@@ -19,7 +19,7 @@ import { handleFormI18n, loadWithFormI18n, layoutLoadWithFormI18n } from './hook
  *
  * @example
  * ```typescript
- * import { createMessageGetter, handleFormI18n } from '@goobits/ui/i18n';
+ * import { createMessageGetter, handleFormI18n } from '@goobits/forms/i18n';
  *
  * // Create a message getter for a specific locale
  * const t = createMessageGetter('en', messages);

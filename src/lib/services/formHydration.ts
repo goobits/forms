@@ -1,5 +1,5 @@
 /**
- * @fileoverview Form hydration service for @goobits/ui
+ * @fileoverview Form hydration service for @goobits/forms
  * Handles form data initialization, auto-detection of browser info, and test data management
  */
 

@@ -7,7 +7,7 @@
 	 */
 
 	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
-	import { containKeyboardEvent } from '@goobits/keyboard/dom';
+	import { containKeyboardEvent } from '@goobits/goo/keyboard';
 	import {
 		getMonthCalendarDates,
 		getDayNames,

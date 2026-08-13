@@ -1,6 +1,6 @@
 # Contact Form API Example
 
-This example demonstrates how to create a contact form API endpoint using the `@goobits/ui` package.
+This example demonstrates how to create a contact form API endpoint using the `@goobits/forms` package.
 
 ## Usage
 
@@ -13,7 +13,7 @@ This example demonstrates how to create a contact form API endpoint using the `@
 
 ```javascript
 // /api/contact/+server.js
-import { createContactApiHandler } from '@goobits/ui/handlers/contactFormHandler';
+import { createContactApiHandler } from '@goobits/forms/handlers/contactFormHandler';
 
 export const POST = createContactApiHandler({
 	csrfSecret: process.env.CONTACT_CSRF_SECRET,

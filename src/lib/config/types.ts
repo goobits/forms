@@ -1,5 +1,5 @@
 /**
- * Type definitions for @goobits/ui configuration
+ * Type definitions for @goobits/forms configuration
  */
 
 import type { ZodSchema } from 'zod';

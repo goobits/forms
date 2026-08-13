@@ -1,6 +1,6 @@
 # Documentation
 
-Welcome to the @goobits/ui documentation demo. This page demonstrates the docs-engine features.
+Welcome to the @goobits/forms documentation demo. This page demonstrates the docs-engine features.
 
 ## TOC
 
@@ -23,8 +23,8 @@ This is a tip callout. Use it for best practices.
 Here's an example with syntax highlighting:
 
 ```typescript
-import { ContactForm } from '@goobits/ui/ui';
-import { createContactApiHandler } from '@goobits/ui/handlers/contactFormHandler';
+import { ContactForm } from '@goobits/forms/ui';
+import { createContactApiHandler } from '@goobits/forms/handlers/contactFormHandler';
 
 export const POST = createContactApiHandler({
 	csrfSecret: process.env.CONTACT_CSRF_SECRET,
@@ -107,6 +107,6 @@ $$
 
 ## Links
 
-Check out the [Cookbook](../../../../docs/cookbook.md) for practical recipes.
+Read [Getting started](../../../../docs/getting-started.md) for setup and the first form.
 
 Or explore the [API Reference](../../../../docs/api-reference.md) for complete documentation.

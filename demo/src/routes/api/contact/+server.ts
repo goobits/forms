@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { createContactApiHandler } from '@goobits/ui/handlers/contactFormHandler';
+import { createContactApiHandler } from '@goobits/forms/handlers/contactFormHandler';
 
 const csrfSecret = process.env.FORMS_DEMO_CSRF_SECRET
 	?? (dev ? 'forms-demo-contact-csrf-local-development-only' : undefined);

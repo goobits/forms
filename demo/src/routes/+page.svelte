@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { ContactForm } from '@goobits/ui/ui';
-	import '@goobits/ui/ui/variables.css';
-	import '@goobits/ui/ui/ContactForm.css';
+	import { ContactForm } from '@goobits/forms/ui';
+	import '@goobits/forms/ui/index.css';
 </script>
 
 <svelte:head>
-	<title>@goobits/ui Demo</title>
+	<title>@goobits/forms Demo</title>
 </svelte:head>
 
 <div class="hero">
-	<h1>@goobits/ui Demo</h1>
+	<h1>@goobits/forms Demo</h1>
 	<p class="subtitle">
 		Production-ready forms for SvelteKit with validation, security, and email delivery
 	</p>

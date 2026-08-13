@@ -1,6 +1,6 @@
 # Examples
 
-Real-world implementations of @goobits/ui.
+Real-world implementations of @goobits/forms.
 
 ## Available Examples
 

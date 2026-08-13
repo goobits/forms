@@ -1,5 +1,5 @@
 /**
- * Configuration management for @goobits/ui
+ * Configuration management for @goobits/forms
  */
 
 import { z } from 'zod';

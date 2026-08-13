@@ -1,8 +1,8 @@
 packages:
   - '.'
   - 'demo'
-  - '../../../../packages/@goobits/keyboard'
-  - '../../../../packages/@goobits/security'
+  - '../goo'
+  - '../../security'
 
 overrides:
   '@sveltejs/kit': 2.70.2

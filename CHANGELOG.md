@@ -5,15 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2026-08-13
+
+### Breaking Changes
+
+- Renamed the package from `@goobits/ui` to `@goobits/forms`.
+- Removed general button, input, textarea, select, checkbox, radio, slider,
+  card, badge, modal, menu, tooltip, and toast exports. Goo is their canonical
+  owner.
+- Replaced the private `@goobits/keyboard` workspace dependency with the
+  supported `@goobits/goo/keyboard` facade.
+
+### Added
+
+- Generic validation-result and form-submission lifecycle APIs.
+- SvelteKit form-action adapter.
+- Accessible `FormStatus` component.
+
+### Changed
+
+- Contact form fields and submission controls compose Goo inputs, selects,
+  textareas, buttons, and spinners.
+- Documentation now covers only the surviving form-workflow surface.
+
 ## [3.0.0] - 2026-07-15
 
 ### Breaking Changes
 
-- Removed the `@goobits/ui/security` and `@goobits/ui/security/csrf` exports. Server
+- Removed the `@goobits/forms/security` and `@goobits/forms/security/csrf` exports. Server
   applications now import CSRF primitives directly from
   `@goobits/security/csrf/sveltekit`.
 - Removed the generic server-side rate-limit and reCAPTCHA verifier exports from
-  `@goobits/ui/services`. Their canonical owners are now
+  `@goobits/forms/services`. Their canonical owners are now
   `@goobits/security/rate-limit` and `@goobits/security/recaptcha`.
 
 ### Fixed
@@ -29,7 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### BREAKING CHANGES
 
-- **Package renamed from `@goobits/forms` to `@goobits/ui`**
+- **Package renamed from `@goobits/forms` to `@goobits/forms`**
   - This package has been renamed to better reflect its expanded scope beyond forms
   - Now includes 30+ UI components: forms, buttons, cards, modals, menus, tooltips, notifications, and more
   - **Migration required**: See [MIGRATION.md](./MIGRATION.md) for complete upgrade instructions
@@ -148,13 +171,13 @@ The package originally focused on form components but has evolved into a compreh
 - Slider, DatePicker, DateRangePicker
 - Toast notification system
 
-The new name `@goobits/ui` better represents this comprehensive UI library.
+The new name `@goobits/forms` better represents this comprehensive UI library.
 
 ### Migration Steps
 
 1. Uninstall old package: `npm uninstall @goobits/forms`
-2. Install new package: `npm install @goobits/ui`
-3. Find and replace: `@goobits/forms` → `@goobits/ui` in all files
+2. Install new package: `npm install @goobits/forms`
+3. Find and replace: `@goobits/forms` → `@goobits/forms` in all files
 4. Verify imports and CSS paths are updated
 5. Clear cache and rebuild: `rm -rf node_modules .svelte-kit && npm install && npm run build`
 
@@ -164,7 +187,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 
 - The `@goobits/forms` package will receive security fixes only until **June 1, 2026**
 - After June 1, 2026, `@goobits/forms` will be deprecated and no longer maintained
-- All new features and updates will be published to `@goobits/ui`
+- All new features and updates will be published to `@goobits/forms`
 
 ### Test Coverage
 
@@ -357,7 +380,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 
 ## [1.0.0] - 2025-10-12
 
-Initial release of @goobits/ui - A comprehensive Svelte 5 forms library.
+Initial release of @goobits/forms - A comprehensive Svelte 5 forms library.
 
 ### Features
 - Configurable form components with validation
@@ -376,6 +399,7 @@ Initial release of @goobits/ui - A comprehensive Svelte 5 forms library.
 - Screen reader accessibility features
 - Custom styling with CSS variables and BEM methodology
 
+[4.0.0]: https://github.com/goobits/forms/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/goobits/forms/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/goobits/forms/compare/v1.3.1...v2.0.0
 [1.3.1]: https://github.com/goobits/forms/compare/v1.3.0...v1.3.1

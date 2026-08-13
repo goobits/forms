@@ -1,5 +1,6 @@
 <script>
-	import { Loader2 } from '@lucide/svelte'
+	import { GooButton } from '@goobits/goo/button'
+	import { GooSpinner } from '@goobits/goo/spinner'
 
 	/**
 	 * SubmitButton - Contact form submit button with loading state
@@ -15,28 +16,13 @@
 </script>
 
 <div class="contact-form__button-container">
-	<button type="submit" class="contact-form__submit-button" disabled={submitting} aria-busy={submitting}>
+	<GooButton type="submit" class="contact-form__submit-button" disabled={submitting} aria-busy={submitting}>
 		{#if submitting}
-			<Loader2 class="animate-spin" size={18} />
+			<GooSpinner size={18} label={getMessage('sending', 'Sending...')} />
 			<span>{getMessage('sending', 'Sending...')}</span>
 		{:else}
 			<span>{getMessage('sendMessage', 'Send Message')}</span>
 			<i class="fa fa-paper-plane contact-form__icon"></i>
 		{/if}
-	</button>
+	</GooButton>
 </div>
-
-<style>
-	:global(.animate-spin) {
-		animation: spin 1.5s linear infinite;
-	}
-
-	@keyframes spin {
-		from {
-			transform: rotate(0deg);
-		}
-		to {
-			transform: rotate(360deg);
-		}
-	}
-</style>

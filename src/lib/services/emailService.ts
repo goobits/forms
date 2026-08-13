@@ -1,5 +1,5 @@
 /**
- * @fileoverview Generic email service interface for @goobits/ui
+ * @fileoverview Generic email service interface for @goobits/forms
  * Provides a pluggable email service with adapters for different providers
  */
 

@@ -216,7 +216,7 @@ export { debounce };
  *
  * @example
  * ```typescript
- * import { contactSchema } from '@goobits/ui/validation';
+ * import { contactSchema } from '@goobits/forms/validation';
  *
  * // Use directly
  * const result = contactSchema.safeParse(formData);

@@ -11,7 +11,7 @@
 	import { tick } from 'svelte';
 	import CalendarComponent from './Calendar.svelte';
 	import Portal from './Portal.svelte';
-	import { containKeyboardEvent } from '@goobits/keyboard/dom';
+	import { containKeyboardEvent } from '@goobits/goo/keyboard';
 	import { formatDate, parseDate, startOfDay } from '../utils/date-utils';
 
 	/**

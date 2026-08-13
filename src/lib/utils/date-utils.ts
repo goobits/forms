@@ -1,5 +1,5 @@
 /**
- * Date Utilities for @goobits/ui
+ * Date Utilities for @goobits/forms
  *
  * Collection of helper functions for date manipulation,
  * formatting, and validation in the DatePicker component.

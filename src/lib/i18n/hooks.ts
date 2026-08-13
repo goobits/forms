@@ -57,7 +57,7 @@ const formConfig = getContactFormConfig();
  * @example
  * ```typescript
  * // In hooks.server.ts
- * import { handleFormI18n } from '@goobits/ui/i18n'
+ * import { handleFormI18n } from '@goobits/forms/i18n'
  * import type { Handle } from '@sveltejs/kit'
  *
  * export const handle: Handle = async ({ event, resolve }) => {
@@ -112,7 +112,7 @@ export async function handleFormI18n(event: RequestEvent, handler?: I18nHandler)
  * @example
  * ```typescript
  * // In +page.server.ts
- * import { loadWithFormI18n } from '@goobits/ui/i18n'
+ * import { loadWithFormI18n } from '@goobits/forms/i18n'
  * import type { PageServerLoad } from './$types'
  *
  * export const load: PageServerLoad = async (event) => {
@@ -162,7 +162,7 @@ export async function loadWithFormI18n<T extends Record<string, unknown> = Recor
  * @example
  * ```typescript
  * // In +layout.server.ts
- * import { layoutLoadWithFormI18n } from '@goobits/ui/i18n'
+ * import { layoutLoadWithFormI18n } from '@goobits/forms/i18n'
  * import type { LayoutServerLoad } from './$types'
  *
  * export const load: LayoutServerLoad = async (event) => {

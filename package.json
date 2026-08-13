@@ -1,7 +1,7 @@
 {
-	"name": "@goobits/ui",
-	"version": "3.0.0",
-	"description": "Comprehensive UI component library including forms, modals, menus, tooltips with validation, reCAPTCHA, and file uploads for Svelte 5",
+	"name": "@goobits/forms",
+	"version": "4.0.0",
+	"description": "Accessible form workflows, validation, submission state, contact handlers, and file uploads for Svelte 5",
 	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
@@ -15,7 +15,7 @@
 		"prepublishOnly": "pnpm run build && pnpm run lint && pnpm run test:run",
 		"test": "vitest run",
 		"test:run": "vitest run",
-		"test:leaks": "vitest run --detectAsyncLeaks --maxWorkers=1 --silent=passed-only src/lib/ui/ContactForm.a11y.test.ts src/lib/ui/DatePicker.a11y.test.ts src/lib/ui/Slider.a11y.test.ts",
+		"test:leaks": "vitest run --detectAsyncLeaks --maxWorkers=1 --silent=passed-only src/lib/ui/ContactForm.a11y.test.ts src/lib/ui/DatePicker.a11y.test.ts",
 		"test:heap": "vitest run --logHeapUsage --maxWorkers=1 --reporter=verbose src/lib/handlers/contactFormHandler.test.ts src/lib/ui/ContactForm.a11y.test.ts",
 		"test:watch": "vitest --watch",
 		"test:ui": "vitest --ui",
@@ -47,33 +47,14 @@
 			"svelte": "./dist/ui/index.js",
 			"default": "./dist/ui/index.js"
 		},
-		"./ui/*": {
-			"svelte": "./dist/ui/*",
-			"default": "./dist/ui/*"
-		},
 		"./ui/index.css": "./dist/ui/index.css",
-		"./ui/menu": {
-			"types": "./dist/ui/menu/index.d.ts",
-			"svelte": "./dist/ui/menu/index.js",
-			"default": "./dist/ui/menu/index.js"
+		"./core": {
+			"types": "./dist/core/index.d.ts",
+			"default": "./dist/core/index.js"
 		},
-		"./ui/menu/*": {
-			"svelte": "./dist/ui/menu/*",
-			"default": "./dist/ui/menu/*"
-		},
-		"./ui/modals": {
-			"types": "./dist/ui/modals/index.d.ts",
-			"svelte": "./dist/ui/modals/index.js",
-			"default": "./dist/ui/modals/index.js"
-		},
-		"./ui/modals/*": {
-			"svelte": "./dist/ui/modals/*",
-			"default": "./dist/ui/modals/*"
-		},
-		"./ui/tooltip": {
-			"types": "./dist/ui/tooltip/index.d.ts",
-			"svelte": "./dist/ui/tooltip/index.js",
-			"default": "./dist/ui/tooltip/index.js"
+		"./sveltekit": {
+			"types": "./dist/sveltekit/index.d.ts",
+			"default": "./dist/sveltekit/index.js"
 		},
 		"./config": {
 			"types": "./dist/config/index.d.ts",
@@ -111,7 +92,7 @@
 		"CHANGELOG.md"
 	],
 	"dependencies": {
-		"@goobits/keyboard": "workspace:*",
+		"@goobits/goo": "workspace:*",
 		"@goobits/security": "workspace:*",
 		"@sveltejs/kit": "2.70.2",
 		"formsnap": "^2.0.1",
@@ -134,15 +115,11 @@
 	"keywords": [
 		"svelte",
 		"sveltekit",
-		"ui-components",
 		"forms",
 		"form",
 		"contact-form",
 		"validation",
 		"recaptcha",
-		"modals",
-		"menus",
-		"tooltips",
 		"i18n",
 		"internationalization",
 		"form-builder",

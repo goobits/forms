@@ -1,5 +1,5 @@
 /**
- * Constants for @goobits/ui
+ * Constants for @goobits/forms
  *
  * This module provides environment detection and configuration constants
  * used throughout the forms library for timing, storage, and behavior control.

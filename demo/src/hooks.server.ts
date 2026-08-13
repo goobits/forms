@@ -1,7 +1,7 @@
-import { initContactFormConfig } from '@goobits/ui/config';
+import { initContactFormConfig } from '@goobits/forms/config';
 
 initContactFormConfig({
-	appName: '@goobits/ui Demo',
+	appName: '@goobits/forms Demo',
 	categories: {
 		general: {
 			label: 'General Inquiry',

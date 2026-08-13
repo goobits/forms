@@ -1,5 +1,5 @@
 /**
- * Logger utility for @goobits/ui
+ * Logger utility for @goobits/forms
  *
  * This module provides a configurable logging system with multiple log levels,
  * module-specific loggers, and consistent formatting across the forms library.
@@ -80,7 +80,7 @@ export interface Logger {
 let globalConfig: Required<LoggerConfig> = {
 	enabled: true,
 	level: LogLevels.INFO,
-	prefix: '@goobits/ui'
+	prefix: '@goobits/forms'
 };
 
 /**
