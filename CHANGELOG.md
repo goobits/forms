@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generic validation-result and form-submission lifecycle APIs.
 - SvelteKit form-action adapter.
 - Accessible `FormStatus` component.
+- Focused `ui/form-errors` and `ui/form-status` exports for consumers that do
+  not need the complete Forms UI barrel.
 
 ### Changed
 

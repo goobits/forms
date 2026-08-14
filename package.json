@@ -48,6 +48,16 @@
 			"default": "./dist/ui/index.js"
 		},
 		"./ui/index.css": "./dist/ui/index.css",
+		"./ui/form-errors": {
+			"types": "./dist/ui/FormErrors.svelte.d.ts",
+			"svelte": "./dist/ui/FormErrors.svelte",
+			"default": "./dist/ui/FormErrors.svelte"
+		},
+		"./ui/form-status": {
+			"types": "./dist/ui/FormStatus.svelte.d.ts",
+			"svelte": "./dist/ui/FormStatus.svelte",
+			"default": "./dist/ui/FormStatus.svelte"
+		},
 		"./core": {
 			"types": "./dist/core/index.d.ts",
 			"default": "./dist/core/index.js"
