@@ -228,8 +228,8 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3(@lucide/svelte@0.546.0(svelte@5.56.8(@typescript-eslint/types@8.65.0)))(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/node@26.1.2)(svelte@5.56.8(@typescript-eslint/types@8.65.0))
       '@goobits/forms':
-        specifier: file:..
-        version: file:(@aws-sdk/client-ses@3.1099.0)(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(@typescript-eslint/types@8.65.0)(nodemailer@9.0.3)(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0))
+        specifier: workspace:*
+        version: link:..
       '@lucide/svelte':
         specifier: ^0.546.0
         version: 0.546.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))
@@ -648,18 +648,6 @@ packages:
       svelte: 5.56.8
     peerDependenciesMeta:
       mermaid:
-        optional: true
-
-  '@goobits/forms@file:':
-    resolution: {directory: '', type: directory}
-    engines: {node: '>=18.0.0', pnpm: '>=9.0.0'}
-    peerDependencies:
-      '@aws-sdk/client-ses': ^3.0.0
-      nodemailer: ^9.0.1
-    peerDependenciesMeta:
-      '@aws-sdk/client-ses':
-        optional: true
-      nodemailer:
         optional: true
 
   '@goobits/logger@1.0.0':
@@ -3738,26 +3726,6 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@goobits/forms@file:(@aws-sdk/client-ses@3.1099.0)(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(@typescript-eslint/types@8.65.0)(nodemailer@9.0.3)(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0))':
-    dependencies:
-      '@goobits/goo': link:../goo
-      '@goobits/security': link:../../security
-      '@sveltejs/kit': 2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0))
-      formsnap: 2.0.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(sveltekit-superforms@2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3))
-      svelte: 5.56.8(@typescript-eslint/types@8.65.0)
-      sveltekit-superforms: 2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)
-      zod: 4.4.3
-    optionalDependencies:
-      '@aws-sdk/client-ses': 3.1099.0
-      nodemailer: 9.0.3
-    transitivePeerDependencies:
-      - '@opentelemetry/api'
-      - '@sveltejs/vite-plugin-svelte'
-      - '@types/json-schema'
-      - '@typescript-eslint/types'
-      - typescript
-      - vite
-
   '@goobits/logger@1.0.0': {}
 
   '@goobits/themes@1.3.2(@lucide/svelte@0.546.0(svelte@5.56.8(@typescript-eslint/types@8.65.0)))(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))':
@@ -5093,12 +5061,6 @@ snapshots:
 
   flatted@3.4.4: {}
 
-  formsnap@2.0.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(sveltekit-superforms@2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)):
-    dependencies:
-      svelte: 5.56.8(@typescript-eslint/types@8.65.0)
-      svelte-toolbelt: 0.5.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))
-      sveltekit-superforms: 2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)
-
   formsnap@2.0.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(sveltekit-superforms@2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@7.2.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@8.2.0(@types/node@25.9.5)(esbuild@0.28.1)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@8.2.0(@types/node@25.9.5)(esbuild@0.28.1)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)):
     dependencies:
       svelte: 5.56.8(@typescript-eslint/types@8.65.0)
@@ -6306,34 +6268,6 @@ snapshots:
       zimmerframe: 1.1.4
     transitivePeerDependencies:
       - '@typescript-eslint/types'
-
-  sveltekit-superforms@2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3):
-    dependencies:
-      '@sveltejs/kit': 2.70.2(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@6.4.3(@types/node@26.1.2)(lightningcss@1.33.0)(yaml@2.9.0))
-      devalue: 5.9.0
-      memoize-weak: 1.0.2
-      svelte: 5.56.8(@typescript-eslint/types@8.65.0)
-      ts-deepmerge: 8.0.0
-    optionalDependencies:
-      '@exodus/schemasafe': 1.3.0
-      '@standard-schema/spec': 1.1.0
-      '@typeschema/class-validator': 0.3.0(@types/json-schema@7.0.15)(class-validator@0.14.4)
-      '@valibot/to-json-schema': 1.7.1(valibot@1.4.2(typescript@6.0.3))
-      '@vinejs/vine': 3.0.1
-      arktype: 2.2.3
-      class-validator: 0.14.4
-      effect: 3.22.1
-      joi: 17.13.4
-      json-schema-to-ts: 3.1.1
-      superstruct: 2.0.2
-      typebox: 1.3.8
-      valibot: 1.4.2(typescript@6.0.3)
-      yup: 1.7.1
-      zod: 4.4.3
-      zod-v3-to-json-schema: 4.0.0(zod@4.4.3)
-    transitivePeerDependencies:
-      - '@types/json-schema'
-      - typescript
 
   sveltekit-superforms@2.30.2(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@7.2.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))(vite@8.2.0(@types/node@25.9.5)(esbuild@0.28.1)(yaml@2.9.0)))(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3)(vite@8.2.0(@types/node@25.9.5)(esbuild@0.28.1)(yaml@2.9.0)))(@types/json-schema@7.0.15)(svelte@5.56.8(@typescript-eslint/types@8.65.0))(typescript@6.0.3):
     dependencies:
