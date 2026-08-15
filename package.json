@@ -9,6 +9,7 @@
 	"publishConfig": {
 		"access": "public"
 	},
+	"packageManager": "pnpm@11.21.0",
 	"scripts": {
 		"build": "svelte-package && pnpm run build:clean",
 		"build:clean": "find dist -type f -name '*.test.*' -delete",
