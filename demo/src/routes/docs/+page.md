@@ -46,8 +46,9 @@ export const POST = createContactApiHandler({
 
 ## Code Tabs
 
-````tabs
-```javascript tab="JavaScript"
+````tabs:forms-api
+tab: JavaScript
+```javascript
 // JavaScript example
 const handler = createContactApiHandler({
 	csrfSecret: process.env.CONTACT_CSRF_SECRET,
@@ -56,7 +57,8 @@ const handler = createContactApiHandler({
 });
 ```
 
-```typescript tab="TypeScript"
+tab: TypeScript
+```typescript
 // TypeScript example
 import type { RequestHandler } from '@sveltejs/kit';
 
