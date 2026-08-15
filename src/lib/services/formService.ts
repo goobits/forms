@@ -6,7 +6,7 @@
  */
 
 // External Imports
-import { superForm } from 'sveltekit-superforms';
+import { superForm } from 'sveltekit-superforms/client';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import type { ZodSchema } from 'zod';
 

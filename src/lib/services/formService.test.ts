@@ -22,7 +22,7 @@ const mockSanitizeFormData = vi.hoisted(() => vi.fn());
 const mockHandleError = vi.hoisted(() => vi.fn());
 
 // Mock external dependencies
-vi.mock('sveltekit-superforms', () => ({
+vi.mock('sveltekit-superforms/client', () => ({
 	superForm: mockSuperForm
 }));
 
