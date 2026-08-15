@@ -22,5 +22,9 @@ overrides:
   postcss: 8.5.25
   rollup: 4.62.3
   sharp: 0.35.3
-  svelte: 5.56.8
+  svelte: 5.56.9
   undici@^7.0.0: 7.29.0
+
+peerDependencyRules:
+  allowedVersions:
+    '@lucide/svelte': '1'
