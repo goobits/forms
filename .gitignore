@@ -8,6 +8,7 @@ node_modules/
 dist/
 build/
 .svelte-kit/
+demo/.svelte-kit
 package/
 /dist
 /build
