@@ -18,7 +18,6 @@
 		<nav>
 			<a href="/">Home</a>
 			<a href="/docs">Docs</a>
-			<a href="/examples">Examples</a>
 		</nav>
 	</header>
 
