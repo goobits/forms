@@ -5,7 +5,11 @@
  * Svelte components with Testing Library.
  */
 
-import { render as testingLibraryRender, type RenderOptions, type RenderResult } from '@testing-library/svelte';
+import {
+	render as testingLibraryRender,
+	type RenderOptions,
+	type RenderResult
+} from '@testing-library/svelte';
 import type { Component } from 'svelte';
 import { vi, type Mock } from 'vitest';
 
@@ -82,8 +86,8 @@ export function mockMatchMedia(options: { matches?: boolean; media?: string } = 
 			removeListener: vi.fn(),
 			addEventListener: vi.fn(),
 			removeEventListener: vi.fn(),
-			dispatchEvent: vi.fn(),
-		})),
+			dispatchEvent: vi.fn()
+		}))
 	});
 }
 
@@ -102,7 +106,9 @@ export function createFormData(data: Record<string, string | Blob>) {
  * Helper to get form validation errors from the DOM
  */
 export function getValidationErrors(container: HTMLElement) {
-	const errorElements = container.querySelectorAll('[data-testid*="error"], .error, [role="alert"]');
+	const errorElements = container.querySelectorAll(
+		'[data-testid*="error"], .error, [role="alert"]'
+	);
 	return Array.from(errorElements).map((el) => el.textContent?.trim() || '');
 }
 
@@ -112,7 +118,8 @@ export function getValidationErrors(container: HTMLElement) {
 export function hasAccessibleName(element: HTMLElement) {
 	const ariaLabel = element.getAttribute('aria-label');
 	const ariaLabelledBy = element.getAttribute('aria-labelledby');
-	const hasLabelElement = !!element.closest('label') || !!document.querySelector(`label[for="${element.id}"]`);
+	const hasLabelElement =
+		!!element.closest('label') || !!document.querySelector(`label[for="${element.id}"]`);
 
 	return !!(ariaLabel || ariaLabelledBy || hasLabelElement || element.textContent?.trim());
 }
@@ -122,9 +129,13 @@ export function hasAccessibleName(element: HTMLElement) {
  */
 export function checkAccessibility(element: HTMLElement) {
 	const checks = {
-		hasRole: !!element.getAttribute('role') || !!element.tagName.match(/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/),
+		hasRole:
+			!!element.getAttribute('role') ||
+			!!element.tagName.match(/^(BUTTON|A|INPUT|SELECT|TEXTAREA)$/),
 		hasAccessibleName: hasAccessibleName(element),
-		isKeyboardAccessible: element.tabIndex >= 0 || ['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName)
+		isKeyboardAccessible:
+			element.tabIndex >= 0 ||
+			['BUTTON', 'A', 'INPUT', 'SELECT', 'TEXTAREA'].includes(element.tagName)
 	};
 
 	return {

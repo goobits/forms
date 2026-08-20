@@ -161,7 +161,11 @@ export function getValidatorForCategory(
  * getValidationClasses(false, true, ''); // Returns: ""
  * ```
  */
-export function getValidationClasses(hasError: boolean, isTouched: boolean, value?: unknown): string {
+export function getValidationClasses(
+	hasError: boolean,
+	isTouched: boolean,
+	value?: unknown
+): string {
 	if (!isTouched) return '';
 	// Only show valid state if there's an actual value
 	return hasError ? 'is-invalid has-error' : value ? 'is-valid' : '';
@@ -238,7 +242,7 @@ export const contactSchema = z.object({
 	email: z.string().email('Please enter a valid email address'),
 	message: z.string().min(1, 'Please share your message with us'),
 	attachments: z.array(z.instanceof(File)).optional(),
-	coppa: z.boolean().refine(val => val === true, {
+	coppa: z.boolean().refine((val) => val === true, {
 		message: "Please confirm you're over 13 or have parent/teacher permission"
 	})
 });
@@ -253,7 +257,7 @@ export const feedbackSchema = z.object({
 	email: z.string().email('Please enter a valid email address'),
 	message: z.string().min(1, 'Please share your message with us'),
 	attachments: z.array(z.instanceof(File)).optional(),
-	coppa: z.boolean().refine(val => val === true, {
+	coppa: z.boolean().refine((val) => val === true, {
 		message: "Please confirm you're over 13 or have parent/teacher permission"
 	})
 });
@@ -272,7 +276,7 @@ export const supportSchema = z.object({
 	browserVersion: z.string().min(1, 'Please tell us your browser version'),
 	operatingSystem: z.string().min(1, "Please tell us which operating system you're using"),
 	attachments: z.array(z.instanceof(File)).optional(),
-	coppa: z.boolean().refine(val => val === true, {
+	coppa: z.boolean().refine((val) => val === true, {
 		message: "Please confirm you're over 13 or have parent/teacher permission"
 	})
 });
@@ -288,7 +292,7 @@ export const businessSchema = z.object({
 	company: z.string().min(1, 'Please provide your company name'),
 	businessRole: z.string().min(1, 'Please tell us your role in the company'),
 	message: z.string().min(1, 'Please share your message with us'),
-	coppa: z.boolean().refine(val => val === true, {
+	coppa: z.boolean().refine((val) => val === true, {
 		message: "Please confirm you're over 13 or have parent/teacher permission"
 	})
 });
@@ -305,7 +309,7 @@ export const bookingSchema = z.object({
 	preferredDate: z.string().min(1, 'Please select your preferred date'),
 	preferredTime: z.string().min(1, 'Please select your preferred time'),
 	message: z.string().min(1, 'Please share your message with us'),
-	coppa: z.boolean().refine(val => val === true, {
+	coppa: z.boolean().refine((val) => val === true, {
 		message: "Please confirm you're over 13 or have parent/teacher permission"
 	})
 });

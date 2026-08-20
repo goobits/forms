@@ -583,9 +583,16 @@ export function initContactFormConfig(
 			// Convert FormData to plain object
 			// Handle FormData instances, iterables, and plain objects
 			const data = (
-				typeof formData === 'object' && formData !== null && 'entries' in formData &&
-				typeof (formData as { entries?: () => IterableIterator<[string, FormDataEntryValue]> }).entries === 'function'
-					? Object.fromEntries((formData as { entries: () => IterableIterator<[string, FormDataEntryValue]> }).entries())
+				typeof formData === 'object' &&
+				formData !== null &&
+				'entries' in formData &&
+				typeof (formData as { entries?: () => IterableIterator<[string, FormDataEntryValue]> })
+					.entries === 'function'
+					? Object.fromEntries(
+							(
+								formData as { entries: () => IterableIterator<[string, FormDataEntryValue]> }
+							).entries()
+						)
 					: typeof formData === 'object' && formData !== null && Symbol.iterator in formData
 						? Object.fromEntries(formData as Iterable<[string, unknown]>)
 						: formData

@@ -31,10 +31,13 @@ const config = {
 				screenshotPlugin,
 				remarkMath,
 				katexPlugin,
-				[codeHighlightPlugin, {
-					theme: 'dracula',
-					showLineNumbers: true
-				}]
+				[
+					codeHighlightPlugin,
+					{
+						theme: 'dracula',
+						showLineNumbers: true
+					}
+				]
 			]
 		})
 	],

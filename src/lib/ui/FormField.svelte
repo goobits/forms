@@ -148,8 +148,7 @@
 				onfocus={handleFocus}
 				onkeydown={handleKeyDown}
 				placeholder={fieldConfig.placeholder}
-				rows={fieldConfig.rows || 4}
-			></textarea>
+				rows={fieldConfig.rows || 4}></textarea>
 		{:else}
 			<input
 				{...fieldProps}

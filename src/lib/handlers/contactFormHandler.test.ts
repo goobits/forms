@@ -75,16 +75,14 @@ function createContactFormHandlers(options: TestContactApiHandlerOptions = {}) {
 /**
  * Helper function to create mock RequestEvent for testing
  */
-function createMockRequestEvent(options: {
-	method?: string;
-	body?: any;
-	clientAddress?: string;
-} = {}): RequestEvent {
-	const {
-		method = 'POST',
-		body = {},
-		clientAddress = '192.168.1.1'
-	} = options;
+function createMockRequestEvent(
+	options: {
+		method?: string;
+		body?: any;
+		clientAddress?: string;
+	} = {}
+): RequestEvent {
+	const { method = 'POST', body = {}, clientAddress = '192.168.1.1' } = options;
 
 	const headers = new Headers({
 		'content-type': 'application/json'
@@ -316,9 +314,7 @@ describe('createContactApiHandler', () => {
 
 			await handler(event);
 
-			expect(mockLogger.error).toHaveBeenCalledWith(
-				expect.stringContaining('CSRF')
-			);
+			expect(mockLogger.error).toHaveBeenCalledWith(expect.stringContaining('CSRF'));
 		});
 	});
 
@@ -478,9 +474,7 @@ describe('createContactApiHandler', () => {
 
 			await handler(event);
 
-			expect(mockLogger.error).toHaveBeenCalledWith(
-				expect.stringContaining('sanitization')
-			);
+			expect(mockLogger.error).toHaveBeenCalledWith(expect.stringContaining('sanitization'));
 		});
 	});
 

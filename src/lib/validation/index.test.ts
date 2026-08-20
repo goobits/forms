@@ -20,7 +20,7 @@ import {
 	businessSchema,
 	bookingSchema,
 	type ValidationConfig,
-	type ValidationErrors,
+	type ValidationErrors
 } from './index';
 
 // Helper to create mock ValidationConfig
@@ -29,7 +29,7 @@ function createMockValidationConfig(): ValidationConfig {
 		categories: {
 			general: { fields: ['name', 'email', 'message'] },
 			support: { fields: ['name', 'email', 'message', 'browser'] },
-			business: { fields: ['name', 'email', 'company'] },
+			business: { fields: ['name', 'email', 'company'] }
 		},
 		schemas: {
 			complete: z.object({
@@ -37,21 +37,21 @@ function createMockValidationConfig(): ValidationConfig {
 				email: z.string().email('Invalid email'),
 				message: z.string().min(1, 'Message is required'),
 				browser: z.string().min(1, 'Browser is required'),
-				company: z.string().min(1, 'Company is required'),
+				company: z.string().min(1, 'Company is required')
 			}),
 			categories: {
 				general: z.object({
 					name: z.string().min(1, 'Name is required'),
 					email: z.string().email('Invalid email'),
-					message: z.string().min(1, 'Message is required'),
-				}),
-			},
+					message: z.string().min(1, 'Message is required')
+				})
+			}
 		},
 		categoryToFieldMap: {
 			general: ['name', 'email', 'message'],
 			support: ['name', 'email', 'message', 'browser'],
-			business: ['name', 'email', 'company'],
-		},
+			business: ['name', 'email', 'company']
+		}
 	};
 }
 
@@ -108,7 +108,7 @@ describe('createValidationSchemaForCategory', () => {
 			const result = schema.safeParse({
 				name: 'John Doe',
 				email: 'john@example.com',
-				company: 'Acme Inc',
+				company: 'Acme Inc'
 			});
 
 			expect(result.success).toBe(true);
@@ -126,7 +126,7 @@ describe('createValidationSchemaForCategory', () => {
 			const validResult = schema.safeParse({
 				name: 'John',
 				email: 'john@example.com',
-				company: 'Acme',
+				company: 'Acme'
 			});
 			expect(validResult.success).toBe(true);
 
@@ -134,7 +134,7 @@ describe('createValidationSchemaForCategory', () => {
 			const invalidResult = schema.safeParse({
 				name: '',
 				email: 'invalid-email',
-				company: '',
+				company: ''
 			});
 			expect(invalidResult.success).toBe(false);
 		});
@@ -160,10 +160,10 @@ describe('createValidationSchemaForCategory', () => {
 		test('throws error when category has no schema and no field map', () => {
 			const config: ValidationConfig = {
 				categories: {
-					empty: { fields: [] },
+					empty: { fields: [] }
 				},
 				schemas: {},
-				categoryToFieldMap: {},
+				categoryToFieldMap: {}
 			};
 
 			expect(() => {
@@ -174,12 +174,12 @@ describe('createValidationSchemaForCategory', () => {
 		test('throws error when no complete schema available for fallback', () => {
 			const config: ValidationConfig = {
 				categories: {
-					test: { fields: ['name'] },
+					test: { fields: ['name'] }
 				},
 				schemas: {},
 				categoryToFieldMap: {
-					test: ['name'],
-				},
+					test: ['name']
+				}
 			};
 
 			expect(() => {
@@ -196,7 +196,7 @@ describe('createValidationSchemaForCategory', () => {
 			const result = schema.safeParse({
 				name: 'John Doe',
 				email: 'john@example.com',
-				message: 'Hello world',
+				message: 'Hello world'
 			});
 
 			expect(result.success).toBe(true);
@@ -209,7 +209,7 @@ describe('createValidationSchemaForCategory', () => {
 			const result = schema.safeParse({
 				name: '',
 				email: 'invalid',
-				message: '',
+				message: ''
 			});
 
 			expect(result.success).toBe(false);
@@ -268,10 +268,10 @@ describe('getValidatorForCategory', () => {
 		test('throws error when schema creation fails', () => {
 			const config: ValidationConfig = {
 				categories: {
-					broken: { fields: [] },
+					broken: { fields: [] }
 				},
 				schemas: {},
-				categoryToFieldMap: {},
+				categoryToFieldMap: {}
 			};
 
 			expect(() => {
@@ -312,7 +312,7 @@ describe('getValidationClasses', () => {
 				{ hasError: false, isTouched: false, value: '' },
 				{ hasError: true, isTouched: false, value: '' },
 				{ hasError: false, isTouched: false, value: 'value' },
-				{ hasError: true, isTouched: false, value: 'value' },
+				{ hasError: true, isTouched: false, value: 'value' }
 			];
 
 			scenarios.forEach(({ hasError, isTouched, value }) => {
@@ -331,7 +331,7 @@ describe('getValidationClasses', () => {
 				{ value: true },
 				{ value: false },
 				{ value: 0 },
-				{ value: null },
+				{ value: null }
 			];
 
 			scenarios.forEach(({ value }) => {
@@ -344,7 +344,7 @@ describe('getValidationClasses', () => {
 		test('returns valid classes for touched fields with non-empty values', () => {
 			const validValues = ['text', 123, true, { key: 'value' }, [1, 2, 3], [], {}, '   '];
 
-			validValues.forEach(value => {
+			validValues.forEach((value) => {
 				expect(getValidationClasses(false, true, value)).toBe('is-valid');
 			});
 		});
@@ -352,7 +352,7 @@ describe('getValidationClasses', () => {
 		test('returns empty for touched fields with empty values', () => {
 			const emptyValues = ['', 0, false, null, undefined];
 
-			emptyValues.forEach(value => {
+			emptyValues.forEach((value) => {
 				expect(getValidationClasses(false, true, value)).toBe('');
 			});
 		});
@@ -512,7 +512,7 @@ describe('hasValidationErrors', () => {
 	describe('error detection', () => {
 		test('returns true when errors exist with length > 0', () => {
 			const errors: ValidationErrors = {
-				email: ['Invalid email format'],
+				email: ['Invalid email format']
 			};
 			expect(hasValidationErrors(errors)).toBe(true);
 		});
@@ -524,10 +524,10 @@ describe('hasValidationErrors', () => {
 				{ field1: undefined },
 				{ field1: [], field2: undefined },
 				{ field1: [], field2: [], field3: undefined },
-				{ email: undefined, name: undefined, message: undefined },
+				{ email: undefined, name: undefined, message: undefined }
 			];
 
-			noErrorScenarios.forEach(errors => {
+			noErrorScenarios.forEach((errors) => {
 				expect(hasValidationErrors(errors)).toBe(false);
 			});
 		});
@@ -538,7 +538,7 @@ describe('hasValidationErrors', () => {
 			const errors: ValidationErrors = {
 				email: ['Invalid email'],
 				name: [],
-				phone: undefined,
+				phone: undefined
 			};
 			expect(hasValidationErrors(errors)).toBe(true);
 		});
@@ -548,14 +548,14 @@ describe('hasValidationErrors', () => {
 				field1: [],
 				field2: undefined,
 				field3: ['Error here'],
-				field4: [],
+				field4: []
 			};
 			expect(hasValidationErrors(errors)).toBe(true);
 		});
 
 		test('handles single field with multiple errors', () => {
 			const errors: ValidationErrors = {
-				email: ['Invalid format', 'Already taken', 'Too long'],
+				email: ['Invalid format', 'Already taken', 'Too long']
 			};
 			expect(hasValidationErrors(errors)).toBe(true);
 		});
@@ -576,7 +576,7 @@ describe('hasValidationErrors', () => {
 		test('detects errors in flat structure', () => {
 			const errors: ValidationErrors = {
 				'user.name': ['Required'],
-				'user.email': [],
+				'user.email': []
 			};
 			expect(hasValidationErrors(errors)).toBe(true);
 		});
@@ -584,7 +584,7 @@ describe('hasValidationErrors', () => {
 		test('handles dot-notation field names', () => {
 			const errors: ValidationErrors = {
 				'profile.bio': ['Too long'],
-				'profile.age': undefined,
+				'profile.age': undefined
 			};
 			expect(hasValidationErrors(errors)).toBe(true);
 		});
@@ -596,7 +596,7 @@ describe('clearFieldError', () => {
 		test('removes specified field from errors', () => {
 			const errors: ValidationErrors = {
 				email: ['Invalid email'],
-				name: ['Required'],
+				name: ['Required']
 			};
 			const result = clearFieldError(errors, 'email');
 
@@ -606,7 +606,7 @@ describe('clearFieldError', () => {
 
 		test('returns new object (immutability)', () => {
 			const errors: ValidationErrors = {
-				email: ['Invalid email'],
+				email: ['Invalid email']
 			};
 			const result = clearFieldError(errors, 'email');
 
@@ -616,7 +616,7 @@ describe('clearFieldError', () => {
 		test('original errors object unchanged', () => {
 			const errors: ValidationErrors = {
 				email: ['Invalid email'],
-				name: ['Required'],
+				name: ['Required']
 			};
 			const original = { ...errors };
 
@@ -629,7 +629,7 @@ describe('clearFieldError', () => {
 	describe('edge cases', () => {
 		test('handles non-existent field (no-op)', () => {
 			const errors: ValidationErrors = {
-				email: ['Invalid'],
+				email: ['Invalid']
 			};
 			const result = clearFieldError(errors, 'nonexistent');
 
@@ -647,7 +647,7 @@ describe('clearFieldError', () => {
 		test('handles clearing field with undefined value', () => {
 			const errors: ValidationErrors = {
 				email: undefined,
-				name: ['Required'],
+				name: ['Required']
 			};
 			const result = clearFieldError(errors, 'email');
 
@@ -661,7 +661,7 @@ describe('clearFieldError', () => {
 			let errors: ValidationErrors = {
 				email: ['Invalid'],
 				name: ['Required'],
-				phone: ['Invalid format'],
+				phone: ['Invalid format']
 			};
 
 			errors = clearFieldError(errors, 'email');
@@ -677,7 +677,7 @@ describe('clearFieldError', () => {
 			const errors: ValidationErrors = {
 				field1: ['Error 1'],
 				field2: ['Error 2'],
-				field3: ['Error 3'],
+				field3: ['Error 3']
 			};
 			const result = clearFieldError(errors, 'field2');
 
@@ -689,7 +689,7 @@ describe('clearFieldError', () => {
 		test('clearing all fields results in empty object references', () => {
 			let errors: ValidationErrors = {
 				email: ['Error'],
-				name: ['Error'],
+				name: ['Error']
 			};
 
 			errors = clearFieldError(errors, 'email');
@@ -708,10 +708,10 @@ describe('Pre-built Schemas', () => {
 				name: 'John Doe',
 				email: 'john@example.com',
 				message: 'Hello world',
-				coppa: true,
+				coppa: true
 			};
 
-			requiredFields.forEach(field => {
+			requiredFields.forEach((field) => {
 				const incomplete = { ...validData };
 				delete incomplete[field as keyof typeof incomplete];
 				const result = contactSchema.safeParse(incomplete);
@@ -727,7 +727,7 @@ describe('Pre-built Schemas', () => {
 				name: 'John',
 				email: 'invalid-email',
 				message: 'Hello',
-				coppa: true,
+				coppa: true
 			};
 			expect(contactSchema.safeParse(invalidEmail).success).toBe(false);
 
@@ -736,7 +736,7 @@ describe('Pre-built Schemas', () => {
 				name: 'John',
 				email: 'john@example.com',
 				message: 'Hello',
-				coppa: false,
+				coppa: false
 			};
 			expect(contactSchema.safeParse(invalidCoppa).success).toBe(false);
 		});
@@ -747,7 +747,7 @@ describe('Pre-built Schemas', () => {
 				email: 'john@example.com',
 				message: 'Hello',
 				attachments: [new File(['content'], 'test.txt')],
-				coppa: true,
+				coppa: true
 			};
 
 			expect(contactSchema.safeParse(dataWithAttachments).success).toBe(true);
@@ -756,7 +756,7 @@ describe('Pre-built Schemas', () => {
 				name: 'John',
 				email: 'john@example.com',
 				message: 'Hello',
-				coppa: true,
+				coppa: true
 			};
 
 			expect(contactSchema.safeParse(dataWithoutAttachments).success).toBe(true);
@@ -769,7 +769,7 @@ describe('Pre-built Schemas', () => {
 				name: 'Jane Doe',
 				email: 'jane@example.com',
 				message: 'Great product!',
-				coppa: true,
+				coppa: true
 			};
 
 			expect(feedbackSchema.safeParse(validData).success).toBe(true);
@@ -778,7 +778,7 @@ describe('Pre-built Schemas', () => {
 				name: '',
 				email: 'invalid',
 				message: '',
-				coppa: false,
+				coppa: false
 			};
 
 			const result = feedbackSchema.safeParse(incompleteData);
@@ -790,7 +790,7 @@ describe('Pre-built Schemas', () => {
 				name: 'Jane',
 				email: 'jane@example.com',
 				message: 'Feedback here',
-				coppa: true,
+				coppa: true
 			};
 
 			const contactResult = contactSchema.safeParse(data);
@@ -805,7 +805,7 @@ describe('Pre-built Schemas', () => {
 				email: 'jane@example.com',
 				message: 'Feedback',
 				attachments: [new File(['data'], 'screenshot.png')],
-				coppa: true,
+				coppa: true
 			};
 
 			expect(feedbackSchema.safeParse(data).success).toBe(true);
@@ -814,7 +814,14 @@ describe('Pre-built Schemas', () => {
 
 	describe('supportSchema', () => {
 		test('validates all required fields', () => {
-			const requiredFields = ['name', 'email', 'message', 'browser', 'browserVersion', 'operatingSystem'];
+			const requiredFields = [
+				'name',
+				'email',
+				'message',
+				'browser',
+				'browserVersion',
+				'operatingSystem'
+			];
 			const validData = {
 				name: 'John Doe',
 				email: 'john@example.com',
@@ -822,10 +829,10 @@ describe('Pre-built Schemas', () => {
 				browser: 'Chrome',
 				browserVersion: '100.0.4896.127',
 				operatingSystem: 'Windows 11',
-				coppa: true,
+				coppa: true
 			};
 
-			requiredFields.forEach(field => {
+			requiredFields.forEach((field) => {
 				const incomplete = { ...validData, [field]: '' };
 				const result = supportSchema.safeParse(incomplete);
 				expect(result.success).toBe(false);
@@ -842,7 +849,7 @@ describe('Pre-built Schemas', () => {
 				browser: 'Chrome',
 				browserVersion: '100',
 				operatingSystem: 'Windows',
-				coppa: false,
+				coppa: false
 			};
 
 			expect(supportSchema.safeParse(data).success).toBe(false);
@@ -857,7 +864,7 @@ describe('Pre-built Schemas', () => {
 				browserVersion: '95',
 				operatingSystem: 'macOS',
 				attachments: [new File(['log'], 'error.log')],
-				coppa: true,
+				coppa: true
 			};
 
 			expect(supportSchema.safeParse(data).success).toBe(true);
@@ -873,10 +880,10 @@ describe('Pre-built Schemas', () => {
 				company: 'Acme Corporation',
 				businessRole: 'Chief Technology Officer',
 				message: 'Interested in enterprise plan',
-				coppa: true,
+				coppa: true
 			};
 
-			requiredFields.forEach(field => {
+			requiredFields.forEach((field) => {
 				const incomplete = { ...validData, [field]: '' };
 				const result = businessSchema.safeParse(incomplete);
 				expect(result.success).toBe(false);
@@ -892,7 +899,7 @@ describe('Pre-built Schemas', () => {
 				company: 'Acme',
 				businessRole: 'CEO',
 				message: 'Business inquiry',
-				coppa: false,
+				coppa: false
 			};
 
 			expect(businessSchema.safeParse(data).success).toBe(false);
@@ -901,7 +908,14 @@ describe('Pre-built Schemas', () => {
 
 	describe('bookingSchema', () => {
 		test('validates all required fields', () => {
-			const requiredFields = ['name', 'email', 'message', 'phone', 'preferredDate', 'preferredTime'];
+			const requiredFields = [
+				'name',
+				'email',
+				'message',
+				'phone',
+				'preferredDate',
+				'preferredTime'
+			];
 			const validData = {
 				name: 'Alice Johnson',
 				email: 'alice@example.com',
@@ -909,10 +923,10 @@ describe('Pre-built Schemas', () => {
 				preferredDate: '2024-06-15',
 				preferredTime: '14:30',
 				message: 'Would like to schedule a consultation',
-				coppa: true,
+				coppa: true
 			};
 
-			requiredFields.forEach(field => {
+			requiredFields.forEach((field) => {
 				const incomplete = { ...validData, [field]: '' };
 				const result = bookingSchema.safeParse(incomplete);
 				expect(result.success).toBe(false);
@@ -929,7 +943,7 @@ describe('Pre-built Schemas', () => {
 				preferredDate: '2024-06-15',
 				preferredTime: '14:30',
 				message: 'Book consultation',
-				coppa: false,
+				coppa: false
 			};
 
 			expect(bookingSchema.safeParse(data).success).toBe(false);
@@ -943,7 +957,7 @@ describe('Pre-built Schemas', () => {
 				{ schema: feedbackSchema, name: 'feedback' },
 				{ schema: supportSchema, name: 'support' },
 				{ schema: businessSchema, name: 'business' },
-				{ schema: bookingSchema, name: 'booking' },
+				{ schema: bookingSchema, name: 'booking' }
 			];
 
 			schemas.forEach(({ schema }) => {
@@ -957,7 +971,7 @@ describe('Pre-built Schemas', () => {
 				name: "John O'Brien",
 				email: 'john@ex-ample.com',
 				message: 'Hello! How are you? <test>',
-				coppa: true,
+				coppa: true
 			};
 
 			const result = contactSchema.safeParse(data);
@@ -983,7 +997,7 @@ describe('Integration Tests', () => {
 			const result = schema.safeParse({
 				name: 'John Doe',
 				email: 'john@example.com',
-				message: 'Hello',
+				message: 'Hello'
 			});
 			expect(result.success).toBe(true);
 		});
@@ -1011,7 +1025,7 @@ describe('Integration Tests', () => {
 			const validResult = schema.safeParse({
 				name: 'John',
 				email: 'john@example.com',
-				company: 'Acme',
+				company: 'Acme'
 			});
 
 			expect(validResult.success).toBe(true);
@@ -1025,7 +1039,7 @@ describe('Integration Tests', () => {
 				name: '',
 				email: 'invalid',
 				message: '',
-				coppa: false,
+				coppa: false
 			});
 
 			expect(result.success).toBe(false);
@@ -1043,7 +1057,7 @@ describe('Integration Tests', () => {
 				name: '',
 				email: 'test@test.com',
 				message: 'Hello',
-				coppa: true,
+				coppa: true
 			});
 
 			expect(result.success).toBe(false);
@@ -1057,7 +1071,7 @@ describe('Integration Tests', () => {
 	describe('CSS classes in form context', () => {
 		test('simulates form field validation state', () => {
 			const errors: ValidationErrors = {
-				email: ['Invalid email'],
+				email: ['Invalid email']
 			};
 			const touched = { email: true, name: false };
 			const values = { email: 'invalid', name: '' };
@@ -1071,11 +1085,7 @@ describe('Integration Tests', () => {
 			expect(emailClasses).toBe('is-invalid has-error');
 
 			// Name field: not touched
-			const nameClasses = getValidationClasses(
-				false,
-				touched.name,
-				values.name
-			);
+			const nameClasses = getValidationClasses(false, touched.name, values.name);
 			expect(nameClasses).toBe('');
 		});
 
@@ -1133,7 +1143,7 @@ describe('Integration Tests', () => {
 			let errors: ValidationErrors = {
 				email: ['Invalid email'],
 				name: ['Name required'],
-				message: ['Message required'],
+				message: ['Message required']
 			};
 
 			expect(hasValidationErrors(errors)).toBe(true);
@@ -1152,7 +1162,7 @@ describe('Integration Tests', () => {
 			let errors: ValidationErrors = {
 				email: ['Invalid'],
 				name: ['Required'],
-				coppa: ['Must agree'],
+				coppa: ['Must agree']
 			};
 
 			// User fixes email
@@ -1177,7 +1187,7 @@ describe('Integration Tests', () => {
 				name: 'John Doe',
 				email: 'john@example.com',
 				message: 'I have a question about your product',
-				coppa: true,
+				coppa: true
 			};
 
 			const result = contactSchema.safeParse(formData);
@@ -1197,7 +1207,7 @@ describe('Integration Tests', () => {
 				browser: 'Google Chrome',
 				browserVersion: '119.0.6045.105',
 				operatingSystem: 'macOS Sonoma 14.1',
-				coppa: true,
+				coppa: true
 			};
 
 			const result = supportSchema.safeParse(formData);
@@ -1209,7 +1219,7 @@ describe('Integration Tests', () => {
 				name: 'John',
 				email: '',
 				message: 'Test',
-				coppa: true,
+				coppa: true
 			};
 
 			const result = contactSchema.safeParse(partialData);

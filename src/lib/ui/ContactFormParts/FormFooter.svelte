@@ -9,7 +9,7 @@
 	 * @prop {Function} getMessage - Message getter function
 	 */
 
-	let { privacyPolicyUrl, getMessage } = $props()
+	let { privacyPolicyUrl, getMessage } = $props();
 </script>
 
 <hr class="contact-form__divider contact-form__divider--top-spacing" />

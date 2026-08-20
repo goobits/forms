@@ -6,7 +6,13 @@
  */
 
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
-import { escapeHTML, sanitizeURL, sanitize, sanitizeFormData, DANGEROUS_PROTOCOLS } from './sanitizeInput';
+import {
+	escapeHTML,
+	sanitizeURL,
+	sanitize,
+	sanitizeFormData,
+	DANGEROUS_PROTOCOLS
+} from './sanitizeInput';
 
 describe('escapeHTML', () => {
 	describe('basic HTML entity escaping', () => {
@@ -41,7 +47,9 @@ describe('escapeHTML', () => {
 
 		test('escapes multiple special characters in one string', () => {
 			const input = 'Hello & <goodbye> "world" \'test\'';
-			expect(escapeHTML(input)).toBe('Hello &amp; &lt;goodbye&gt; &quot;world&quot; &#039;test&#039;');
+			expect(escapeHTML(input)).toBe(
+				'Hello &amp; &lt;goodbye&gt; &quot;world&quot; &#039;test&#039;'
+			);
 		});
 
 		test('prevents img tag injection with attributes', () => {
@@ -148,7 +156,7 @@ describe('sanitizeURL', () => {
 		});
 
 		test('verifies all DANGEROUS_PROTOCOLS are blocked', () => {
-			DANGEROUS_PROTOCOLS.forEach(protocol => {
+			DANGEROUS_PROTOCOLS.forEach((protocol) => {
 				const url = `${protocol}malicious`;
 				expect(sanitizeURL(url)).toBe(null);
 			});
@@ -247,7 +255,9 @@ describe('sanitizeURL', () => {
 		});
 
 		test('allows URLs with special characters in path', () => {
-			expect(sanitizeURL('https://example.com/path?foo=bar&baz=qux')).toBe('https://example.com/path?foo=bar&baz=qux');
+			expect(sanitizeURL('https://example.com/path?foo=bar&baz=qux')).toBe(
+				'https://example.com/path?foo=bar&baz=qux'
+			);
 		});
 
 		test('allows complex valid URLs', () => {
@@ -394,7 +404,9 @@ describe('sanitize', () => {
 				}
 			};
 			const result = sanitize(input);
-			expect((result as any).level1.level2.level3.level4.level5).toBe('&lt;script&gt;deep&lt;/script&gt;');
+			expect((result as any).level1.level2.level3.level4.level5).toBe(
+				'&lt;script&gt;deep&lt;/script&gt;'
+			);
 		});
 
 		test('handles empty objects', () => {
@@ -450,15 +462,9 @@ describe('sanitize', () => {
 		});
 
 		test('sanitizes objects within arrays', () => {
-			const input = [
-				{ name: '<user1>' },
-				{ name: '<user2>' }
-			];
+			const input = [{ name: '<user1>' }, { name: '<user2>' }];
 			const result = sanitize(input);
-			expect(result).toEqual([
-				{ name: '&lt;user1&gt;' },
-				{ name: '&lt;user2&gt;' }
-			]);
+			expect(result).toEqual([{ name: '&lt;user1&gt;' }, { name: '&lt;user2&gt;' }]);
 		});
 
 		test('sanitizes complex nested structures', () => {
@@ -802,7 +808,9 @@ describe('sanitizeFormData', () => {
 			const result = sanitizeFormData(profileForm);
 
 			// Verify textarea escape attempt is neutralized
-			expect(result?.bio).toBe('&lt;/textarea&gt;&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;');
+			expect(result?.bio).toBe(
+				'&lt;/textarea&gt;&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;'
+			);
 
 			// Top-level URL fields are properly sanitized (null = blocked dangerous protocol)
 			expect(result?.profileUrl).toBe(null);
@@ -827,11 +835,14 @@ describe('sanitizeFormData', () => {
 			expect(result?.field1).toBe('value&quot; onload=&quot;alert(1)&quot;');
 			expect(result?.field2).toBe('value&#039; onfocus=&#039;alert(1)&#039;');
 			expect(result?.field3).toBe('value onclick=alert(1)');
-			expect(result?.field4).toBe('&lt;div onmouseover=&quot;alert(1)&quot;&gt;hover me&lt;/div&gt;');
+			expect(result?.field4).toBe(
+				'&lt;div onmouseover=&quot;alert(1)&quot;&gt;hover me&lt;/div&gt;'
+			);
 		});
 
 		test('prevents polyglot XSS payload', () => {
-			const polyglotPayload = 'javascript:/*--></title></style></textarea></script></xmp><svg/onload=\'+/"/+/onmouseover=1/+/[*/[]/+alert(1)//\'>';
+			const polyglotPayload =
+				"javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/\"/+/onmouseover=1/+/[*/[]/+alert(1)//'>";
 			const form = {
 				input: polyglotPayload,
 				url: polyglotPayload
@@ -866,7 +877,7 @@ describe('DANGEROUS_PROTOCOLS', () => {
 			'mhtml:'
 		];
 
-		expectedProtocols.forEach(protocol => {
+		expectedProtocols.forEach((protocol) => {
 			expect(DANGEROUS_PROTOCOLS).toContain(protocol);
 		});
 	});

@@ -22,17 +22,6 @@
 		"declarationMap": true,
 		"types": ["node"]
 	},
-	"include": [
-		"src/lib/**/*.ts",
-		"src/lib/**/*.svelte"
-	],
-	"exclude": [
-		"node_modules",
-		"demo",
-		"**/*.test.ts",
-		"tests",
-		"dist",
-		"build",
-		".svelte-kit"
-	]
+	"include": ["src/lib/**/*.ts", "src/lib/**/*.svelte"],
+	"exclude": ["node_modules", "demo", "**/*.test.ts", "tests", "dist", "build", ".svelte-kit"]
 }

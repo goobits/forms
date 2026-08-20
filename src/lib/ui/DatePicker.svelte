@@ -141,7 +141,9 @@
 	/**
 	 * Open the calendar
 	 */
-	async function openCalendar({ focusCalendar = false }: { focusCalendar?: boolean } = {}): Promise<void> {
+	async function openCalendar({
+		focusCalendar = false
+	}: { focusCalendar?: boolean } = {}): Promise<void> {
 		if (disabled) return;
 		updateCalendarPosition();
 		isOpen = true;

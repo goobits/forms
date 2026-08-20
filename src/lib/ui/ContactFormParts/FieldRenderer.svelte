@@ -1,11 +1,11 @@
 <script>
-	import { Field, Control, Label, FieldErrors } from 'formsnap'
-	import { CheckCircle, AlertCircle } from '@lucide/svelte'
-	import { GooInput } from '@goobits/goo/input'
-	import { GooSelect } from '@goobits/goo/select'
-	import { GooTextarea } from '@goobits/goo/textarea'
-	import UploadImage from '../UploadImage.svelte'
-	import { getValidationClasses } from '../../validation/index.js'
+	import { Field, Control, Label, FieldErrors } from 'formsnap';
+	import { CheckCircle, AlertCircle } from '@lucide/svelte';
+	import { GooInput } from '@goobits/goo/input';
+	import { GooSelect } from '@goobits/goo/select';
+	import { GooTextarea } from '@goobits/goo/textarea';
+	import UploadImage from '../UploadImage.svelte';
+	import { getValidationClasses } from '../../validation/index.js';
 
 	/**
 	 * FieldRenderer - Dynamic field renderer for ContactForm
@@ -39,22 +39,22 @@
 		onInput,
 		onFileChange,
 		onFileError
-	} = $props()
+	} = $props();
 
 	function getFieldClasses(name) {
-		const hasError = !!errors[name]
-		const isTouched = touched[name]
-		const value = formData[name]
-		return getValidationClasses(hasError, isTouched, value)
+		const hasError = !!errors[name];
+		const isTouched = touched[name];
+		const value = formData[name];
+		return getValidationClasses(hasError, isTouched, value);
 	}
 
 	function handleValueInput(name, value) {
-		formData[name] = value
-		onInput(name)
+		formData[name] = value;
+		onInput(name);
 	}
 
 	function handleValueBlur(name) {
-		onBlur(name)
+		onBlur(name);
 	}
 
 	function getGooControlProps(controlProps) {
@@ -64,8 +64,8 @@
 			'aria-invalid': _ariaInvalid,
 			'aria-required': _ariaRequired,
 			...rest
-		} = controlProps
-		return rest
+		} = controlProps;
+		return rest;
 	}
 </script>
 
@@ -96,14 +96,16 @@
 								block
 								value={formData[fieldName] ?? ''}
 								options={fieldConfig.options.map((option) =>
-									typeof option === 'object' ? { id: option.value, label: option.label } : { id: option, label: option }
+									typeof option === 'object'
+										? { id: option.value, label: option.label }
+										: { id: option, label: option }
 								)}
 								placeholder="Select {fieldConfig.label.replace('(optional)', '')}"
 								required={fieldConfig.required}
 								onchange={(value) => {
-									formData[fieldName] = value
-									onInput(fieldName)
-									onBlur(fieldName)
+									formData[fieldName] = value;
+									onInput(fieldName);
+									onBlur(fieldName);
 								}}
 								class="contact-form__select {getFieldClasses(fieldName)}"
 							/>
@@ -130,8 +132,8 @@
 								required={fieldConfig.required}
 								rows={4}
 								onchange={(value) => {
-									handleValueBlur(fieldName)
-									handleValueInput(fieldName, value)
+									handleValueBlur(fieldName);
+									handleValueInput(fieldName, value);
 								}}
 								oninput={(value) => handleValueInput(fieldName, value)}
 							/>
@@ -152,8 +154,8 @@
 							class="contact-form__checkbox"
 							onblur={() => onBlur(fieldName)}
 							onchange={(event) => {
-								formData[fieldName] = event.currentTarget.checked
-								onInput(fieldName)
+								formData[fieldName] = event.currentTarget.checked;
+								onInput(fieldName);
 							}}
 							type="checkbox"
 						/>

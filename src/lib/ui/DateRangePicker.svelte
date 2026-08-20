@@ -13,12 +13,7 @@
 	import Portal from './Portal.svelte';
 	import FormLabel from './FormLabel.svelte';
 	import { containKeyboardEvent } from '@goobits/goo/keyboard';
-	import {
-		formatDate,
-		parseDate,
-		startOfDay,
-		compareDate
-	} from '../utils/date-utils';
+	import { formatDate, parseDate, startOfDay, compareDate } from '../utils/date-utils';
 
 	/**
 	 * Props interface for the DateRangePicker component

@@ -1,14 +1,14 @@
-import { test as base, expect, type Page } from '@playwright/test'
-import AxeBuilder from '@axe-core/playwright'
+import { test as base, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 /**
  * Extended test fixture with custom utilities
  */
 export const test = base.extend({
 	// Add custom fixtures here if needed
-})
+});
 
-export { expect }
+export { expect };
 
 /**
  * Check accessibility violations using axe-core
@@ -16,15 +16,15 @@ export { expect }
  * @param context - Optional context selector to scope the accessibility check
  */
 export async function checkA11y(page: Page, context?: string) {
-	const builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+	const builder = new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']);
 
 	if (context) {
-		builder.include(context)
+		builder.include(context);
 	}
 
-	const results = await builder.analyze()
+	const results = await builder.analyze();
 
-	expect(results.violations).toEqual([])
+	expect(results.violations).toEqual([]);
 }
 
 /**
@@ -34,7 +34,7 @@ export async function checkA11y(page: Page, context?: string) {
  * @param timeout - Optional timeout in milliseconds
  */
 export async function waitForVisible(page: Page, selector: string, timeout = 5000) {
-	await page.waitForSelector(selector, { state: 'visible', timeout })
+	await page.waitForSelector(selector, { state: 'visible', timeout });
 }
 
 /**
@@ -44,7 +44,7 @@ export async function waitForVisible(page: Page, selector: string, timeout = 500
  * @param timeout - Optional timeout in milliseconds
  */
 export async function waitForHidden(page: Page, selector: string, timeout = 5000) {
-	await page.waitForSelector(selector, { state: 'hidden', timeout })
+	await page.waitForSelector(selector, { state: 'hidden', timeout });
 }
 
 /**
@@ -53,7 +53,7 @@ export async function waitForHidden(page: Page, selector: string, timeout = 5000
  * @param name - Screenshot name
  */
 export async function takeScreenshot(page: Page, name: string) {
-	await page.screenshot({ path: `test-results/screenshots/${name}.png`, fullPage: true })
+	await page.screenshot({ path: `test-results/screenshots/${name}.png`, fullPage: true });
 }
 
 /**
@@ -68,8 +68,8 @@ export async function mockApiResponse(page: Page, url: string, response: any) {
 			status: 200,
 			contentType: 'application/json',
 			body: JSON.stringify(response)
-		})
-	})
+		});
+	});
 }
 
 /**
@@ -79,8 +79,8 @@ export async function mockApiResponse(page: Page, url: string, response: any) {
  * @param value - Value to fill
  */
 export async function fillFieldByLabel(page: Page, label: string, value: string) {
-	const field = page.getByLabel(label)
-	await field.fill(value)
+	const field = page.getByLabel(label);
+	await field.fill(value);
 }
 
 /**
@@ -90,9 +90,9 @@ export async function fillFieldByLabel(page: Page, label: string, value: string)
  */
 export async function hasFocus(page: Page, selector: string): Promise<boolean> {
 	return await page.evaluate((sel) => {
-		const element = document.querySelector(sel)
-		return document.activeElement === element
-	}, selector)
+		const element = document.querySelector(sel);
+		return document.activeElement === element;
+	}, selector);
 }
 
 /**
@@ -102,7 +102,7 @@ export async function hasFocus(page: Page, selector: string): Promise<boolean> {
  * @param key - Key to press
  */
 export async function pressKey(page: Page, selector: string, key: string) {
-	await page.locator(selector).press(key)
+	await page.locator(selector).press(key);
 }
 
 /**
@@ -110,7 +110,7 @@ export async function pressKey(page: Page, selector: string, key: string) {
  * @param page - Playwright page object
  */
 export async function waitForNetworkIdle(page: Page) {
-	await page.waitForLoadState('networkidle')
+	await page.waitForLoadState('networkidle');
 }
 
 /**
@@ -119,7 +119,7 @@ export async function waitForNetworkIdle(page: Page) {
  * @param selector - CSS selector
  */
 export async function isVisible(page: Page, selector: string): Promise<boolean> {
-	return await page.locator(selector).isVisible()
+	return await page.locator(selector).isVisible();
 }
 
 /**
@@ -128,5 +128,5 @@ export async function isVisible(page: Page, selector: string): Promise<boolean> 
  * @param selector - CSS selector
  */
 export async function getCount(page: Page, selector: string): Promise<number> {
-	return await page.locator(selector).count()
+	return await page.locator(selector).count();
 }

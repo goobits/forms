@@ -102,7 +102,7 @@ let totalLinks = 0;
 let validLinks = 0;
 let externalLinks = 0;
 
-markdownFiles.forEach(file => {
+markdownFiles.forEach((file) => {
 	console.log(`📄 ${file}`);
 
 	const content = fs.readFileSync(path.join(PACKAGE_ROOT, file), 'utf8');
@@ -113,7 +113,7 @@ markdownFiles.forEach(file => {
 		return;
 	}
 
-	links.forEach(link => {
+	links.forEach((link) => {
 		totalLinks++;
 
 		// Skip external URLs
@@ -160,7 +160,7 @@ if (fileExists('CHANGELOG.md')) {
 	}
 
 	// Check for version link definitions at bottom
-	versions.forEach(version => {
+	versions.forEach((version) => {
 		const linkDef = `[${version}]: https://github.com/goobits/forms/compare/`;
 		if (!changelog.includes(linkDef)) {
 			warnings.push(`⚠️  CHANGELOG.md: Missing version link definition for ${version}`);
@@ -172,9 +172,7 @@ if (fileExists('CHANGELOG.md')) {
 
 // Check package.json version matches latest CHANGELOG
 try {
-	const packageJson = JSON.parse(
-		fs.readFileSync(path.join(PACKAGE_ROOT, 'package.json'), 'utf8')
-	);
+	const packageJson = JSON.parse(fs.readFileSync(path.join(PACKAGE_ROOT, 'package.json'), 'utf8'));
 	const currentVersion = packageJson.version;
 
 	if (fileExists('CHANGELOG.md')) {
@@ -206,7 +204,7 @@ if (fileExists('README.md')) {
 		'troubleshooting'
 	];
 
-	docsFiles.forEach(doc => {
+	docsFiles.forEach((doc) => {
 		const linkPattern = new RegExp(`./docs/${doc}\\.md`, 'i');
 		if (!linkPattern.test(readme)) {
 			warnings.push(`⚠️  README.md: No link to docs/${doc}.md found`);
@@ -231,13 +229,13 @@ if (errors.length === 0 && warnings.length === 0) {
 } else {
 	if (errors.length > 0) {
 		console.log(`❌ ${errors.length} error(s):\n`);
-		errors.forEach(error => console.log(error));
+		errors.forEach((error) => console.log(error));
 		console.log();
 	}
 
 	if (warnings.length > 0) {
 		console.log(`⚠️  ${warnings.length} warning(s):\n`);
-		warnings.forEach(warning => console.log(warning));
+		warnings.forEach((warning) => console.log(warning));
 		console.log();
 	}
 

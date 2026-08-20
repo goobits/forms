@@ -1,5 +1,5 @@
 <script>
-	import { GooSelect } from '@goobits/goo/select'
+	import { GooSelect } from '@goobits/goo/select';
 
 	/**
 	 * CategorySelector - Contact form category selection dropdown
@@ -13,14 +13,14 @@
 	 * @prop {Function} getMessage - Message getter function
 	 */
 
-	let { value = $bindable(), categories, onChange, getMessage } = $props()
+	let { value = $bindable(), categories, onChange, getMessage } = $props();
 
 	const options = $derived.by(() =>
 		Object.entries(categories).map(([val, { label }]) => ({
 			id: val,
 			label
 		}))
-	)
+	);
 </script>
 
 <div class="contact-form__field-group">

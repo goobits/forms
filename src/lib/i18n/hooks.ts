@@ -174,10 +174,7 @@ export async function loadWithFormI18n<T extends Record<string, unknown> = Recor
  */
 export async function layoutLoadWithFormI18n<
 	T extends Record<string, unknown> = Record<string, unknown>
->(
-	event: RequestEvent,
-	originalLoad?: LoadFunction<T>
-): Promise<T & LoadResultWithI18n> {
+>(event: RequestEvent, originalLoad?: LoadFunction<T>): Promise<T & LoadResultWithI18n> {
 	// This is similar to loadWithFormI18n but typically used in +layout.server.js
 	return await loadWithFormI18n(event, originalLoad);
 }

@@ -23,7 +23,6 @@ import { createLogger } from './logger.js';
 
 const logger = createLogger('SanitizeInput');
 
-
 /**
  * Sanitizable value types
  */

@@ -48,7 +48,6 @@ export interface ErrorMessageConfig extends MessageObject {
 	recaptchaMissing: string;
 }
 
-
 /**
  * reCAPTCHA configuration
  */

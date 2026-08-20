@@ -21,7 +21,10 @@ let currentConfig: ContactFormConfig | null = null;
  * @param source - The source object to merge from.
  * @returns A new object with the merged properties.
  */
-function deepMerge(target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> {
+function deepMerge(
+	target: Record<string, unknown>,
+	source: Record<string, unknown>
+): Record<string, unknown> {
 	const output = { ...target };
 
 	if (isObject(target) && isObject(source)) {
@@ -124,7 +127,11 @@ function createSubmissionHandlerFactory(config: ContactFormConfig) {
 		const defaultRecipient = config.defaultRecipient || 'contact@example.com';
 		const defaultSubject = config.defaultSubject || 'New Contact Form Submission';
 
-		return async (data: FormData, category: string, locals?: Record<string, unknown>): Promise<SubmissionResult> => {
+		return async (
+			data: FormData,
+			category: string,
+			locals?: Record<string, unknown>
+		): Promise<SubmissionResult> => {
 			try {
 				const recipient = options.recipient || defaultRecipient;
 				const subject = options.subject || defaultSubject;

@@ -1,6 +1,6 @@
 <script>
-	import { GooButton } from '@goobits/goo/button'
-	import { GooSpinner } from '@goobits/goo/spinner'
+	import { GooButton } from '@goobits/goo/button';
+	import { GooSpinner } from '@goobits/goo/spinner';
 
 	/**
 	 * SubmitButton - Contact form submit button with loading state
@@ -12,11 +12,16 @@
 	 * @prop {Function} getMessage - Message getter function
 	 */
 
-	let { submitting, getMessage } = $props()
+	let { submitting, getMessage } = $props();
 </script>
 
 <div class="contact-form__button-container">
-	<GooButton type="submit" class="contact-form__submit-button" disabled={submitting} aria-busy={submitting}>
+	<GooButton
+		type="submit"
+		class="contact-form__submit-button"
+		disabled={submitting}
+		aria-busy={submitting}
+	>
 		{#if submitting}
 			<GooSpinner size={18} label={getMessage('sending', 'Sending...')} />
 			<span>{getMessage('sending', 'Sending...')}</span>

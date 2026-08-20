@@ -52,18 +52,20 @@
 	}: Props = $props();
 
 	// Combine CSS classes using BEM methodology
-	const fieldClasses = $derived([
-		'form-label',
-		inline && 'form-label--inline',
-		className
-	].filter(Boolean).join(' '));
+	const fieldClasses = $derived(
+		['form-label', inline && 'form-label--inline', className].filter(Boolean).join(' ')
+	);
 
 	// Label classes
-	const labelClasses = $derived([
-		'form-label__text',
-		required && 'form-label__text--required',
-		optional && 'form-label__text--optional'
-	].filter(Boolean).join(' '));
+	const labelClasses = $derived(
+		[
+			'form-label__text',
+			required && 'form-label__text--required',
+			optional && 'form-label__text--optional'
+		]
+			.filter(Boolean)
+			.join(' ')
+	);
 </script>
 
 <div class={fieldClasses}>
@@ -91,7 +93,9 @@
 				aria-hidden="true"
 				class="form-label__icon"
 			>
-				<path d="M8 1a7 7 0 100 14A7 7 0 008 1zM7 4a1 1 0 112 0v3a1 1 0 11-2 0V4zm1 8a1 1 0 100-2 1 1 0 000 2z"/>
+				<path
+					d="M8 1a7 7 0 100 14A7 7 0 008 1zM7 4a1 1 0 112 0v3a1 1 0 11-2 0V4zm1 8a1 1 0 100-2 1 1 0 000 2z"
+				/>
 			</svg>
 			{error}
 		</div>
@@ -107,7 +111,9 @@
 				aria-hidden="true"
 				class="form-label__icon"
 			>
-				<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+				<path
+					d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
+				/>
 			</svg>
 			{success}
 		</div>

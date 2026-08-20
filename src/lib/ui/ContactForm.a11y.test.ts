@@ -13,12 +13,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, getFocusableElements } from './test-utils';
 import { waitFor } from '@testing-library/svelte';
-import {
-	testAccessibility,
-	testWCAG_AA,
-	testFormLabels,
-	testARIA
-} from '../utils/a11y-test-utils';
+import { testAccessibility, testWCAG_AA, testFormLabels, testARIA } from '../utils/a11y-test-utils';
 import ContactForm from './ContactForm.svelte';
 import { initContactFormConfig } from '../config/index';
 
@@ -108,9 +103,7 @@ describe('ContactForm Component - Accessibility', () => {
 			const results = await testWCAG_AA(container);
 
 			// Allow color-contrast violations in unit tests
-			const filteredViolations = results.violations.filter(
-				(v) => v.id !== 'color-contrast'
-			);
+			const filteredViolations = results.violations.filter((v) => v.id !== 'color-contrast');
 
 			expect(filteredViolations).toHaveLength(0);
 		});
@@ -132,9 +125,7 @@ describe('ContactForm Component - Accessibility', () => {
 			const results = await testARIA(container);
 
 			// Filter out color-contrast for unit tests
-			const filteredViolations = results.violations.filter(
-				(v) => v.id !== 'color-contrast'
-			);
+			const filteredViolations = results.violations.filter((v) => v.id !== 'color-contrast');
 
 			expect(filteredViolations).toHaveLength(0);
 		});
@@ -236,9 +227,7 @@ describe('ContactForm Component - Accessibility', () => {
 				props: defaultProps
 			});
 
-			const controls = container.querySelectorAll<HTMLElement>(
-				'button, input, textarea, select'
-			);
+			const controls = container.querySelectorAll<HTMLElement>('button, input, textarea, select');
 			expect(controls.length).toBeGreaterThan(0);
 
 			controls.forEach((control) => {

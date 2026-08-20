@@ -12,7 +12,21 @@ export default defineConfig({
 		minWorkers: 1,
 		setupFiles: ['./tests/setup.ts'],
 		include: ['src/**/*.test.ts', 'src/**/*.test.js', 'src/**/*.spec.ts', 'src/**/*.spec.js'],
-		exclude: ['node_modules', 'dist', 'build', '.svelte-kit', '.idea', '.git', '.cache', 'demo/**/*', 'docs/**/*', 'examples/**/*', 'e2e/**/*', 'playwright-report/**/*', 'coverage/**/*'],
+		exclude: [
+			'node_modules',
+			'dist',
+			'build',
+			'.svelte-kit',
+			'.idea',
+			'.git',
+			'.cache',
+			'demo/**/*',
+			'docs/**/*',
+			'examples/**/*',
+			'e2e/**/*',
+			'playwright-report/**/*',
+			'coverage/**/*'
+		],
 		coverage: {
 			provider: 'v8',
 			reporter: ['text', 'html', 'json-summary', 'text-summary'],

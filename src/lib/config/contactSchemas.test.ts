@@ -485,9 +485,15 @@ describe('contactSchemas', () => {
 				const result = validateContactConfig(config);
 				expect(result.valid).toBe(false);
 				expect(result.errors.length).toBe(3);
-				expect(result.errors).toContain('Field "field1" is used in categories but has no configuration');
-				expect(result.errors).toContain('Field "field2" is used in categories but has no configuration');
-				expect(result.errors).toContain('Field "field3" is used in categories but has no configuration');
+				expect(result.errors).toContain(
+					'Field "field1" is used in categories but has no configuration'
+				);
+				expect(result.errors).toContain(
+					'Field "field2" is used in categories but has no configuration'
+				);
+				expect(result.errors).toContain(
+					'Field "field3" is used in categories but has no configuration'
+				);
 			});
 
 			test('should ignore unused field configs (no error)', () => {
@@ -1104,7 +1110,9 @@ describe('contactSchemas', () => {
 
 			expect(config.validation.validateOnBlur).toBe(false);
 			expect(config.validation.showErrorsOnSubmit).toBe(false);
-			expect(config.validation.validateOnChange).toBe(defaultContactSchema.validation.validateOnChange);
+			expect(config.validation.validateOnChange).toBe(
+				defaultContactSchema.validation.validateOnChange
+			);
 			expect(config.routes.apiPath).toBe('/custom/api');
 			expect(config.routes.basePath).toBe(defaultContactSchema.routes.basePath);
 		});

@@ -34,6 +34,7 @@ pnpm preview
 ## What's Included
 
 ### Form Features
+
 - Contact form with validation
 - Mock email provider (logs to console)
 - Rate limiting
@@ -41,6 +42,7 @@ pnpm preview
 - Responsive design
 
 ### Docs Engine Features
+
 - **Syntax Highlighting**: Code blocks with Shiki (Dracula theme)
 - **Callouts**: Note, warning, and tip boxes
 - **Code Tabs**: Multiple language examples in tabs
@@ -72,6 +74,7 @@ demo/
 ## Configuration
 
 The demo is configured to use:
+
 - **@goobits/forms**: Form components and handlers
 - **@goobits/docs-engine**: Documentation rendering with plugins
 - **MDsveX**: Markdown in Svelte

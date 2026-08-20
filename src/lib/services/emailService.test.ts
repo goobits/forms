@@ -96,11 +96,7 @@ describe('MockEmailProvider', () => {
 	});
 
 	test('sendEmail stores email in sentEmails array', async () => {
-		await mockProvider.sendEmail(
-			'recipient@example.com',
-			'Test Subject',
-			'<p>Test Body</p>'
-		);
+		await mockProvider.sendEmail('recipient@example.com', 'Test Subject', '<p>Test Body</p>');
 
 		const sentEmails = mockProvider.getSentEmails();
 		expect(sentEmails).toHaveLength(1);
@@ -283,11 +279,7 @@ describe('AwsSesProvider', () => {
 	test('sendEmail calls init() before sending', async () => {
 		const initSpy = vi.spyOn(awsProvider, 'init');
 
-		await awsProvider.sendEmail(
-			'recipient@example.com',
-			'Test Subject',
-			'<p>Test Body</p>'
-		);
+		await awsProvider.sendEmail('recipient@example.com', 'Test Subject', '<p>Test Body</p>');
 
 		expect(initSpy).toHaveBeenCalled();
 	});
@@ -364,12 +356,7 @@ describe('AwsSesProvider', () => {
 		await awsProvider.init();
 		const transporter = (awsProvider as any).transporter;
 
-		await awsProvider.sendEmail(
-			'recipient@example.com',
-			'Subject',
-			'<p>HTML Body</p>',
-			''
-		);
+		await awsProvider.sendEmail('recipient@example.com', 'Subject', '<p>HTML Body</p>', '');
 
 		const callArgs = transporter.sendMail.mock.calls[0][0];
 		// Empty string trimmed should not add text field
@@ -425,11 +412,7 @@ describe('sendEmail Convenience Function', () => {
 	});
 
 	test('works with mock provider (default) and returns success result', async () => {
-		const result = await sendEmail(
-			'test@example.com',
-			'Subject',
-			'<p>Body</p>'
-		);
+		const result = await sendEmail('test@example.com', 'Subject', '<p>Body</p>');
 
 		expect(result).toBeDefined();
 		expect(result.success).toBe(true);
@@ -437,17 +420,11 @@ describe('sendEmail Convenience Function', () => {
 	});
 
 	test('works with aws-ses provider when specified in config', async () => {
-		const result = await sendEmail(
-			'test@example.com',
-			'Subject',
-			'<p>Body</p>',
-			'Plain text',
-			{
-				provider: 'aws-ses',
-				region: 'us-east-1',
-				fromEmail: 'noreply@example.com'
-			}
-		);
+		const result = await sendEmail('test@example.com', 'Subject', '<p>Body</p>', 'Plain text', {
+			provider: 'aws-ses',
+			region: 'us-east-1',
+			fromEmail: 'noreply@example.com'
+		});
 
 		expect(result.success).toBe(true);
 		expect(result.message).toBe('Email sent successfully');
@@ -467,11 +444,7 @@ describe('sendEmail Convenience Function', () => {
 		expect(result1.success).toBe(true);
 
 		// Test without bodyText
-		const result2 = await sendEmail(
-			'test@example.com',
-			'Subject',
-			'<p>HTML only</p>'
-		);
+		const result2 = await sendEmail('test@example.com', 'Subject', '<p>HTML only</p>');
 		expect(result2.success).toBe(true);
 		expect(result2.details.bodyText).toBeUndefined();
 	});
@@ -532,7 +505,7 @@ describe('Integration Tests', () => {
 
 		const sentEmails = mockProvider.getSentEmails();
 		expect(sentEmails).toHaveLength(3);
-		expect(sentEmails.map(e => e.to)).toEqual([
+		expect(sentEmails.map((e) => e.to)).toEqual([
 			'user1@example.com',
 			'user2@example.com',
 			'user3@example.com'
@@ -550,11 +523,7 @@ describe('Integration Tests', () => {
 		const mockError = new Error('Network error');
 		transporter.sendMail.mockRejectedValueOnce(mockError);
 
-		const result = await awsProvider.sendEmail(
-			'test@example.com',
-			'Subject',
-			'<p>Body</p>'
-		);
+		const result = await awsProvider.sendEmail('test@example.com', 'Subject', '<p>Body</p>');
 
 		expect(result.success).toBe(false);
 		expect(result.message).toBe('Failed to send email');
@@ -713,11 +682,7 @@ describe('Edge Cases & Error Handling', () => {
 		const unicodeSubject = '测试主题 テスト Тест';
 		const unicodeBody = '<p>测试内容 テスト本文 Тестовое содержание</p>';
 
-		const result = await mockProvider.sendEmail(
-			'test@example.com',
-			unicodeSubject,
-			unicodeBody
-		);
+		const result = await mockProvider.sendEmail('test@example.com', unicodeSubject, unicodeBody);
 
 		expect(result.success).toBe(true);
 		const sentEmails = mockProvider.getSentEmails();
@@ -752,11 +717,7 @@ describe('Edge Cases & Error Handling', () => {
 		const transporter = (awsProvider as any).transporter;
 		transporter.sendMail.mockRejectedValueOnce(new Error('Send failed'));
 
-		const result = await awsProvider.sendEmail(
-			'test@example.com',
-			'Subject',
-			'<p>Body</p>'
-		);
+		const result = await awsProvider.sendEmail('test@example.com', 'Subject', '<p>Body</p>');
 
 		// Should return failure result
 		expect(result.success).toBe(false);
@@ -783,17 +744,13 @@ describe('Edge Cases & Error Handling', () => {
 		const promises = [];
 		for (let i = 0; i < 10; i++) {
 			promises.push(
-				mockProvider.sendEmail(
-					`user${i}@example.com`,
-					`Subject ${i}`,
-					`<p>Body ${i}</p>`
-				)
+				mockProvider.sendEmail(`user${i}@example.com`, `Subject ${i}`, `<p>Body ${i}</p>`)
 			);
 		}
 
 		const results = await Promise.all(promises);
 
-		expect(results.every(r => r.success)).toBe(true);
+		expect(results.every((r) => r.success)).toBe(true);
 		expect(mockProvider.getSentEmails()).toHaveLength(10);
 	});
 
@@ -807,11 +764,7 @@ describe('Edge Cases & Error Handling', () => {
 		expect((awsProvider as any).initialized).toBe(false);
 
 		// Sending email should trigger init
-		const result = await awsProvider.sendEmail(
-			'test@example.com',
-			'Subject',
-			'<p>Body</p>'
-		);
+		const result = await awsProvider.sendEmail('test@example.com', 'Subject', '<p>Body</p>');
 
 		expect(result.success).toBe(true);
 		expect((awsProvider as any).initialized).toBe(true);
@@ -833,11 +786,7 @@ describe('Edge Cases & Error Handling', () => {
 		const mockProvider = new MockEmailProvider();
 		const longSubject = 'Subject '.repeat(100);
 
-		const result = await mockProvider.sendEmail(
-			'test@example.com',
-			longSubject,
-			'<p>Body</p>'
-		);
+		const result = await mockProvider.sendEmail('test@example.com', longSubject, '<p>Body</p>');
 
 		expect(result.success).toBe(true);
 		const sentEmails = mockProvider.getSentEmails();
@@ -864,13 +813,11 @@ describe('MockEmailProvider Verification Helpers', () => {
 		const mockProvider = new MockEmailProvider();
 
 		await mockProvider.sendEmail('test1@example.com', 'Subject 1', '<p>Body 1</p>');
-		await new Promise(resolve => setTimeout(resolve, 10)); // documented test timing behavior.
+		await new Promise((resolve) => setTimeout(resolve, 10)); // documented test timing behavior.
 		await mockProvider.sendEmail('test2@example.com', 'Subject 2', '<p>Body 2</p>');
 
 		const emails = mockProvider.getSentEmails();
-		expect(emails[1].timestamp.getTime()).toBeGreaterThanOrEqual(
-			emails[0].timestamp.getTime()
-		);
+		expect(emails[1].timestamp.getTime()).toBeGreaterThanOrEqual(emails[0].timestamp.getTime());
 	});
 
 	test('email details structure matches interface', async () => {

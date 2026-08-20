@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added - New UI Components (15 total)
 
 #### Form Components
+
 - **Button** - Comprehensive button component with 5 variants (primary, secondary, outline, ghost, danger), 3 sizes, loading states, icon support
 - **Checkbox** - Single checkbox with indeterminate state support
 - **CheckboxGroup** - Manage multiple related checkboxes with vertical/horizontal layouts
@@ -79,6 +80,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **DateRangePicker** - Select start and end dates with validation
 
 #### UI Components
+
 - **Card** - Flexible card container with 3 variants (elevated, outlined, filled)
 - **CardHeader** - Card header with title, subtitle, and action slots
 - **CardBody** - Card body content wrapper
@@ -89,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **ToastProvider** - App-level provider for toast system
 
 #### Utilities
+
 - **25+ date utility functions** - Date formatting, parsing, manipulation, and calendar helpers
 - **Accessibility test utilities** - Comprehensive a11y testing helpers with axe-core
 - **Component test utilities** - Testing helpers for Svelte components
@@ -96,6 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added - Testing Infrastructure
 
 #### Unit Testing
+
 - **@testing-library/svelte** integration for component testing
 - **1,300+ unit tests** across all components
 - **Test utilities module** with render helpers, mocks, and fixtures
@@ -103,6 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Enhanced Vitest configuration** with UI component coverage
 
 #### Accessibility Testing
+
 - **axe-core + jest-axe** integration for automated a11y testing
 - **200+ accessibility tests** verifying WCAG 2.1 AA compliance
 - **Dedicated a11y test utilities** for common testing patterns
@@ -110,6 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Tests for Input, Textarea, Checkbox, Radio, Slider, DatePicker, and more**
 
 #### E2E Testing
+
 - **Playwright** test framework with multi-browser support
 - **102 comprehensive E2E tests** covering components, integration, and accessibility
 - **5 browsers tested**: Chrome, Firefox, Safari, Mobile Chrome, Mobile Safari
@@ -160,6 +166,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The package originally focused on form components but has evolved into a comprehensive UI component library:
 
 **Existing Components (Pre-2.0):**
+
 - Forms: ContactForm, FeedbackForm, CategoryContactForm, FormField
 - Inputs: Input, Textarea, SelectMenu, ToggleSwitch, UploadImage
 - Modals: Modal, Alert, Confirm, AppleModal (8+ components)
@@ -168,6 +175,7 @@ The package originally focused on form components but has evolved into a compreh
 - Other: FormErrors, ThankYou, DemoPlayground
 
 **New Components (2.0):**
+
 - Button, Badge, Card (+ Header/Body/Footer)
 - Checkbox, CheckboxGroup, Radio, RadioGroup
 - Slider, DatePicker, DateRangePicker
@@ -204,11 +212,13 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 ## [1.3.1] - 2025-11-16
 
 ### Changed
+
 - **Build configuration** - Added workspace configuration for standalone package publishing
   - Added `pnpm-workspace.yaml` for better monorepo integration
   - Improved package publishing workflow
 
 ### Fixed
+
 - **NPM package** - Excluded test files and dev configs from published package
   - Added comprehensive `.npmignore` to reduce package size
   - Excluded tests, demos, and development configurations
@@ -217,6 +227,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 ## [1.3.0] - 2025-11-16
 
 ### Added
+
 - **New FormLabel component** - Generic form field wrapper using Svelte 5 Snippets
   - Wraps inputs with label, help text, and error/success messages
   - Flexible composition pattern for custom form layouts
@@ -238,6 +249,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
   - Matches Input component accessibility improvements
 
 ### Changed
+
 - **BEM naming refactor** - Migrated to consistent BEM methodology
   - Input: `.input-group` → `.input__group`, `.input-sm` → `.input--sm`, etc.
   - Textarea: Established `.textarea__input` namespace, `.char-counter` → `.textarea__char-counter`, etc.
@@ -246,6 +258,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
   - ⚠️ **Breaking**: CSS class names changed (see CONTRIBUTION.md for migration guide)
 
 ### Documentation
+
 - Added comprehensive CONTRIBUTION.md with migration guide
 - Documented all accessibility improvements
 - Provided usage examples for new props
@@ -254,12 +267,14 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 ## [1.2.3] - 2025-11-16
 
 ### Added
+
 - **TypeScript configuration** - Added `tsconfig.json` with strict type checking
   - Enabled strict mode with comprehensive compiler options
   - Configured to check source files while excluding tests and demo folder
   - Added Node.js types support for process and environment variables
 
 ### Fixed
+
 - **TypeScript errors** - Resolved all 98 TypeScript errors across the codebase
   - Fixed module imports for zod, @sveltejs/kit, nanoid, and AWS dependencies
   - Corrected null/undefined handling throughout the codebase
@@ -273,6 +288,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
   - Applied to optional peer dependency imports (nodemailer)
 
 ### Changed
+
 - **Type safety improvements** - Enhanced type definitions across handlers and services
   - Added index signature to ContactFormData for type compatibility
   - Made `categoryToFieldMap` optional in ValidationConfig
@@ -282,6 +298,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 ## [1.2.2] - 2025-11-16
 
 ### Fixed
+
 - **ToggleSwitch form submission bug** - Added `type="button"` attribute to prevent toggle from submitting parent forms
   - HTML buttons default to `type="submit"` inside forms, causing toggles to unexpectedly trigger form submissions
   - This fix eliminates the need for workarounds like `event.preventDefault()` in consuming applications
@@ -289,15 +306,18 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 ## [1.2.1] - 2025-11-12
 
 ### Changed
+
 - **Test suite optimization** - Streamlined test coverage by removing 321 redundant tests
 - **Enhanced test coverage** - Added comprehensive test coverage for critical modules (P0 and P1)
 
 ### Fixed
+
 - Fixed exports validation filename to properly exclude from vitest runs
 
 ## [1.2.0] - 2025-11-10
 
 ### Fixed
+
 - **Critical package.json corrections**:
   - Fixed i18n subpath export configuration
   - Corrected module extensions from `.js` to `.ts` for proper resolution
@@ -310,6 +330,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
   - Corrected import paths and component exports
 
 ### Changed
+
 - **Documentation restructure** - Comprehensive audit and rewrite for clarity and consistency
   - Reduced documentation length by 40% while increasing information density
   - Improved scannability with tables, clear hierarchy, and jump links
@@ -324,12 +345,14 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
   - Improved DemoPlayground usage instructions
 
 ### Removed
+
 - Removed emoji clutter from documentation (retained only Security Notice indicator)
 - Cleaned verbose table of contents in favor of concise jump links
 
 ## [1.1.0] - 2025-11-09
 
 ### Added
+
 - **Standalone security implementations** - Package is now fully self-contained and ready for npm publishing
   - Complete inline reCAPTCHA verification service with Google API integration
   - Multi-tier rate limiting service (short/medium/long-term + email-based limits)
@@ -339,6 +362,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 - Security module exports in package.json (`./security/csrf`)
 
 ### Fixed
+
 - **Critical security fixes**:
   - Closed reCAPTCHA bypass vulnerabilities in form components
   - Fixed CSRF token generation to be synchronous (critical bug)
@@ -351,6 +375,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 - Completed `RecaptchaApiResponse` interface with all required fields
 
 ### Changed
+
 - **Migrated from Bun to pnpm** package manager for better compatibility
 - **Removed workspace dependency** on `@goobits/security` - all security code now inlined
 - Refactored reCAPTCHA and rate limiter services to use inline implementations
@@ -359,6 +384,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 - Upgraded VM configuration to version 2.0 with improved host sync
 
 ### Removed
+
 - Removed `@goobits/security` workspace dependency (functionality now built-in)
 - Removed client-side CSRF token generation for better security
 - Removed unused CSRF duplicates
@@ -366,16 +392,19 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 ## [1.0.1] - 2025-10-12
 
 ### Fixed
+
 - Fixed critical bug in `formService.ts` where `schema._def.shape()` was incorrectly called as a function instead of accessing the property
 - Resolved Svelte 5 `$props()` rune conflict in `FeedbackForm` component that caused "Cannot access 'props' before initialization" error
 
 ### Added
+
 - ESLint configuration with TypeScript and Svelte support
 - Prettier configuration with consistent code formatting rules
 - Development environment (`dev/`) for testing library components with hot-reload
 - VM configuration file for development server setup
 
 ### Changed
+
 - Formatted entire codebase with Prettier (tab-based indentation, single quotes)
 - Resolved all ESLint warnings and errors across the project
 - Added `dev/` directory to `.gitignore`
@@ -385,6 +414,7 @@ See [MIGRATION.md](./MIGRATION.md) for detailed instructions and troubleshooting
 Initial release of @goobits/forms - A comprehensive Svelte 5 forms library.
 
 ### Features
+
 - Configurable form components with validation
 - Support for reCAPTCHA integration
 - File upload capabilities
