@@ -2,7 +2,7 @@ packages:
   - '.'
   - 'demo'
   - '../goo'
-  - '../../security'
+  - '../security'
 
 allowBuilds:
   '@parcel/watcher': true

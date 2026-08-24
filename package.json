@@ -167,15 +167,15 @@
 	"dependencies": {
 		"@goobits/goo": "workspace:*",
 		"@goobits/security": "workspace:*",
-		"@sveltejs/kit": "2.70.2",
 		"formsnap": "^2.0.1",
-		"svelte": "5.56.9",
 		"sveltekit-superforms": "^2.30.2",
 		"zod": "^4.4.3"
 	},
 	"peerDependencies": {
 		"@aws-sdk/client-ses": "^3.0.0",
-		"nodemailer": "^9.0.1"
+		"@sveltejs/kit": "^2.0.0",
+		"nodemailer": "^9.0.1",
+		"svelte": "^5.0.0"
 	},
 	"peerDependenciesMeta": {
 		"nodemailer": {
@@ -220,6 +220,7 @@
 		"@goobits/docs-engine": "^2.0.3",
 		"@lucide/svelte": "^1.31.0",
 		"@playwright/test": "^1.62.1",
+		"@sveltejs/kit": "2.70.2",
 		"@sveltejs/package": "^2.5.8",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
 		"@testing-library/jest-dom": "^7.0.1",
@@ -239,6 +240,7 @@
 		"msw": "^2.15.0",
 		"prettier": "^3.9.6",
 		"prettier-plugin-svelte": "^4.1.1",
+		"svelte": "5.56.9",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.67.0",
 		"vite": "^8.2.1",
