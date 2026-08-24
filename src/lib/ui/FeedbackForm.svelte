@@ -346,8 +346,7 @@
 							data-fs-field-errors={$errors.userComment ? 'userComment' : ''}
 							name="userComment"
 							onblur={() => handleBlur('userComment')}
-							oninput={() => handleInput('userComment')}
-						></textarea>
+							oninput={() => handleInput('userComment')}></textarea>
 						{#if $errors.userComment && touched.userComment}
 							<div class="feedback__field-error" data-fs-field-error="userComment">
 								{$errors.userComment}

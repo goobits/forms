@@ -22,19 +22,22 @@ const config = {
 		mdsvex({
 			extensions: ['.md'],
 			remarkPlugins: [
-				filetreePlugin(),
-				calloutsPlugin(),
-				mermaidPlugin(),
-				tabsPlugin(),
-				remarkTableOfContents(),
-				linksPlugin(),
-				screenshotPlugin(),
+				filetreePlugin,
+				calloutsPlugin,
+				mermaidPlugin,
+				tabsPlugin,
+				remarkTableOfContents,
+				linksPlugin,
+				screenshotPlugin,
 				remarkMath,
-				katexPlugin(),
-				codeHighlightPlugin({
-					theme: 'dracula',
-					showLineNumbers: true
-				})
+				katexPlugin,
+				[
+					codeHighlightPlugin,
+					{
+						theme: 'dracula',
+						showLineNumbers: true
+					}
+				]
 			]
 		})
 	],

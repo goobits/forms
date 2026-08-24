@@ -1,5 +1,5 @@
 /**
- * @goobits/ui
+ * @goobits/forms
  *
  * @description Configurable form components with validation, CSRF protection, and category-based routing.
  * @author @goobits
@@ -36,6 +36,8 @@ export * from './services/index.js';
  */
 export * from './handlers/index.js';
 
+export * from './core/index.js';
+
 /**
  * @module utils
  * @description General utility functions for form handling and logging.
@@ -57,4 +59,4 @@ export { configureLogger, LogLevels } from './utils/logger.js';
 export { initContactFormConfig, getValidatorForCategory } from './config/contactSchemas.js';
 
 // UI Components are exported separately to avoid SSR issues.
-// Example: import { ContactForm } from '@goobits/ui/ui';
+// Example: import { ContactForm } from '@goobits/forms/ui';

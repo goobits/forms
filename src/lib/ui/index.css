@@ -1,5 +1,5 @@
 /**
- * @goobits/ui CSS Bundle
+ * @goobits/forms CSS bundle
  *
  * Complete CSS bundle for all forms components.
  * Import this file to get all necessary styles.
@@ -10,7 +10,6 @@
 
 /* Component Styles */
 @import './ContactForm.css';
-@import './DemoPlayground.css';
 @import './FeedbackForm.css';
 @import './FormErrors.css';
 @import './ThankYou.css';

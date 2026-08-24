@@ -1,20 +1,20 @@
 <script>
-	import './ContactForm.css'
-	import FormErrors from './FormErrors.svelte'
-	import ThankYou from './ThankYou.svelte'
-	import CategorySelector from './ContactFormParts/CategorySelector.svelte'
-	import FieldRenderer from './ContactFormParts/FieldRenderer.svelte'
-	import SubmitButton from './ContactFormParts/SubmitButton.svelte'
-	import FormFooter from './ContactFormParts/FormFooter.svelte'
-	import { onDestroy, onMount, untrack } from 'svelte'
-	import { z } from 'zod'
-	import { AlertCircle } from '@lucide/svelte'
+	import './ContactForm.css';
+	import FormErrors from './FormErrors.svelte';
+	import ThankYou from './ThankYou.svelte';
+	import CategorySelector from './ContactFormParts/CategorySelector.svelte';
+	import FieldRenderer from './ContactFormParts/FieldRenderer.svelte';
+	import SubmitButton from './ContactFormParts/SubmitButton.svelte';
+	import FormFooter from './ContactFormParts/FormFooter.svelte';
+	import { onDestroy, onMount, untrack } from 'svelte';
+	import { z } from 'zod';
+	import { AlertCircle } from '@lucide/svelte';
 
-	import { getContactFormConfig } from '../config/index.js'
-	import { hydrateForm } from '../services/formHydration.js'
-	import { debounce } from '../utils/debounce.js'
-	import { saveFormData, clearFormData } from '../services/formStorage.js'
-	import { IS_BROWSER, SAVE_DEBOUNCE_DELAY } from '../utils/constants.js'
+	import { getContactFormConfig } from '../config/index.js';
+	import { hydrateForm } from '../services/formHydration.js';
+	import { debounce } from '../utils/debounce.js';
+	import { saveFormData, clearFormData } from '../services/formStorage.js';
+	import { IS_BROWSER, SAVE_DEBOUNCE_DELAY } from '../utils/constants.js';
 
 	// Import shared form service functions
 	import {
@@ -23,7 +23,7 @@
 		handleFieldTouch,
 		initializeForm,
 		initializeFormState
-	} from '../services/formService.js'
+	} from '../services/formService.js';
 
 	// Import enhanced screen reader announcements
 	import {
@@ -32,17 +32,17 @@
 		announceFormErrors,
 		announceFormStatus,
 		cleanupAllAnnouncements
-	} from '../services/screenReaderService.js'
+	} from '../services/screenReaderService.js';
 
 	// Import reCAPTCHA provider
-	import { createRecaptchaProvider } from '../services/recaptcha/index.js'
-	import { createLogger } from '../utils/logger.js'
+	import { createRecaptchaProvider } from '../services/recaptcha/index.js';
+	import { createLogger } from '../utils/logger.js';
 
 	// Import message helpers
-	import { createMessageGetter } from '../utils/messages.js'
-	import { defaultMessages } from '../config/defaultMessages'
+	import { createMessageGetter } from '../utils/messages.js';
+	import { defaultMessages } from '../config/defaultMessages';
 
-	const logger = createLogger('ContactForm')
+	const logger = createLogger('ContactForm');
 
 	// Get configuration
 	const config = getContactFormConfig();
@@ -68,11 +68,11 @@
 			const csrfResponse = await fetch('/api/csrf', {
 				method: 'GET',
 				credentials: 'include'
-			})
+			});
 			if (!csrfResponse.ok) {
-				throw new Error('Failed to fetch CSRF token')
+				throw new Error('Failed to fetch CSRF token');
 			}
-			const { csrfToken } = await csrfResponse.json()
+			const { csrfToken } = await csrfResponse.json();
 
 			// Submit form with CSRF token in header
 			const response = await fetch(endpoint, {
@@ -83,18 +83,18 @@
 				},
 				credentials: 'include',
 				body: JSON.stringify(data)
-			})
-			if (!response.ok) throw new Error('Form submission failed')
-			return response.json()
+			});
+			if (!response.ok) throw new Error('Form submission failed');
+			return response.json();
 		},
 		uploadAttachments = async () => {
-			logger.warn('No uploadAttachments function provided')
-			return []
+			logger.warn('No uploadAttachments function provided');
+			return [];
 		},
 		privacyPolicyUrl = '/legal/privacy-policy',
 		thankYouImageUrl = '/images/contact-thank-you.svg',
 		homeUrl = '/'
-	} = $props()
+	} = $props();
 
 	// Initialize all possible form fields to ensure they're never undefined
 	const initializeAllFormFields = (data = {}) => {
@@ -104,27 +104,25 @@
 			email: data.email || '',
 			message: data.message || '',
 			coppa: data.coppa || false
-		}
+		};
 
 		// Add all possible fields from all categories with empty string defaults
 		Object.keys(fieldConfigs).forEach((fieldName) => {
 			if (!(fieldName in baseFields)) {
-				baseFields[fieldName] = data[fieldName] || ''
+				baseFields[fieldName] = data[fieldName] || '';
 			}
-		})
+		});
 
-		return baseFields
-	}
+		return baseFields;
+	};
 
 	// Ensure all fields are initialized
-	const initialData = $derived.by(() => initializeAllFormFields(providedInitialData))
-	const initialFormData = untrack(() => initialData)
-	const initialCategory = untrack(() => initialData.category)
+	const initialData = $derived.by(() => initializeAllFormFields(providedInitialData));
+	const initialFormData = untrack(() => initialData);
+	const initialCategory = untrack(() => initialData.category);
 
 	// Create message getter
-	const getMessage = $derived.by(() =>
-		createMessageGetter({ ...defaultMessages, ...messages })
-	);
+	const getMessage = $derived.by(() => createMessageGetter({ ...defaultMessages, ...messages }));
 
 	// Create fallback schema if none provided
 	function createFallbackSchema() {
@@ -147,16 +145,16 @@
 	const formState = initializeFormState({
 		attachments: [],
 		selectedCategory: initialCategory
-	})
+	});
 
-	let attachments = $state(formState.attachments)
-	let recaptcha = $state(formState.recaptcha)
-	let selectedCategory = $state(formState.selectedCategory)
-	let showThankYou = $state(formState.showThankYou)
-	let submissionError = $state(formState.submissionError)
-	let submitting = $state(false)
-	let touched = $state(formState.touched)
-	let statusMessage = $state(null)
+	let attachments = $state(formState.attachments);
+	let recaptcha = $state(formState.recaptcha);
+	let selectedCategory = $state(formState.selectedCategory);
+	let showThankYou = $state(formState.showThankYou);
+	let submissionError = $state(formState.submissionError);
+	let submitting = $state(false);
+	let touched = $state(formState.touched);
+	let statusMessage = $state(null);
 
 	// Define the submit handler using shared function
 	const handleSubmit = async (formData) => {
@@ -484,7 +482,6 @@
 			});
 		}
 	}
-
 </script>
 
 {#if showThankYou}

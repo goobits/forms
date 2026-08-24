@@ -7,7 +7,7 @@
 	 */
 
 	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
-	import { containKeyboardEvent } from '@goobits/keyboard/dom';
+	import { containKeyboardEvent } from '@goobits/goo/keyboard';
 	import {
 		getMonthCalendarDates,
 		getDayNames,
@@ -86,14 +86,14 @@
 		const todayDate = calendarDates.find((date) => isSameDay(date, today) && !isDateDisabled(date));
 		if (todayDate) return todayDate;
 
-		return calendarDates.find((date) => isSameMonth(date, currentMonth) && !isDateDisabled(date))
-			?? calendarDates.find((date) => !isDateDisabled(date));
+		return (
+			calendarDates.find((date) => isSameMonth(date, currentMonth) && !isDateDisabled(date)) ??
+			calendarDates.find((date) => !isDateDisabled(date))
+		);
 	});
 
 	// Generate year options (current year ± 100 years)
-	const yearOptions = $derived(
-		Array.from({ length: 201 }, (_, i) => currentYear - 100 + i)
-	);
+	const yearOptions = $derived(Array.from({ length: 201 }, (_, i) => currentYear - 100 + i));
 
 	/**
 	 * Navigate to previous month
@@ -281,12 +281,7 @@
 			</select>
 		</div>
 
-		<button
-			type="button"
-			class="calendar__nav-button"
-			onclick={nextMonth}
-			aria-label="Next month"
-		>
+		<button type="button" class="calendar__nav-button" onclick={nextMonth} aria-label="Next month">
 			<ChevronRight size={20} />
 		</button>
 	</div>
@@ -295,9 +290,7 @@
 		<!-- Day names header -->
 		<div class="calendar__weekdays" role="row">
 			{#if showWeekNumbers}
-				<div class="calendar__weekday calendar__weekday--week-number" role="columnheader">
-					Wk
-				</div>
+				<div class="calendar__weekday calendar__weekday--week-number" role="columnheader">Wk</div>
 			{/if}
 			{#each dayNames as dayName (dayName)}
 				<div class="calendar__weekday" role="columnheader">
@@ -345,9 +338,7 @@
 	</div>
 
 	<div class="calendar__footer">
-		<button type="button" class="calendar__today-button" onclick={goToToday}>
-			Today
-		</button>
+		<button type="button" class="calendar__today-button" onclick={goToToday}> Today </button>
 	</div>
 </div>
 

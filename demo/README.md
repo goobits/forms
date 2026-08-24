@@ -1,6 +1,6 @@
-# @goobits/ui Demo
+# @goobits/forms Demo
 
-This demo application showcases `@goobits/ui` with `@goobits/docs-engine` integration.
+This demo application showcases `@goobits/forms` with `@goobits/docs-engine` integration.
 
 ## Features
 
@@ -34,6 +34,7 @@ pnpm preview
 ## What's Included
 
 ### Form Features
+
 - Contact form with validation
 - Mock email provider (logs to console)
 - Rate limiting
@@ -41,6 +42,7 @@ pnpm preview
 - Responsive design
 
 ### Docs Engine Features
+
 - **Syntax Highlighting**: Code blocks with Shiki (Dracula theme)
 - **Callouts**: Note, warning, and tip boxes
 - **Code Tabs**: Multiple language examples in tabs
@@ -72,17 +74,18 @@ demo/
 ## Configuration
 
 The demo is configured to use:
-- **@goobits/ui**: Form components and handlers
+
+- **@goobits/forms**: Form components and handlers
 - **@goobits/docs-engine**: Documentation rendering with plugins
 - **MDsveX**: Markdown in Svelte
 - **Svelte 5**: Latest Svelte version
 
 ## Development
 
-The demo links to the local `@goobits/ui` package using `file:..` in package.json. Changes to the main package are automatically reflected in the demo.
+The demo links to the local `@goobits/forms` package using `file:..` in package.json. Changes to the main package are automatically reflected in the demo.
 
 ## Links
 
 - [Forms Documentation](../docs/)
-- [Cookbook](../docs/cookbook.md)
+- [Getting started](../docs/getting-started.md)
 - [API Reference](../docs/api-reference.md)

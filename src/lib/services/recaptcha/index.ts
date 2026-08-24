@@ -288,11 +288,11 @@ export class GoogleRecaptchaV3Provider extends RecaptchaProvider {
 
 		this.loading = new Promise((resolve, reject) => {
 			// Check if already loaded globally
-				const recaptchaWindow = window as RecaptchaWindow;
-				if (typeof window !== 'undefined' && recaptchaWindow.grecaptcha) {
-					this.loaded = true;
-					resolve(true);
-					return;
+			const recaptchaWindow = window as RecaptchaWindow;
+			if (typeof window !== 'undefined' && recaptchaWindow.grecaptcha) {
+				this.loaded = true;
+				resolve(true);
+				return;
 			}
 
 			// Load script
@@ -337,15 +337,15 @@ export class GoogleRecaptchaV3Provider extends RecaptchaProvider {
 
 		// Get new token
 		const token = await new Promise<string>((resolve, reject) => {
-				const grecaptcha = (window as RecaptchaWindow).grecaptcha;
-				if (!grecaptcha) {
-					reject(new Error('reCAPTCHA is not available'));
-					return;
-				}
-				grecaptcha.ready(() => {
-					grecaptcha.execute(this.siteKey, { action }).then(resolve).catch(reject);
-				});
+			const grecaptcha = (window as RecaptchaWindow).grecaptcha;
+			if (!grecaptcha) {
+				reject(new Error('reCAPTCHA is not available'));
+				return;
+			}
+			grecaptcha.ready(() => {
+				grecaptcha.execute(this.siteKey, { action }).then(resolve).catch(reject);
 			});
+		});
 
 		// Cache it
 		this.cacheToken(action, token);

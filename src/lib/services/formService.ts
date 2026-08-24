@@ -6,7 +6,7 @@
  */
 
 // External Imports
-import { superForm } from 'sveltekit-superforms';
+import { superForm } from 'sveltekit-superforms/client';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import type { ZodSchema } from 'zod';
 
@@ -49,8 +49,7 @@ function getSchemaDefaults(schema: ZodSchema): FormRecord {
 				if (field._def) {
 					if (field._def.defaultValue !== undefined) {
 						const defaultValue = field._def.defaultValue;
-						defaults[key] =
-							typeof defaultValue === 'function' ? defaultValue() : defaultValue;
+						defaults[key] = typeof defaultValue === 'function' ? defaultValue() : defaultValue;
 					} else {
 						// Provide sensible defaults based on field type
 						const typeName = field._def.typeName;
@@ -130,7 +129,9 @@ export interface FormSubmitHandlerOptions {
 	/** Function to prepare form data before submission */
 	prepareFormData: (formData: FormRecord, recaptchaToken?: string) => Promise<FormRecord>;
 	/** Function to submit the prepared form data */
-	submitForm: (formData: FormRecord) => Promise<{ success?: boolean; error?: unknown } & FormRecord>;
+	submitForm: (
+		formData: FormRecord
+	) => Promise<{ success?: boolean; error?: unknown } & FormRecord>;
 	/** Callback function for successful submission */
 	onSuccess: (response: { success?: boolean; error?: unknown } & FormRecord) => void;
 	/** Callback function for submission errors */
@@ -207,9 +208,9 @@ export function initializeForm({
 		const schemaDefaults = getSchemaDefaults(schema);
 		const mergedData = { ...schemaDefaults, ...initialData };
 
-			return superForm(mergedData, {
-				dataType: 'json',
-				validators: zod4(schema as Parameters<typeof zod4>[0]),
+		return superForm(mergedData, {
+			dataType: 'json',
+			validators: zod4(schema as Parameters<typeof zod4>[0]),
 			resetForm: false,
 			taintedMessage: false,
 			multipleSubmits: 'prevent',
@@ -340,7 +341,7 @@ export function handleFieldTouch(
 export function createFormSubmitHandler(options: FormSubmitHandlerOptions) {
 	const { validateForm, recaptcha, prepareFormData, submitForm, onSuccess, onError } = options;
 
-		return async function (formData: FormRecord): Promise<FormSubmissionResult> {
+	return async function (formData: FormRecord): Promise<FormSubmissionResult> {
 		// Validate the form first
 		if (!validateForm()) {
 			const error = handleError(
@@ -368,10 +369,7 @@ export function createFormSubmitHandler(options: FormSubmitHandlerOptions) {
 			}
 
 			// Prepare, sanitize and submit
-			const preparedData = await prepareFormData(
-				formData,
-				recaptchaToken ?? undefined
-			);
+			const preparedData = await prepareFormData(formData, recaptchaToken ?? undefined);
 			const sanitizedData = sanitizeFormData(preparedData);
 			const response = await submitForm(sanitizedData);
 
@@ -390,11 +388,9 @@ export function createFormSubmitHandler(options: FormSubmitHandlerOptions) {
 			const standardizedError =
 				error instanceof Error && error.name === 'ContactFormError'
 					? error
-					: handleError(
-							error instanceof Error ? error : String(error),
-							'FormSubmission',
-							{ formData }
-						);
+					: handleError(error instanceof Error ? error : String(error), 'FormSubmission', {
+							formData
+						});
 			onError(standardizedError);
 			return { success: false, error: standardizedError };
 		}

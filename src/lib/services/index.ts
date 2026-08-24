@@ -1,5 +1,5 @@
 /**
- * @fileoverview Services for @goobits/ui
+ * @fileoverview Services for @goobits/forms
  * Central export point for all form-related services and utilities
  */
 

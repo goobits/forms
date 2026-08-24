@@ -1,5 +1,5 @@
 /**
- * Utilities for @goobits/ui
+ * Utilities for @goobits/forms
  *
  * This module serves as the main entry point for form utilities,
  * providing configuration helpers and re-exporting all utility functions
@@ -8,7 +8,7 @@
  * @module utils
  * @example
  * ```typescript
- * import { sanitizeInput, DEBOUNCE_DELAY, handleError } from '@goobits/ui/utils';
+ * import { sanitizeInput, DEBOUNCE_DELAY, handleError } from '@goobits/forms/utils';
  *
  * const cleanValue = sanitizeInput(userInput);
  * const debouncedSave = debounce(saveForm, DEBOUNCE_DELAY);

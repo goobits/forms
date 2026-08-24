@@ -81,10 +81,7 @@ describe('saveFormData', () => {
 		const result = saveFormData(formData, 'contact');
 
 		expect(result).toBe(true);
-		expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-			'test_form_data',
-			expect.any(String)
-		);
+		expect(mockLocalStorage.setItem).toHaveBeenCalledWith('test_form_data', expect.any(String));
 	});
 
 	test('does not filter out category field in saved data', () => {
@@ -106,7 +103,11 @@ describe('saveFormData', () => {
 	test('filters out excluded values', () => {
 		mockLocalStorage.getItem.mockReturnValue(null);
 		const testCases = [
-			{ field: 'attachments', value: [{ name: 'file.pdf', size: 1000 }], desc: 'attachments field' },
+			{
+				field: 'attachments',
+				value: [{ name: 'file.pdf', size: 1000 }],
+				desc: 'attachments field'
+			},
 			{ field: 'empty', value: '', desc: 'empty strings' },
 			{ field: 'nullField', value: null, desc: 'null values' },
 			{ field: 'undefinedField', value: undefined, desc: 'undefined values' }
@@ -163,10 +164,7 @@ describe('saveFormData', () => {
 		const result = saveFormData(formData, 'contact');
 
 		expect(result).toBe(false);
-		expect(mockLocalStorage.setItem).not.toHaveBeenCalledWith(
-			'test_form_data',
-			expect.any(String)
-		);
+		expect(mockLocalStorage.setItem).not.toHaveBeenCalledWith('test_form_data', expect.any(String));
 	});
 
 	test('returns false when only system fields present', () => {
@@ -531,10 +529,7 @@ describe('clearFormData', () => {
 
 		clearFormData('support');
 
-		expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-			'test_form_data',
-			expect.any(String)
-		);
+		expect(mockLocalStorage.setItem).toHaveBeenCalledWith('test_form_data', expect.any(String));
 		const updatedData = JSON.parse(mockStorage['test_form_data']);
 		expect(Object.keys(updatedData)).toHaveLength(2);
 		expect(updatedData.contact).toBeDefined();
@@ -990,13 +985,29 @@ describe('sanitizeForStorage', () => {
 		Object.setPrototypeOf(mockFileList, FileList.prototype);
 
 		const testCases = [
-			{ name: 'attachments field', data: { name: 'John', attachments: [{ name: 'file.pdf' }] }, excluded: 'attachments' },
+			{
+				name: 'attachments field',
+				data: { name: 'John', attachments: [{ name: 'file.pdf' }] },
+				excluded: 'attachments'
+			},
 			{ name: 'category field', data: { name: 'John', category: 'support' }, excluded: 'category' },
-			{ name: 'File instances', data: { name: 'John', file: new File([''], 'test.txt') }, excluded: 'file' },
-			{ name: 'FileList instances', data: { name: 'John', files: mockFileList }, excluded: 'files' },
+			{
+				name: 'File instances',
+				data: { name: 'John', file: new File([''], 'test.txt') },
+				excluded: 'file'
+			},
+			{
+				name: 'FileList instances',
+				data: { name: 'John', files: mockFileList },
+				excluded: 'files'
+			},
 			{ name: 'functions', data: { name: 'John', fn: () => {} }, excluded: 'fn' },
 			{ name: 'null values', data: { name: 'John', nullField: null }, excluded: 'nullField' },
-			{ name: 'undefined values', data: { name: 'John', undefinedField: undefined }, excluded: 'undefinedField' },
+			{
+				name: 'undefined values',
+				data: { name: 'John', undefinedField: undefined },
+				excluded: 'undefinedField'
+			},
 			{ name: 'empty strings', data: { name: 'John', empty: '', message: '' }, excluded: 'empty' }
 		];
 

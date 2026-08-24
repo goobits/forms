@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CheckCircle, AlertCircle } from '@lucide/svelte';
-	import { containKeyboardEvent } from '@goobits/keyboard/dom';
+	import { containKeyboardEvent } from '@goobits/goo/keyboard';
 
 	/**
 	 * Props for the FormField component
@@ -148,8 +148,7 @@
 				onfocus={handleFocus}
 				onkeydown={handleKeyDown}
 				placeholder={fieldConfig.placeholder}
-				rows={fieldConfig.rows || 4}
-			></textarea>
+				rows={fieldConfig.rows || 4}></textarea>
 		{:else}
 			<input
 				{...fieldProps}

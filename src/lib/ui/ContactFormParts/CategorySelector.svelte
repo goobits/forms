@@ -1,5 +1,5 @@
 <script>
-	import SelectMenu from '../SelectMenu.svelte'
+	import { GooSelect } from '@goobits/goo/select';
 
 	/**
 	 * CategorySelector - Contact form category selection dropdown
@@ -13,25 +13,27 @@
 	 * @prop {Function} getMessage - Message getter function
 	 */
 
-	let { value = $bindable(), categories, onChange, getMessage } = $props()
+	let { value = $bindable(), categories, onChange, getMessage } = $props();
 
 	const options = $derived.by(() =>
 		Object.entries(categories).map(([val, { label }]) => ({
-			value: val,
+			id: val,
 			label
 		}))
-	)
+	);
 </script>
 
 <div class="contact-form__field-group">
 	<div class="contact-form__label">
 		{getMessage('howCanWeHelp', 'How can we help?')}
 	</div>
-	<SelectMenu
+	<GooSelect
 		bind:value
 		{options}
+		ariaLabel={getMessage('selectCategory', 'Select a category')}
+		block
 		placeholder="Select a category"
-		onchange={onChange}
+		onchange={(nextValue) => onChange(nextValue)}
 		class="contact-form__select contact-form__category-select"
 	/>
 </div>

@@ -515,7 +515,7 @@ describe('secureDeepMerge', () => {
 				api: {
 					timeout: 10000,
 					headers: {
-						'Authorization': 'Bearer token'
+						Authorization: 'Bearer token'
 					}
 				},
 				theme: {
@@ -538,7 +538,7 @@ describe('secureDeepMerge', () => {
 					retries: 3,
 					headers: {
 						'Content-Type': 'application/json',
-						'Authorization': 'Bearer token'
+						Authorization: 'Bearer token'
 					}
 				},
 				theme: {

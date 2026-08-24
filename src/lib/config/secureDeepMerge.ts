@@ -82,7 +82,10 @@ export function secureDeepMerge<T extends MergeableObject, U extends MergeableOb
 					!Array.isArray(resultValue)
 						? (Object(resultValue) as MergeableObject)
 						: {};
-				result[key as keyof (T & U)] = secureDeepMerge(nestedTarget, sourceValue as MergeableObject) as (T & U)[keyof (T & U)];
+				result[key as keyof (T & U)] = secureDeepMerge(
+					nestedTarget,
+					sourceValue as MergeableObject
+				) as (T & U)[keyof (T & U)];
 			} else {
 				// For primitive values or arrays, just copy
 				result[key as keyof (T & U)] = sourceValue as (T & U)[keyof (T & U)];

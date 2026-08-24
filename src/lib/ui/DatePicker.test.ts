@@ -638,7 +638,10 @@ describe('DatePicker Component', () => {
 			await userEvent.click(input);
 
 			await waitFor(() => {
-				expect(screen.getByRole('gridcell', { name: todayLabel })).toHaveAttribute('aria-current', 'date');
+				expect(screen.getByRole('gridcell', { name: todayLabel })).toHaveAttribute(
+					'aria-current',
+					'date'
+				);
 			});
 		});
 	});

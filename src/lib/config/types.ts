@@ -1,5 +1,5 @@
 /**
- * Type definitions for @goobits/ui configuration
+ * Type definitions for @goobits/forms configuration
  */
 
 import type { ZodSchema } from 'zod';
@@ -98,7 +98,9 @@ export interface ContactFormConfig {
 	};
 	categoryToFieldMap?: Record<string, string[]>;
 	formDataParser?: (formData: FormData, category?: string) => Promise<ValidationResult>;
-	createSubmissionHandler?: (options?: Record<string, unknown>) => (
+	createSubmissionHandler?: (
+		options?: Record<string, unknown>
+	) => (
 		data: FormData,
 		category: string,
 		locals?: Record<string, unknown>

@@ -1,11 +1,11 @@
 <script>
-	import { Field, Control, Label, FieldErrors } from 'formsnap'
-	import { CheckCircle, AlertCircle } from '@lucide/svelte'
-	import Input from '../Input.svelte'
-	import Textarea from '../Textarea.svelte'
-	import SelectMenu from '../SelectMenu.svelte'
-	import UploadImage from '../UploadImage.svelte'
-	import { getValidationClasses } from '../../validation/index.js'
+	import { Field, Control, Label, FieldErrors } from 'formsnap';
+	import { CheckCircle, AlertCircle } from '@lucide/svelte';
+	import { GooInput } from '@goobits/goo/input';
+	import { GooSelect } from '@goobits/goo/select';
+	import { GooTextarea } from '@goobits/goo/textarea';
+	import UploadImage from '../UploadImage.svelte';
+	import { getValidationClasses } from '../../validation/index.js';
 
 	/**
 	 * FieldRenderer - Dynamic field renderer for ContactForm
@@ -39,22 +39,33 @@
 		onInput,
 		onFileChange,
 		onFileError
-	} = $props()
+	} = $props();
 
 	function getFieldClasses(name) {
-		const hasError = !!errors[name]
-		const isTouched = touched[name]
-		const value = formData[name]
-		return getValidationClasses(hasError, isTouched, value)
+		const hasError = !!errors[name];
+		const isTouched = touched[name];
+		const value = formData[name];
+		return getValidationClasses(hasError, isTouched, value);
 	}
 
 	function handleValueInput(name, value) {
-		formData[name] = value
-		onInput(name)
+		formData[name] = value;
+		onInput(name);
 	}
 
 	function handleValueBlur(name) {
-		onBlur(name)
+		onBlur(name);
+	}
+
+	function getGooControlProps(controlProps) {
+		const {
+			id: _id,
+			'aria-describedby': _ariaDescribedby,
+			'aria-invalid': _ariaInvalid,
+			'aria-required': _ariaRequired,
+			...rest
+		} = controlProps;
+		return rest;
 	}
 </script>
 
@@ -77,18 +88,24 @@
 						/>
 					{:else if fieldConfig.type === 'select'}
 						<div class="contact-form__validation-container">
-							<SelectMenu
-								{...props}
+							<GooSelect
+								{...getGooControlProps(props)}
+								inputId={props.id}
+								aria-describedby={props['aria-describedby']}
+								ariaLabel={fieldConfig.label.replace('(optional)', '')}
+								block
 								value={formData[fieldName] ?? ''}
 								options={fieldConfig.options.map((option) =>
-									typeof option === 'object' ? option : { value: option, label: option }
+									typeof option === 'object'
+										? { id: option.value, label: option.label }
+										: { id: option, label: option }
 								)}
 								placeholder="Select {fieldConfig.label.replace('(optional)', '')}"
 								required={fieldConfig.required}
 								onchange={(value) => {
-									formData[fieldName] = value
-									onInput(fieldName)
-									onBlur(fieldName)
+									formData[fieldName] = value;
+									onInput(fieldName);
+									onBlur(fieldName);
 								}}
 								class="contact-form__select {getFieldClasses(fieldName)}"
 							/>
@@ -103,21 +120,22 @@
 						</div>
 					{:else if fieldConfig.type === 'textarea'}
 						<div class="contact-form__validation-container">
-							<Textarea
-								{...props}
+							<GooTextarea
+								{...getGooControlProps(props)}
+								inputId={props.id}
+								aria-describedby={props['aria-describedby']}
+								block
 								value={formData[fieldName] ?? ''}
-								variant={touched[fieldName] && fieldErrors?.[fieldName]
-									? 'error'
-									: !fieldErrors?.[fieldName] && touched[fieldName] && formData[fieldName]
-										? 'success'
-										: 'default'}
+								aria-invalid={touched[fieldName] && fieldErrors?.[fieldName] ? 'true' : 'false'}
 								class="contact-form__textarea {getFieldClasses(fieldName)}"
 								placeholder={fieldConfig.placeholder}
 								required={fieldConfig.required}
 								rows={4}
-								autoResize={true}
-								onblur={() => handleValueBlur(fieldName)}
-								oninput={(event) => handleValueInput(fieldName, event.currentTarget.value)}
+								onchange={(value) => {
+									handleValueBlur(fieldName);
+									handleValueInput(fieldName, value);
+								}}
+								oninput={(value) => handleValueInput(fieldName, value)}
 							/>
 
 							<span class="contact-form__validation-icon" aria-hidden="true">
@@ -136,27 +154,26 @@
 							class="contact-form__checkbox"
 							onblur={() => onBlur(fieldName)}
 							onchange={(event) => {
-								formData[fieldName] = event.currentTarget.checked
-								onInput(fieldName)
+								formData[fieldName] = event.currentTarget.checked;
+								onInput(fieldName);
 							}}
 							type="checkbox"
 						/>
 					{:else}
 						<div class="contact-form__validation-container">
-							<Input
-								{...props}
+							<GooInput
+								{...getGooControlProps(props)}
+								inputId={props.id}
+								aria-describedby={props['aria-describedby']}
+								block
 								value={formData[fieldName] ?? ''}
-								variant={touched[fieldName] && fieldErrors?.[fieldName]
-									? 'error'
-									: !fieldErrors?.[fieldName] && touched[fieldName] && formData[fieldName]
-										? 'success'
-										: 'default'}
+								aria-invalid={touched[fieldName] && fieldErrors?.[fieldName] ? 'true' : 'false'}
 								class="contact-form__input {getFieldClasses(fieldName)}"
 								placeholder={fieldConfig.placeholder}
 								required={fieldConfig.required}
 								type={fieldConfig.type}
 								onblur={() => handleValueBlur(fieldName)}
-								oninput={(event) => handleValueInput(fieldName, event.currentTarget.value)}
+								oninput={(value) => handleValueInput(fieldName, value)}
 							/>
 
 							<span class="contact-form__validation-icon" aria-hidden="true">

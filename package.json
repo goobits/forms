@@ -1,21 +1,84 @@
 {
-	"name": "@goobits/ui",
-	"version": "3.0.0",
-	"description": "Comprehensive UI component library including forms, modals, menus, tooltips with validation, reCAPTCHA, and file uploads for Svelte 5",
+	"name": "@goobits/forms",
+	"version": "4.0.0",
+	"description": "Accessible form workflows, validation, submission state, contact handlers, and file uploads for Svelte 5",
 	"type": "module",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"svelte": "./dist/index.js",
+	"main": "./src/lib/index.ts",
+	"types": "./src/lib/index.ts",
+	"svelte": "./src/lib/index.ts",
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"main": "./dist/index.js",
+		"types": "./dist/index.d.ts",
+		"svelte": "./dist/index.js",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"svelte": "./dist/index.js",
+				"default": "./dist/index.js"
+			},
+			"./ui": {
+				"types": "./dist/ui/index.d.ts",
+				"svelte": "./dist/ui/index.js",
+				"default": "./dist/ui/index.js"
+			},
+			"./ui/index.css": "./dist/ui/index.css",
+			"./ui/form-errors": {
+				"types": "./dist/ui/FormErrors.svelte.d.ts",
+				"svelte": "./dist/ui/FormErrors.svelte",
+				"default": "./dist/ui/FormErrors.svelte"
+			},
+			"./ui/form-status": {
+				"types": "./dist/ui/FormStatus.svelte.d.ts",
+				"svelte": "./dist/ui/FormStatus.svelte",
+				"default": "./dist/ui/FormStatus.svelte"
+			},
+			"./core": {
+				"types": "./dist/core/index.d.ts",
+				"default": "./dist/core/index.js"
+			},
+			"./sveltekit": {
+				"types": "./dist/sveltekit/index.d.ts",
+				"default": "./dist/sveltekit/index.js"
+			},
+			"./config": {
+				"types": "./dist/config/index.d.ts",
+				"default": "./dist/config/index.js"
+			},
+			"./validation": {
+				"types": "./dist/validation/index.d.ts",
+				"default": "./dist/validation/index.js"
+			},
+			"./i18n": {
+				"types": "./dist/i18n/index.d.ts",
+				"default": "./dist/i18n/index.js"
+			},
+			"./services": {
+				"types": "./dist/services/index.d.ts",
+				"default": "./dist/services/index.js"
+			},
+			"./handlers": {
+				"types": "./dist/handlers/index.d.ts",
+				"default": "./dist/handlers/index.js"
+			},
+			"./handlers/contactFormHandler": {
+				"types": "./dist/handlers/contactFormHandler.d.ts",
+				"default": "./dist/handlers/contactFormHandler.js"
+			},
+			"./utils": {
+				"types": "./dist/utils/index.d.ts",
+				"default": "./dist/utils/index.js"
+			}
+		}
 	},
+	"packageManager": "pnpm@11.22.0",
 	"scripts": {
 		"build": "svelte-package && pnpm run build:clean",
 		"build:clean": "find dist -type f -name '*.test.*' -delete",
 		"prepublishOnly": "pnpm run build && pnpm run lint && pnpm run test:run",
 		"test": "vitest run",
 		"test:run": "vitest run",
-		"test:leaks": "vitest run --detectAsyncLeaks --maxWorkers=1 --silent=passed-only src/lib/ui/ContactForm.a11y.test.ts src/lib/ui/DatePicker.a11y.test.ts src/lib/ui/Slider.a11y.test.ts",
+		"test:leaks": "vitest run --detectAsyncLeaks --maxWorkers=1 --silent=passed-only src/lib/ui/ContactForm.a11y.test.ts src/lib/ui/DatePicker.a11y.test.ts",
 		"test:heap": "vitest run --logHeapUsage --maxWorkers=1 --reporter=verbose src/lib/handlers/contactFormHandler.test.ts src/lib/ui/ContactForm.a11y.test.ts",
 		"test:watch": "vitest --watch",
 		"test:ui": "vitest --ui",
@@ -38,70 +101,61 @@
 	},
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js",
-			"default": "./dist/index.js"
+			"types": "./src/lib/index.ts",
+			"svelte": "./src/lib/index.ts",
+			"default": "./src/lib/index.ts"
 		},
 		"./ui": {
-			"types": "./dist/ui/index.d.ts",
-			"svelte": "./dist/ui/index.js",
-			"default": "./dist/ui/index.js"
+			"types": "./src/lib/ui/index.ts",
+			"svelte": "./src/lib/ui/index.ts",
+			"default": "./src/lib/ui/index.ts"
 		},
-		"./ui/*": {
-			"svelte": "./dist/ui/*",
-			"default": "./dist/ui/*"
+		"./ui/index.css": "./src/lib/ui/index.css",
+		"./ui/form-errors": {
+			"types": "./src/lib/ui/FormErrors.svelte",
+			"svelte": "./src/lib/ui/FormErrors.svelte",
+			"default": "./src/lib/ui/FormErrors.svelte"
 		},
-		"./ui/index.css": "./dist/ui/index.css",
-		"./ui/menu": {
-			"types": "./dist/ui/menu/index.d.ts",
-			"svelte": "./dist/ui/menu/index.js",
-			"default": "./dist/ui/menu/index.js"
+		"./ui/form-status": {
+			"types": "./src/lib/ui/FormStatus.svelte",
+			"svelte": "./src/lib/ui/FormStatus.svelte",
+			"default": "./src/lib/ui/FormStatus.svelte"
 		},
-		"./ui/menu/*": {
-			"svelte": "./dist/ui/menu/*",
-			"default": "./dist/ui/menu/*"
+		"./core": {
+			"types": "./src/lib/core/index.ts",
+			"default": "./src/lib/core/index.ts"
 		},
-		"./ui/modals": {
-			"types": "./dist/ui/modals/index.d.ts",
-			"svelte": "./dist/ui/modals/index.js",
-			"default": "./dist/ui/modals/index.js"
-		},
-		"./ui/modals/*": {
-			"svelte": "./dist/ui/modals/*",
-			"default": "./dist/ui/modals/*"
-		},
-		"./ui/tooltip": {
-			"types": "./dist/ui/tooltip/index.d.ts",
-			"svelte": "./dist/ui/tooltip/index.js",
-			"default": "./dist/ui/tooltip/index.js"
+		"./sveltekit": {
+			"types": "./src/lib/sveltekit/index.ts",
+			"default": "./src/lib/sveltekit/index.ts"
 		},
 		"./config": {
-			"types": "./dist/config/index.d.ts",
-			"default": "./dist/config/index.js"
+			"types": "./src/lib/config/index.ts",
+			"default": "./src/lib/config/index.ts"
 		},
 		"./validation": {
-			"types": "./dist/validation/index.d.ts",
-			"default": "./dist/validation/index.js"
+			"types": "./src/lib/validation/index.ts",
+			"default": "./src/lib/validation/index.ts"
 		},
 		"./i18n": {
-			"types": "./dist/i18n/index.d.ts",
-			"default": "./dist/i18n/index.js"
+			"types": "./src/lib/i18n/index.ts",
+			"default": "./src/lib/i18n/index.ts"
 		},
 		"./services": {
-			"types": "./dist/services/index.d.ts",
-			"default": "./dist/services/index.js"
+			"types": "./src/lib/services/index.ts",
+			"default": "./src/lib/services/index.ts"
 		},
 		"./handlers": {
-			"types": "./dist/handlers/index.d.ts",
-			"default": "./dist/handlers/index.js"
+			"types": "./src/lib/handlers/index.ts",
+			"default": "./src/lib/handlers/index.ts"
 		},
 		"./handlers/contactFormHandler": {
-			"types": "./dist/handlers/contactFormHandler.d.ts",
-			"default": "./dist/handlers/contactFormHandler.js"
+			"types": "./src/lib/handlers/contactFormHandler.ts",
+			"default": "./src/lib/handlers/contactFormHandler.ts"
 		},
 		"./utils": {
-			"types": "./dist/utils/index.d.ts",
-			"default": "./dist/utils/index.js"
+			"types": "./src/lib/utils/index.ts",
+			"default": "./src/lib/utils/index.ts"
 		}
 	},
 	"files": [
@@ -111,11 +165,11 @@
 		"CHANGELOG.md"
 	],
 	"dependencies": {
-		"@goobits/keyboard": "workspace:*",
+		"@goobits/goo": "workspace:*",
 		"@goobits/security": "workspace:*",
 		"@sveltejs/kit": "2.70.2",
 		"formsnap": "^2.0.1",
-		"svelte": "5.56.8",
+		"svelte": "5.56.9",
 		"sveltekit-superforms": "^2.30.2",
 		"zod": "^4.4.3"
 	},
@@ -134,15 +188,11 @@
 	"keywords": [
 		"svelte",
 		"sveltekit",
-		"ui-components",
 		"forms",
 		"form",
 		"contact-form",
 		"validation",
 		"recaptcha",
-		"modals",
-		"menus",
-		"tooltips",
 		"i18n",
 		"internationalization",
 		"form-builder",
@@ -165,33 +215,33 @@
 		"url": "git+https://github.com/goobits/forms.git"
 	},
 	"devDependencies": {
-		"@axe-core/playwright": "^4.12.1",
+		"@axe-core/playwright": "^4.13.0",
 		"@eslint/js": "^10.0.1",
 		"@goobits/docs-engine": "^2.0.3",
-		"@lucide/svelte": "^1.28.0",
+		"@lucide/svelte": "^1.31.0",
 		"@playwright/test": "^1.62.1",
 		"@sveltejs/package": "^2.5.8",
-		"@sveltejs/vite-plugin-svelte": "^7.2.0",
-		"@testing-library/jest-dom": "^6.9.1",
+		"@sveltejs/vite-plugin-svelte": "^7.3.0",
+		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/svelte": "^5.4.2",
-		"@testing-library/user-event": "^14.6.1",
-		"@types/node": "^25.9.5",
-		"@typescript-eslint/eslint-plugin": "^8.65.0",
-		"@typescript-eslint/parser": "^8.65.0",
+		"@testing-library/user-event": "^14.6.4",
+		"@types/node": "^26.2.0",
+		"@typescript-eslint/eslint-plugin": "^8.67.0",
+		"@typescript-eslint/parser": "^8.67.0",
 		"@vitest/coverage-v8": "^4.1.10",
 		"@vitest/ui": "^4.1.10",
-		"axe-core": "^4.12.1",
-		"eslint": "^10.8.0",
-		"eslint-plugin-svelte": "^3.22.0",
-		"globals": "^17.8.0",
-		"jest-axe": "^10.0.0",
-		"jsdom": "^29.1.1",
+		"axe-core": "^4.13.0",
+		"eslint": "^10.8.1",
+		"eslint-plugin-svelte": "^3.23.0",
+		"globals": "^17.11.0",
+		"jest-axe": "^11.0.0",
+		"jsdom": "^30.0.1",
 		"msw": "^2.15.0",
 		"prettier": "^3.9.6",
-		"prettier-plugin-svelte": "^3.5.2",
+		"prettier-plugin-svelte": "^4.1.1",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.65.0",
-		"vite": "^8.2.0",
+		"typescript-eslint": "^8.67.0",
+		"vite": "^8.2.1",
 		"vitest": "^4.1.10"
 	}
 }

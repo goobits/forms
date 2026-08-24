@@ -1,5 +1,5 @@
 /**
- * Date Utilities for @goobits/ui
+ * Date Utilities for @goobits/forms
  *
  * Collection of helper functions for date manipulation,
  * formatting, and validation in the DatePicker component.
@@ -352,11 +352,7 @@ export function isLeapYear(year: number): boolean {
  * @param startDay - First day of week (0=Sunday, 1=Monday)
  * @returns Array of dates for calendar grid (typically 35 or 42 days)
  */
-export function getMonthCalendarDates(
-	year: number,
-	month: number,
-	startDay: number = 0
-): Date[] {
+export function getMonthCalendarDates(year: number, month: number, startDay: number = 0): Date[] {
 	const firstDayOfMonth = getFirstDayOfMonth(year, month);
 	const daysInMonth = getDaysInMonth(year, month);
 

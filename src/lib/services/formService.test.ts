@@ -22,7 +22,7 @@ const mockSanitizeFormData = vi.hoisted(() => vi.fn());
 const mockHandleError = vi.hoisted(() => vi.fn());
 
 // Mock external dependencies
-vi.mock('sveltekit-superforms', () => ({
+vi.mock('sveltekit-superforms/client', () => ({
 	superForm: mockSuperForm
 }));
 
@@ -638,10 +638,7 @@ describe('createFormSubmitHandler', () => {
 			await handler({ name: 'John' });
 
 			expect(mockRecaptcha.getToken).toHaveBeenCalledWith('submit');
-			expect(mockPrepareFormData).toHaveBeenCalledWith(
-				{ name: 'John' },
-				'token-abc-123'
-			);
+			expect(mockPrepareFormData).toHaveBeenCalledWith({ name: 'John' }, 'token-abc-123');
 		});
 
 		test('should handle reCAPTCHA failures', async () => {
@@ -680,10 +677,7 @@ describe('createFormSubmitHandler', () => {
 
 			await handler({ name: 'John' });
 
-			expect(mockPrepareFormData).toHaveBeenCalledWith(
-				{ name: 'John' },
-				undefined
-			);
+			expect(mockPrepareFormData).toHaveBeenCalledWith({ name: 'John' }, undefined);
 		});
 
 		test('handles recaptcha getToken errors gracefully', async () => {

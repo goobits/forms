@@ -381,21 +381,21 @@ IP Address: ${clientAddress}</small></p>
 						details: emailResult?.details || {}
 					});
 				}
-				} catch (emailError) {
-					const typedEmailError =
-						emailError instanceof Error
-							? (emailError as Error & { code?: unknown; details?: unknown })
-							: null;
-					logger.error('Failed to send contact form email:', {
-						error: typedEmailError?.message || String(emailError),
-						stack: typedEmailError?.stack,
-						code: typedEmailError?.code,
-						details: typedEmailError?.details || {},
-						adminEmail,
-						fromEmail,
-						provider: emailServiceConfig?.provider || 'unknown'
-					});
-					// Don't fail the API response if email fails
+			} catch (emailError) {
+				const typedEmailError =
+					emailError instanceof Error
+						? (emailError as Error & { code?: unknown; details?: unknown })
+						: null;
+				logger.error('Failed to send contact form email:', {
+					error: typedEmailError?.message || String(emailError),
+					stack: typedEmailError?.stack,
+					code: typedEmailError?.code,
+					details: typedEmailError?.details || {},
+					adminEmail,
+					fromEmail,
+					provider: emailServiceConfig?.provider || 'unknown'
+				});
+				// Don't fail the API response if email fails
 			}
 
 			const successResponse: ApiSuccessResponse = {

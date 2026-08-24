@@ -1,9 +1,9 @@
 // @ts-check
 
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import svelte from 'eslint-plugin-svelte'
-import globals from 'globals'
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import svelte from 'eslint-plugin-svelte';
+import globals from 'globals';
 
 export default tseslint.config(
 	eslint.configs.recommended,
@@ -18,7 +18,7 @@ export default tseslint.config(
 		}
 	},
 	{
-		files: [ '**/*.svelte' ],
+		files: ['**/*.svelte'],
 		languageOptions: {
 			parserOptions: {
 				parser: tseslint.parser
@@ -41,13 +41,7 @@ export default tseslint.config(
 		}
 	},
 	{
-		files: [
-			'**/*.test.ts',
-			'**/*.spec.ts',
-			'**/*.example.ts',
-			'tests/**/*.ts',
-			'**/*.d.ts'
-		],
+		files: ['**/*.test.ts', '**/*.spec.ts', '**/*.example.ts', 'tests/**/*.ts', '**/*.d.ts'],
 		rules: {
 			'@typescript-eslint/no-explicit-any': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
@@ -68,4 +62,4 @@ export default tseslint.config(
 			'packages/**'
 		]
 	}
-)
+);

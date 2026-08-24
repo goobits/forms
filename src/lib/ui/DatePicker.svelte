@@ -11,7 +11,7 @@
 	import { tick } from 'svelte';
 	import CalendarComponent from './Calendar.svelte';
 	import Portal from './Portal.svelte';
-	import { containKeyboardEvent } from '@goobits/keyboard/dom';
+	import { containKeyboardEvent } from '@goobits/goo/keyboard';
 	import { formatDate, parseDate, startOfDay } from '../utils/date-utils';
 
 	/**
@@ -141,7 +141,9 @@
 	/**
 	 * Open the calendar
 	 */
-	async function openCalendar({ focusCalendar = false }: { focusCalendar?: boolean } = {}): Promise<void> {
+	async function openCalendar({
+		focusCalendar = false
+	}: { focusCalendar?: boolean } = {}): Promise<void> {
 		if (disabled) return;
 		updateCalendarPosition();
 		isOpen = true;

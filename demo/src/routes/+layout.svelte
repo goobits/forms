@@ -1,10 +1,8 @@
 <script lang="ts">
-	import {
-		CodeTabsHydrator,
-		FileTreeHydrator,
-		MermaidHydrator,
-		ScreenshotHydrator
-	} from '@goobits/docs-engine/components';
+	import CodeTabsHydrator from '@goobits/docs-engine/components/CodeTabsHydrator';
+	import FileTreeHydrator from '@goobits/docs-engine/components/FileTreeHydrator';
+	import MermaidHydrator from '@goobits/docs-engine/components/MermaidHydrator';
+	import ScreenshotHydrator from '@goobits/docs-engine/components/ScreenshotHydrator';
 	import '@goobits/docs-engine/styles';
 	import './app.css';
 </script>
@@ -16,11 +14,10 @@
 
 <div class="app">
 	<header>
-		<h1>@goobits/ui Demo</h1>
+		<h1>@goobits/forms Demo</h1>
 		<nav>
 			<a href="/">Home</a>
 			<a href="/docs">Docs</a>
-			<a href="/examples">Examples</a>
 		</nav>
 	</header>
 
@@ -29,7 +26,7 @@
 	</main>
 
 	<footer>
-		<p>Built with @goobits/ui and @goobits/docs-engine</p>
+		<p>Built with @goobits/forms and @goobits/docs-engine</p>
 	</footer>
 </div>
 

@@ -1,5 +1,5 @@
 /**
- * @fileoverview Generic email service interface for @goobits/ui
+ * @fileoverview Generic email service interface for @goobits/forms
  * Provides a pluggable email service with adapters for different providers
  */
 
@@ -247,16 +247,16 @@ export class AwsSesProvider extends EmailProvider {
 			const trimmedBodyHtml = (bodyHtml || '').trim();
 			const trimmedBodyText = (bodyText || '').trim();
 
-				const mailOptions: MailOptions = {
-					from: this.config.fromEmail,
-					to,
-					subject: trimmedSubject
-				};
+			const mailOptions: MailOptions = {
+				from: this.config.fromEmail,
+				to,
+				subject: trimmedSubject
+			};
 
 			if (trimmedBodyHtml) mailOptions.html = trimmedBodyHtml;
 			if (trimmedBodyText) mailOptions.text = trimmedBodyText;
 
-				await this.transporter?.sendMail(mailOptions);
+			await this.transporter?.sendMail(mailOptions);
 
 			return {
 				success: true,

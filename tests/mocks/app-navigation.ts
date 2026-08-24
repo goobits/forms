@@ -6,16 +6,31 @@
 import { vi } from 'vitest';
 
 // Mock goto function
-export const goto = vi.fn((_url: string | URL, _options?: { replaceState?: boolean; noScroll?: boolean; keepFocus?: boolean; invalidateAll?: boolean; state?: any }) => Promise.resolve());
+export const goto = vi.fn(
+	(
+		_url: string | URL,
+		_options?: {
+			replaceState?: boolean;
+			noScroll?: boolean;
+			keepFocus?: boolean;
+			invalidateAll?: boolean;
+			state?: any;
+		}
+	) => Promise.resolve()
+);
 
 // Mock invalidate function
-export const invalidate = vi.fn((_resource: string | URL | ((url: URL) => boolean)) => Promise.resolve());
+export const invalidate = vi.fn((_resource: string | URL | ((url: URL) => boolean)) =>
+	Promise.resolve()
+);
 
 // Mock invalidateAll function
 export const invalidateAll = vi.fn(() => Promise.resolve());
 
 // Mock preloadData function
-export const preloadData = vi.fn((_url: string | URL) => Promise.resolve({ type: 'loaded' as const, status: 200, data: {} }));
+export const preloadData = vi.fn((_url: string | URL) =>
+	Promise.resolve({ type: 'loaded' as const, status: 200, data: {} })
+);
 
 // Mock preloadCode function
 export const preloadCode = vi.fn((..._urls: string[]) => Promise.resolve());
