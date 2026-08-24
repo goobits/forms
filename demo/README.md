@@ -31,6 +31,8 @@ pnpm build
 pnpm preview
 ```
 
+Development and preview servers use `http://localhost:3180` and fail if that port is occupied.
+
 ## What's Included
 
 ### Form Features
