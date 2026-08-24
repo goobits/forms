@@ -30,7 +30,7 @@ vi.mock('sveltekit-superforms/adapters', () => ({
 	zod4: mockZod4
 }));
 
-vi.mock('../utils/logger.ts', () => ({
+vi.mock('@goobits/logger', () => ({
 	createLogger: vi.fn(() => mockLogger)
 }));
 

@@ -18,7 +18,7 @@
 	} from '../services/formService.js';
 
 	// Import logger utility
-	import { createLogger } from '../utils/logger.js';
+	import { createLogger } from '@goobits/logger';
 
 	// Import message helpers
 	import { createMessageGetter } from '../utils/messages.js';

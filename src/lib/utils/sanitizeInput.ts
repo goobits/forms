@@ -19,7 +19,7 @@
  * ```
  */
 
-import { createLogger } from './logger.js';
+import { createLogger } from '@goobits/logger';
 
 const logger = createLogger('SanitizeInput');
 

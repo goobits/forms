@@ -20,7 +20,7 @@ const { mockWarn, mockInfo, mockError, mockDebug } = vi.hoisted(() => ({
 	mockDebug: vi.fn()
 }));
 
-vi.mock('../utils/logger', () => ({
+vi.mock('@goobits/logger', () => ({
 	createLogger: () => ({
 		warn: mockWarn,
 		info: mockInfo,

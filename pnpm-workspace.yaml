@@ -1,7 +1,9 @@
 packages:
   - '.'
   - 'demo'
+  - '../email'
   - '../goo'
+  - '../logger'
   - '../security'
 
 allowBuilds:

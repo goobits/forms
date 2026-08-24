@@ -11,7 +11,7 @@ import { zod4 } from 'sveltekit-superforms/adapters';
 import type { ZodSchema } from 'zod';
 
 // Import logger utility
-import { createLogger } from '../utils/logger.js';
+import { createLogger } from '@goobits/logger';
 
 const logger = createLogger('FormService');
 

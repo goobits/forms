@@ -5,7 +5,7 @@
 
 import { getContactFormConfig } from '../config/index.js';
 import { loadFormData } from './formStorage.js';
-import { createLogger } from '../utils/logger.js';
+import { createLogger } from '@goobits/logger';
 import { IS_BROWSER, IS_DEV } from '../utils/constants.js';
 
 const logger = createLogger('FormHydration');

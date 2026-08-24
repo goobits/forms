@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ContactForm from './ContactForm.svelte';
 	import { onMount, onDestroy } from 'svelte';
-	import { createLogger } from '../utils/logger.js';
+	import { createLogger } from '@goobits/logger';
 
 	type ContactFormPageConfig = {
 		categories?: Record<string, unknown>;

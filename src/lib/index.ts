@@ -45,13 +45,6 @@ export * from './core/index.js';
 export * from './utils/index.js';
 
 /**
- * @function configureLogger
- * @description Configurable logging system for debugging and monitoring.
- * @param {object} options - Logging configuration.
- */
-export { configureLogger, LogLevels } from './utils/logger.js';
-
-/**
  * @function initContactFormConfig
  * @description Initializes contact form configuration with custom categories and validation.
  * @param {object} config - The contact form configuration.

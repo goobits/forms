@@ -27,7 +27,7 @@ const mockLocalStorage = {
 };
 
 // Mock logger
-vi.mock('../utils/logger.ts', () => ({
+vi.mock('@goobits/logger', () => ({
 	createLogger: () => ({
 		debug: vi.fn(),
 		error: vi.fn(),

@@ -18,6 +18,7 @@
 	},
 	"dependencies": {
 		"@goobits/docs-engine": "^2.0.3",
+		"@goobits/email": "workspace:*",
 		"@goobits/forms": "workspace:*",
 		"@lucide/svelte": "^1.31.0"
 	},

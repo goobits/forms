@@ -6,7 +6,7 @@
  */
 
 // Import logger utility and constants
-import { createLogger } from '../utils/logger.js';
+import { createLogger } from '@goobits/logger';
 import {
 	IS_BROWSER,
 	STORAGE_KEY,

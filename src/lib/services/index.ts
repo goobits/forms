@@ -17,6 +17,3 @@ export * from './recaptcha/index.js';
 
 // Re-export screen reader utilities
 export * from './screenReaderService.js';
-
-// Re-export email service utilities
-export * from './emailService.js';

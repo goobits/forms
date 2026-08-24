@@ -24,13 +24,18 @@ initContactFormConfig({
 
 ```ts
 // src/routes/api/contact/+server.ts
+import { createEmailService, createMockProvider } from '@goobits/email';
 import { createContactApiHandler } from '@goobits/forms/handlers';
+
+const email = createEmailService({
+	provider: createMockProvider(),
+	from: process.env.FROM_EMAIL
+});
 
 export const POST = createContactApiHandler({
 	csrfSecret: process.env.CONTACT_CSRF_SECRET,
 	adminEmail: process.env.ADMIN_EMAIL,
-	fromEmail: process.env.FROM_EMAIL,
-	emailServiceConfig: { provider: 'mock' }
+	sendEmail: email.send
 });
 ```
 
@@ -59,6 +64,8 @@ const newsletter = createFormSubmission({
 
 Newsletter providers, authentication, authorization, CRUD, and moderation stay in the consuming app. Forms manages the interaction and submission lifecycle only.
 
+Email providers stay in `@goobits/email`. Forms accepts the host's configured `send` function.
+
 ## Public API
 
 | Import                      | Contents                                                   |
@@ -69,7 +76,7 @@ Newsletter providers, authentication, authorization, CRUD, and moderation stay i
 | `@goobits/forms/handlers`   | Contact API handler                                        |
 | `@goobits/forms/config`     | Contact configuration                                      |
 | `@goobits/forms/validation` | Zod-backed form schemas and helpers                        |
-| `@goobits/forms/services`   | Form, email, reCAPTCHA, hydration, and storage services    |
+| `@goobits/forms/services`   | Form, reCAPTCHA, hydration, and storage services           |
 | `@goobits/forms/i18n`       | Translation hooks                                          |
 
 Generic buttons, inputs, selects, textareas, checkboxes, sliders, dialogs, menus, tooltips, spinners, and focus behavior come from `@goobits/goo`.

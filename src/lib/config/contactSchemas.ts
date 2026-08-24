@@ -8,7 +8,7 @@
  */
 
 import { secureDeepMerge } from './secureDeepMerge';
-import { createLogger } from '../utils/logger';
+import { createLogger } from '@goobits/logger';
 import type {
 	FieldConfig,
 	CategoryConfig,

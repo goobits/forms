@@ -25,22 +25,17 @@ Here's an example with syntax highlighting:
 ```typescript
 import { ContactForm } from '@goobits/forms/ui';
 import { createContactApiHandler } from '@goobits/forms/handlers/contactFormHandler';
+import { createEmailService, createMockProvider } from '@goobits/email';
+
+const email = createEmailService({
+	provider: createMockProvider(),
+	from: process.env.FROM_EMAIL
+});
 
 export const POST = createContactApiHandler({
 	csrfSecret: process.env.CONTACT_CSRF_SECRET,
 	adminEmail: process.env.ADMIN_EMAIL,
-	fromEmail: process.env.FROM_EMAIL,
-	emailServiceConfig: {
-		provider: 'nodemailer',
-		smtp: {
-			host: 'smtp.gmail.com',
-			port: 587,
-			auth: {
-				user: process.env.SMTP_USER,
-				pass: process.env.SMTP_PASS
-			}
-		}
-	}
+	sendEmail: email.send
 });
 ```
 

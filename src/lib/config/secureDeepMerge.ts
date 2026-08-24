@@ -3,7 +3,7 @@
  * Prevents prototype pollution and property traversal attacks
  */
 
-import { createLogger } from '../utils/logger';
+import { createLogger } from '@goobits/logger';
 
 const logger = createLogger('SecureDeepMerge');
 

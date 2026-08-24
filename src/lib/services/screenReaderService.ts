@@ -6,7 +6,7 @@
  */
 
 import { IS_BROWSER } from '../utils/constants.js';
-import { createLogger } from '../utils/logger.js';
+import { createLogger } from '@goobits/logger';
 import { createMessageGetter } from '../utils/messages.js';
 import { defaultMessages } from '../config/defaultMessages';
 

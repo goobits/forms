@@ -60,14 +60,19 @@ export interface UiConfigOptions {
 	theme?: 'light' | 'dark' | 'auto';
 }
 
-export interface EmailServiceConfig {
-	host?: string;
-	port?: number;
-	secure?: boolean;
-	auth?: {
-		user: string;
-		pass: string;
-	};
+export interface FormEmailMessage {
+	to: string;
+	subject: string;
+	html: string;
+	text: string;
+}
+
+export interface FormEmailSender {
+	send(message: FormEmailMessage): Promise<unknown>;
+}
+
+export interface FormSubmissionLocals {
+	emailService?: FormEmailSender;
 }
 
 export interface I18nConfig {
@@ -85,7 +90,6 @@ export interface ContactFormConfig {
 	fileSettings: FileSettings;
 	defaultRecipient?: string;
 	defaultSubject?: string;
-	emailService?: EmailServiceConfig;
 	i18n?: I18nConfig;
 	// Additional extended properties
 	recaptcha?: RecaptchaConfig;
@@ -103,7 +107,7 @@ export interface ContactFormConfig {
 	) => (
 		data: FormData,
 		category: string,
-		locals?: Record<string, unknown>
+		locals?: FormSubmissionLocals
 	) => Promise<SubmissionResult>;
 }
 

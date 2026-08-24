@@ -13,13 +13,18 @@ This example demonstrates how to create a contact form API endpoint using the `@
 
 ```javascript
 // /api/contact/+server.js
+import { createEmailService, createMockProvider } from '@goobits/email';
 import { createContactApiHandler } from '@goobits/forms/handlers/contactFormHandler';
+
+const email = createEmailService({
+	provider: createMockProvider(),
+	from: process.env.FROM_EMAIL
+});
 
 export const POST = createContactApiHandler({
 	csrfSecret: process.env.CONTACT_CSRF_SECRET,
-	// Email configuration
 	adminEmail: process.env.ADMIN_EMAIL,
-	fromEmail: process.env.FROM_EMAIL,
+	sendEmail: email.send,
 
 	// Security configuration
 	recaptchaSecretKey: process.env.RECAPTCHA_SECRET_KEY,
@@ -41,7 +46,7 @@ export const POST = createContactApiHandler({
 | ---------------------- | -------- | --------------------------------------------- |
 | `adminEmail`           | string   | Email address to send notifications to        |
 | `fromEmail`            | string   | From email address for notifications          |
-| `emailServiceConfig`   | object   | Configuration for the email service           |
+| `sendEmail`            | function | Host-owned email delivery function            |
 | `successMessage`       | string   | Default success message                       |
 | `errorMessage`         | string   | Default error message                         |
 | `rateLimitMessage`     | string   | Message shown when rate limited               |
@@ -53,28 +58,23 @@ export const POST = createContactApiHandler({
 | `customValidation`     | function | Custom validation function                    |
 | `customSuccessHandler` | function | Custom success handler function               |
 
-## Email Service Configuration
+## Email delivery
 
-The `emailServiceConfig` object supports different email providers:
-
-### AWS SES
+Configure the provider with `@goobits/email`, then inject its `send` function:
 
 ```javascript
-emailServiceConfig: {
-  provider: 'aws-ses',
-  region: 'us-east-1',
-  accessKeyId: 'YOUR_ACCESS_KEY',
-  secretAccessKey: 'YOUR_SECRET_KEY',
-  apiVersion: 'latest'
-}
-```
+import { createEmailService, createMockProvider } from '@goobits/email';
 
-### Mock Provider (for development)
+const email = createEmailService({
+	provider: createMockProvider(),
+	from: process.env.FROM_EMAIL
+});
 
-```javascript
-emailServiceConfig: {
-	provider: 'mock';
-}
+const handler = createContactApiHandler({
+	csrfSecret: process.env.CONTACT_CSRF_SECRET,
+	adminEmail: process.env.ADMIN_EMAIL,
+	sendEmail: email.send
+});
 ```
 
 ## Custom Handlers

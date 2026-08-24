@@ -8,9 +8,8 @@ import type { RequestHandler, RequestEvent } from '@sveltejs/kit';
 import { createSvelteKitCsrf } from '@goobits/security/csrf/sveltekit';
 import { createRateLimiter } from '@goobits/security/rate-limit';
 import { verifyRecaptcha } from '@goobits/security/recaptcha';
-import { createLogger } from '../utils/logger.js';
+import { createLogger } from '@goobits/logger';
 import { sanitizeFormData } from '../utils/sanitizeInput.js';
-import sendEmail from '../services/emailService.js';
 
 const logger = createLogger('ContactFormHandler');
 
@@ -29,15 +28,23 @@ export type CustomSuccessHandler = (
 	clientAddress: string
 ) => Promise<Record<string, unknown> | null>;
 
-/**
- * Email service configuration interface
- */
-export interface EmailServiceConfig {
-	/** Email service provider */
-	provider?: string;
-	/** Additional configuration options */
-	[key: string]: unknown;
+/** Host-owned email delivery contract. */
+export interface ContactEmailMessage {
+	to: string;
+	from?: string;
+	subject: string;
+	html: string;
+	text: string;
 }
+
+export interface ContactEmailResult {
+	success: boolean;
+	error?: string;
+	reason?: string;
+	details?: unknown;
+}
+
+export type ContactEmailSender = (message: ContactEmailMessage) => Promise<ContactEmailResult>;
 
 /**
  * Contact form submission data interface
@@ -71,8 +78,8 @@ export interface ContactApiHandlerOptions {
 	adminEmail?: string;
 	/** From email address for notifications */
 	fromEmail?: string;
-	/** Email service configuration */
-	emailServiceConfig?: EmailServiceConfig;
+	/** Host-owned email delivery function */
+	sendEmail?: ContactEmailSender;
 	/** Success message to return */
 	successMessage?: string;
 	/** Generic error message */
@@ -149,7 +156,7 @@ export function createContactApiHandler(options: ContactApiHandlerOptions): Requ
 		csrfSecret,
 		adminEmail,
 		fromEmail,
-		emailServiceConfig,
+		sendEmail,
 		successMessage = "Thank you for your message! We'll get back to you soon.",
 		errorMessage = 'An error occurred. Please try again later.',
 		rateLimitMessage = 'Too many requests. Please try again later.',
@@ -304,7 +311,6 @@ export function createContactApiHandler(options: ContactApiHandlerOptions): Requ
 			if (logSubmissions) {
 				logger.info('Contact form submission:', {
 					category: sanitizedData.category || 'general',
-					ip: clientAddress,
 					timestamp: new Date().toISOString()
 				});
 			}
@@ -327,12 +333,12 @@ export function createContactApiHandler(options: ContactApiHandlerOptions): Requ
 				}
 			}
 
-			// Send email notification
-			try {
-				const category = sanitizedData.category || 'general';
-				const subject = `New Contact Form Submission - ${category}`;
+			if (sendEmail && adminEmail) {
+				try {
+					const category = sanitizedData.category || 'general';
+					const subject = `New Contact Form Submission - ${category}`;
 
-				const bodyText = `
+					const bodyText = `
 New contact form submission:
 
 Category: ${category}
@@ -346,7 +352,7 @@ Submitted at: ${new Date().toISOString()}
 IP Address: ${clientAddress}
         `.trim();
 
-				const bodyHtml = `
+					const bodyHtml = `
 <h2>New Contact Form Submission</h2>
 <p><strong>Category:</strong> ${category}</p>
 <p><strong>Name:</strong> ${sanitizedData.name}</p>
@@ -360,42 +366,37 @@ IP Address: ${clientAddress}
 IP Address: ${clientAddress}</small></p>
         `.trim();
 
-				// Send email to admin/site owner
-				const emailResult = await sendEmail(
-					adminEmail || 'admin@example.com',
-					subject,
-					bodyHtml,
-					bodyText,
-					{
-						fromEmail: fromEmail || 'noreply@example.com',
-						...emailServiceConfig
-					}
-				);
+					// Send email to admin/site owner
+					const emailResult = await sendEmail({
+						to: adminEmail,
+						...(fromEmail ? { from: fromEmail } : {}),
+						subject,
+						html: bodyHtml,
+						text: bodyText
+					});
 
-				if (emailResult && emailResult.success) {
-					logger.info('Contact form email sent successfully');
-				} else {
-					logger.warn('Contact form email may not have been sent properly', {
-						success: emailResult?.success || false,
-						message: emailResult?.message || 'Unknown error',
-						details: emailResult?.details || {}
+					if (emailResult && emailResult.success) {
+						logger.info('Contact form email sent successfully');
+					} else {
+						logger.warn('Contact form email may not have been sent properly', {
+							success: emailResult?.success || false,
+							error: emailResult?.error || 'Unknown error',
+							reason: emailResult?.reason || 'unknown',
+							details: emailResult?.details || {}
+						});
+					}
+				} catch (emailError) {
+					const typedEmailError =
+						emailError instanceof Error
+							? (emailError as Error & { code?: unknown; details?: unknown })
+							: null;
+					logger.error('Failed to send contact form email:', {
+						error: typedEmailError?.message || String(emailError),
+						stack: typedEmailError?.stack,
+						code: typedEmailError?.code,
+						details: typedEmailError?.details || {}
 					});
 				}
-			} catch (emailError) {
-				const typedEmailError =
-					emailError instanceof Error
-						? (emailError as Error & { code?: unknown; details?: unknown })
-						: null;
-				logger.error('Failed to send contact form email:', {
-					error: typedEmailError?.message || String(emailError),
-					stack: typedEmailError?.stack,
-					code: typedEmailError?.code,
-					details: typedEmailError?.details || {},
-					adminEmail,
-					fromEmail,
-					provider: emailServiceConfig?.provider || 'unknown'
-				});
-				// Don't fail the API response if email fails
 			}
 
 			const successResponse: ApiSuccessResponse = {

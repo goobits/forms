@@ -36,7 +36,7 @@
 
 	// Import reCAPTCHA provider
 	import { createRecaptchaProvider } from '../services/recaptcha/index.js';
-	import { createLogger } from '../utils/logger.js';
+	import { createLogger } from '@goobits/logger';
 
 	// Import message helpers
 	import { createMessageGetter } from '../utils/messages.js';

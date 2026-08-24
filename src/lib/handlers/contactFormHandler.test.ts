@@ -42,11 +42,7 @@ vi.mock('@goobits/security/recaptcha', () => ({
 	verifyRecaptcha: mockVerifyRecaptcha
 }));
 
-vi.mock('../services/emailService.ts', () => ({
-	default: mockSendEmail
-}));
-
-vi.mock('../utils/logger.ts', () => ({
+vi.mock('@goobits/logger', () => ({
 	createLogger: () => mockLogger
 }));
 
@@ -64,12 +60,20 @@ type TestContactApiHandlerOptions = Omit<ContactApiHandlerOptions, 'csrfSecret'>
 
 function createContactApiHandler(options: TestContactApiHandlerOptions = {}) {
 	const { csrfSecret = TEST_CSRF_SECRET, ...handlerOptions } = options;
-	return createContactApiHandlerImpl({ ...handlerOptions, csrfSecret });
+	return createContactApiHandlerImpl({
+		...handlerOptions,
+		sendEmail: handlerOptions.sendEmail ?? mockSendEmail,
+		csrfSecret
+	});
 }
 
 function createContactFormHandlers(options: TestContactApiHandlerOptions = {}) {
 	const { csrfSecret = TEST_CSRF_SECRET, ...handlerOptions } = options;
-	return createContactFormHandlersImpl({ ...handlerOptions, csrfSecret });
+	return createContactFormHandlersImpl({
+		...handlerOptions,
+		sendEmail: handlerOptions.sendEmail ?? mockSendEmail,
+		csrfSecret
+	});
 }
 
 /**
@@ -877,9 +881,9 @@ describe('createContactApiHandler', () => {
 			await handler(event);
 
 			expect(mockSendEmail).toHaveBeenCalled();
-			const emailCall = mockSendEmail.mock.calls[0];
-			const bodyHtml = emailCall[2];
-			const bodyText = emailCall[3];
+			const email = mockSendEmail.mock.calls[0][0];
+			const bodyHtml = email.html;
+			const bodyText = email.text;
 
 			expect(bodyText).toContain('John Doe');
 			expect(bodyText).toContain('john@example.com');
@@ -906,8 +910,7 @@ describe('createContactApiHandler', () => {
 
 			await handler(event);
 
-			const emailCall = mockSendEmail.mock.calls[0];
-			const subject = emailCall[1];
+			const subject = mockSendEmail.mock.calls[0][0].subject;
 
 			expect(subject).toContain('New Contact Form Submission');
 			expect(subject).toContain('sales');
@@ -926,11 +929,10 @@ describe('createContactApiHandler', () => {
 			await handler(event);
 
 			expect(mockSendEmail).toHaveBeenCalledWith(
-				'contact@mycompany.com',
-				expect.any(String),
-				expect.any(String),
-				expect.any(String),
-				expect.objectContaining({ fromEmail: 'forms@example.com' })
+				expect.objectContaining({
+					to: 'contact@mycompany.com',
+					from: 'forms@example.com'
+				})
 			);
 		});
 
@@ -970,7 +972,7 @@ describe('createContactApiHandler', () => {
 			mockRateLimit.check.mockResolvedValue({ allowed: true });
 			mockValidateCsrf.mockReturnValue(true);
 			mockSanitizeFormData.mockImplementation((data) => data);
-			mockSendEmail.mockResolvedValue({ success: false, message: 'Failed to send' });
+			mockSendEmail.mockResolvedValue({ success: false, error: 'Failed to send' });
 
 			const event2 = createMockRequestEvent({
 				body: { name: 'John', email: 'john@example.com', message: 'Hello' }
@@ -998,9 +1000,9 @@ describe('createContactApiHandler', () => {
 
 			await handler(event);
 
-			const emailCall = mockSendEmail.mock.calls[0];
-			const bodyHtml = emailCall[2];
-			const bodyText = emailCall[3];
+			const email = mockSendEmail.mock.calls[0][0];
+			const bodyHtml = email.html;
+			const bodyText = email.text;
 
 			// Verify HTML formatting
 			expect(bodyHtml).toContain('<h2>');
@@ -1179,8 +1181,7 @@ describe('createContactApiHandler', () => {
 			expect(mockLogger.info).toHaveBeenCalledWith(
 				expect.stringContaining('Contact form submission'),
 				expect.objectContaining({
-					category: 'support',
-					ip: '10.0.0.1'
+					category: 'support'
 				})
 			);
 		});

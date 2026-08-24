@@ -4,8 +4,14 @@
 
 import { z } from 'zod';
 import { defaultConfig } from './defaults';
-import { createLogger } from '../utils/logger';
-import type { ContactFormConfig, FormData, ValidationResult, SubmissionResult } from './types';
+import { createLogger } from '@goobits/logger';
+import type {
+	ContactFormConfig,
+	FormData,
+	FormSubmissionLocals,
+	ValidationResult,
+	SubmissionResult
+} from './types';
 
 export { defaultMessages } from './defaultMessages';
 export { initContactFormConfig as initFormConfig, getValidatorForCategory } from './contactSchemas';
@@ -130,7 +136,7 @@ function createSubmissionHandlerFactory(config: ContactFormConfig) {
 		return async (
 			data: FormData,
 			category: string,
-			locals?: Record<string, unknown>
+			locals?: FormSubmissionLocals
 		): Promise<SubmissionResult> => {
 			try {
 				const recipient = options.recipient || defaultRecipient;
@@ -145,7 +151,7 @@ function createSubmissionHandlerFactory(config: ContactFormConfig) {
 
 				// Use email service if available in locals
 				if (locals && locals.emailService) {
-					await locals.emailService.sendEmail({
+					await locals.emailService.send({
 						to: recipient,
 						subject: `${subject} - ${category}`,
 						html: formatSubmissionEmail(data, category),
