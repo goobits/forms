@@ -21,7 +21,7 @@ import { vi, type Mock } from 'vitest';
  *
  * @example
  * ```ts
- * import { render } from './test-utils'
+ * import { render } from '../../../tests/support/render'
  * import MyComponent from './MyComponent.svelte'
  *
  * render(MyComponent, { props: { name: 'World' } })

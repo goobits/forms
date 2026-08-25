@@ -6,7 +6,7 @@ import { expect } from 'vitest';
 expect.extend(toHaveNoViolations);
 
 /**
- * Options for accessibility testing
+ * Accessibility test options
  */
 export interface A11yTestOptions {
 	/**

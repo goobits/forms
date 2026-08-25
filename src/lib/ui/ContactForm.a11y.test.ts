@@ -11,9 +11,14 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, getFocusableElements } from './test-utils';
+import { render, getFocusableElements } from '../../../tests/support/render';
 import { waitFor } from '@testing-library/svelte';
-import { testAccessibility, testWCAG_AA, testFormLabels, testARIA } from '../utils/a11y-test-utils';
+import {
+	testAccessibility,
+	testWCAG_AA,
+	testFormLabels,
+	testARIA
+} from '../../../tests/support/accessibility';
 import ContactForm from './ContactForm.svelte';
 import { initContactFormConfig } from '../config/index';
 

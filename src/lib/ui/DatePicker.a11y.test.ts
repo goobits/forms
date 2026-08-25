@@ -13,14 +13,14 @@
 import { describe, it, expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { screen, waitFor } from '@testing-library/svelte';
-import { render, getFocusableElements } from './test-utils';
+import { render, getFocusableElements } from '../../../tests/support/render';
 import {
 	testAccessibility,
 	testWCAG_AA,
 	testKeyboardNavigation,
 	testFormLabels,
 	assertFocusable
-} from '../utils/a11y-test-utils';
+} from '../../../tests/support/accessibility';
 import DatePicker from './DatePicker.svelte';
 
 describe('DatePicker Component - Accessibility', () => {

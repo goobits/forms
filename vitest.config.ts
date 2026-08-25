@@ -46,7 +46,6 @@ export default defineConfig({
 				'**/*.spec.{ts,js}',
 				'**/types.ts',
 				'**/index.ts',
-				'**/test-utils.ts',
 				'**/test-setup.ts',
 				'src/lib/utils/logger.ts',
 				'src/lib/utils/debounce.ts',
