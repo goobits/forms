@@ -44,15 +44,15 @@ function getSchemaDefaults(schema: ZodSchema): FormRecord {
 		if (schemaWithShape?._def?.shape) {
 			// Handle ZodObject schemas
 			const shape = schemaWithShape._def.shape;
-			Object.keys(shape).forEach((key) => {
-				const field = shape[key];
-				if (field._def) {
-					if (field._def.defaultValue !== undefined) {
-						const defaultValue = field._def.defaultValue;
+			Object.entries(shape).forEach(([key, field]) => {
+				const definition = field._def;
+				if (definition) {
+					if (definition.defaultValue !== undefined) {
+						const defaultValue = definition.defaultValue;
 						defaults[key] = typeof defaultValue === 'function' ? defaultValue() : defaultValue;
 					} else {
 						// Provide sensible defaults based on field type
-						const typeName = field._def.typeName;
+						const typeName = definition.typeName;
 						switch (typeName) {
 							case 'ZodString':
 								defaults[key] = '';

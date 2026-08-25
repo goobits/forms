@@ -47,8 +47,8 @@ export function formatDate(date: Date, format: string, locale: string = 'en-US')
 	const tokens: Record<string, string> = {
 		YYYY: year.toString(),
 		YY: year.toString().slice(-2),
-		MMMM: monthNames[month],
-		MMM: monthNamesShort[month],
+		MMMM: monthNames[month]!,
+		MMM: monthNamesShort[month]!,
 		MM: (month + 1).toString().padStart(2, '0'),
 		M: (month + 1).toString(),
 		DD: day.toString().padStart(2, '0'),
@@ -57,10 +57,10 @@ export function formatDate(date: Date, format: string, locale: string = 'en-US')
 
 	let result = format;
 	// Sort by length descending to replace longer tokens first
-	Object.keys(tokens)
-		.sort((a, b) => b.length - a.length)
-		.forEach((token) => {
-			result = result.replace(new RegExp(token, 'g'), tokens[token]);
+	Object.entries(tokens)
+		.sort(([a], [b]) => b.length - a.length)
+		.forEach(([token, replacement]) => {
+			result = result.replace(new RegExp(token, 'g'), replacement);
 		});
 
 	return result;
@@ -89,23 +89,26 @@ export function parseDate(dateString: string, format: string): Date | undefined 
 		let day: number;
 
 		if (formatLower === 'yyyy-mm-dd') {
-			const parts = dateString.split('-');
-			if (parts.length !== 3) return undefined;
-			year = parseInt(parts[0], 10);
-			month = parseInt(parts[1], 10) - 1;
-			day = parseInt(parts[2], 10);
+			const parts = splitDateParts(dateString, '-');
+			if (!parts) return undefined;
+			const [yearPart, monthPart, dayPart] = parts;
+			year = parseInt(yearPart, 10);
+			month = parseInt(monthPart, 10) - 1;
+			day = parseInt(dayPart, 10);
 		} else if (formatLower === 'mm/dd/yyyy') {
-			const parts = dateString.split('/');
-			if (parts.length !== 3) return undefined;
-			month = parseInt(parts[0], 10) - 1;
-			day = parseInt(parts[1], 10);
-			year = parseInt(parts[2], 10);
+			const parts = splitDateParts(dateString, '/');
+			if (!parts) return undefined;
+			const [monthPart, dayPart, yearPart] = parts;
+			month = parseInt(monthPart, 10) - 1;
+			day = parseInt(dayPart, 10);
+			year = parseInt(yearPart, 10);
 		} else if (formatLower === 'dd/mm/yyyy') {
-			const parts = dateString.split('/');
-			if (parts.length !== 3) return undefined;
-			day = parseInt(parts[0], 10);
-			month = parseInt(parts[1], 10) - 1;
-			year = parseInt(parts[2], 10);
+			const parts = splitDateParts(dateString, '/');
+			if (!parts) return undefined;
+			const [dayPart, monthPart, yearPart] = parts;
+			day = parseInt(dayPart, 10);
+			month = parseInt(monthPart, 10) - 1;
+			year = parseInt(yearPart, 10);
 		} else {
 			// Fallback to basic ISO parsing
 			const date = new Date(dateString);
@@ -117,6 +120,16 @@ export function parseDate(dateString: string, format: string): Date | undefined 
 	} catch {
 		return undefined;
 	}
+}
+
+function splitDateParts(
+	dateString: string,
+	separator: string
+): [string, string, string] | undefined {
+	const parts = dateString.split(separator);
+	return parts.length === 3 && parts.every(Boolean)
+		? (parts as [string, string, string])
+		: undefined;
 }
 
 /**

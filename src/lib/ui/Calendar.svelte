@@ -241,6 +241,7 @@
 		// Focus the new date
 		if (newIndex !== dateIndex) {
 			const newDate = calendarDates[newIndex];
+			if (!newDate) return;
 			const button = document.querySelector(
 				`button[data-date="${newDate.getTime()}"]`
 			) as HTMLButtonElement;

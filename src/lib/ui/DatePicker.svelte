@@ -270,47 +270,47 @@
 	 * Handle click outside to close calendar
 	 */
 	$effect(() => {
-		if (isOpen && browser) {
-			const handleClickOutside = (event: MouseEvent) => {
-				const target = event.target as Node;
-				// Check if click is outside both trigger and calendar
-				if (
-					triggerRef &&
-					!triggerRef.contains(target) &&
-					!document.getElementById(calendarId)?.contains(target)
-				) {
-					closeCalendar();
-				}
-			};
+		if (!isOpen || !browser) return;
 
-			// Use a small delay to prevent immediate closing
-			const timeoutId = setTimeout(() => {
-				document.addEventListener('mousedown', handleClickOutside);
-			}, 0);
+		const handleClickOutside = (event: MouseEvent) => {
+			const target = event.target as Node;
+			// Check if click is outside both trigger and calendar
+			if (
+				triggerRef &&
+				!triggerRef.contains(target) &&
+				!document.getElementById(calendarId)?.contains(target)
+			) {
+				closeCalendar();
+			}
+		};
 
-			return () => {
-				clearTimeout(timeoutId);
-				document.removeEventListener('mousedown', handleClickOutside);
-			};
-		}
+		// Use a small delay to prevent immediate closing
+		const timeoutId = setTimeout(() => {
+			document.addEventListener('mousedown', handleClickOutside);
+		}, 0);
+
+		return () => {
+			clearTimeout(timeoutId);
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
 	});
 
 	/**
 	 * Handle Escape key globally when calendar is open
 	 */
 	$effect(() => {
-		if (isOpen && browser) {
-			const handleEscape = (event: KeyboardEvent) => {
-				if (event.key === 'Escape') {
-					containKeyboardEvent(event);
-					closeCalendar();
-					inputRef?.focus();
-				}
-			};
+		if (!isOpen || !browser) return;
 
-			document.addEventListener('keydown', handleEscape);
-			return () => document.removeEventListener('keydown', handleEscape);
-		}
+		const handleEscape = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				containKeyboardEvent(event);
+				closeCalendar();
+				inputRef?.focus();
+			}
+		};
+
+		document.addEventListener('keydown', handleEscape);
+		return () => document.removeEventListener('keydown', handleEscape);
 	});
 
 	// CSS classes
