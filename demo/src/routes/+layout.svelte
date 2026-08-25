@@ -1,8 +1,10 @@
 <script lang="ts">
-	import CodeTabsHydrator from '@goobits/docs-engine/components/CodeTabsHydrator';
-	import FileTreeHydrator from '@goobits/docs-engine/components/FileTreeHydrator';
-	import MermaidHydrator from '@goobits/docs-engine/components/MermaidHydrator';
-	import ScreenshotHydrator from '@goobits/docs-engine/components/ScreenshotHydrator';
+	import {
+		CodeTabsHydrator,
+		FileTreeHydrator,
+		MermaidHydrator,
+		ScreenshotHydrator
+	} from '@goobits/docs-engine/components';
 	import '@goobits/docs-engine/styles';
 	import './app.css';
 </script>
