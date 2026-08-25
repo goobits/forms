@@ -41,22 +41,29 @@ export interface FileSettings {
 
 export interface RecaptchaConfig {
 	enabled: boolean;
-	provider?: 'google-v3' | 'google-v2' | 'hcaptcha';
-	siteKey?: string;
-	minScore?: number;
+	provider: 'google-v3' | 'google-v2' | 'hcaptcha';
+	siteKey: string;
+	secretKey: string;
+	minScore: number;
+	cacheTimeout: number;
 }
 
 export interface ApiConfig {
-	endpoint?: string;
+	endpoint: string;
 	headers?: Record<string, string>;
+	timeout: number;
+	retries: number;
 }
 
 export interface UiConfigOptions {
-	submitButtonText?: string;
-	submittingButtonText?: string;
-	resetAfterSubmit?: boolean;
-	showSuccessMessage?: boolean;
-	successMessageDuration?: number;
+	submitButtonText: string;
+	submittingButtonText: string;
+	resetAfterSubmit: boolean;
+	showSuccessMessage: boolean;
+	successMessageDuration: number;
+	showFieldErrors: boolean;
+	focusFirstError: boolean;
+	scrollToError: boolean;
 	theme?: 'light' | 'dark' | 'auto';
 }
 
@@ -76,6 +83,13 @@ export interface FormSubmissionLocals {
 }
 
 export interface I18nConfig {
+	enabled: boolean;
+	supportedLanguages: string[];
+	defaultLanguage: string;
+	includeLanguageInURL: boolean;
+	autoDetectLanguage: boolean;
+	languageDetectionOrder: Array<'url' | 'sessionStorage' | 'browser'>;
+	persistLanguageKey: string;
 	locale?: string;
 	translations?: Record<string, MessageObject>;
 }

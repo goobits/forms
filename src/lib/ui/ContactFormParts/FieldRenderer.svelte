@@ -1,6 +1,7 @@
 <script>
 	import { Field, Control, Label, FieldErrors } from 'formsnap';
 	import { CheckCircle, AlertCircle } from '@lucide/svelte';
+	import { GooCheckbox } from '@goobits/goo/checkbox';
 	import { GooInput } from '@goobits/goo/input';
 	import { GooSelect } from '@goobits/goo/select';
 	import { GooTextarea } from '@goobits/goo/textarea';
@@ -147,17 +148,23 @@
 							</span>
 						</div>
 					{:else if fieldConfig.type === 'checkbox'}
-						<input
-							{...props}
+						<GooCheckbox
+							{...getGooControlProps(props)}
+							id={props.id}
+							name={props.name}
+							ariaLabel={fieldConfig.label.replace(/<[^>]*>/g, '').replace('(optional)', '').trim()}
 							checked={!!formData[fieldName]}
-							class:contact-form__field--error={touched[fieldName] && fieldErrors?.[fieldName]}
-							class="contact-form__checkbox"
+							class="contact-form__checkbox {touched[fieldName] && fieldErrors?.[fieldName]
+								? 'contact-form__field--error'
+								: ''}"
+							required={fieldConfig.required}
+							aria-describedby={props['aria-describedby']}
+							aria-invalid={touched[fieldName] && fieldErrors?.[fieldName] ? 'true' : 'false'}
 							onblur={() => onBlur(fieldName)}
-							onchange={(event) => {
-								formData[fieldName] = event.currentTarget.checked;
+							onchange={(value) => {
+								formData[fieldName] = value;
 								onInput(fieldName);
 							}}
-							type="checkbox"
 						/>
 					{:else}
 						<div class="contact-form__validation-container">

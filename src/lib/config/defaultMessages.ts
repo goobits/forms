@@ -112,14 +112,16 @@ export const defaultMessages: DefaultMessageConfig = {
 	validationError: 'Please fix the validation errors before submitting.',
 	formError: 'Form error:',
 	networkError: 'An error occurred. Please try again later.',
-	rateLimit: (minutes: number): string =>
-		`Too many requests. Please try again in ${minutes} ${minutes === 1 ? 'minute' : 'minutes'}.`,
+	rateLimit: (value: unknown): string => {
+		const minutes = Number(value);
+		return `Too many requests. Please try again in ${minutes} ${minutes === 1 ? 'minute' : 'minutes'}.`;
+	},
 
 	// Form validation
-	required: (field: string): string => `Please provide your ${field}`,
-	invalid: (field: string): string => `Please provide a valid ${field}`,
-	select: (field: string): string => `Please select ${field}`,
-	maxLength: (max: number): string => `Maximum ${max} characters`,
+	required: (field: unknown): string => `Please provide your ${String(field)}`,
+	invalid: (field: unknown): string => `Please provide a valid ${String(field)}`,
+	select: (field: unknown): string => `Please select ${String(field)}`,
+	maxLength: (max: unknown): string => `Maximum ${Number(max)} characters`,
 
 	// File validation
 	fileSize: 'File size must be less than 5MB',

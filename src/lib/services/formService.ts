@@ -129,11 +129,9 @@ export interface FormSubmitHandlerOptions {
 	/** Function to prepare form data before submission */
 	prepareFormData: (formData: FormRecord, recaptchaToken?: string) => Promise<FormRecord>;
 	/** Function to submit the prepared form data */
-	submitForm: (
-		formData: FormRecord
-	) => Promise<{ success?: boolean; error?: unknown } & FormRecord>;
+	submitForm: (formData: FormRecord) => Promise<unknown>;
 	/** Callback function for successful submission */
-	onSuccess: (response: { success?: boolean; error?: unknown } & FormRecord) => void;
+	onSuccess: (response: FormRecord & { success: true }) => void;
 	/** Callback function for submission errors */
 	onError: (error: Error) => void;
 }
@@ -355,7 +353,7 @@ export function createFormSubmitHandler(options: FormSubmitHandlerOptions) {
 
 		try {
 			// Get reCAPTCHA token if available
-			const recaptchaToken = await getRecaptchaToken(recaptcha);
+			const recaptchaToken = await getRecaptchaToken(recaptcha ?? null);
 
 			// If reCAPTCHA is enabled but token is null, fail the submission
 			if (recaptcha && !recaptchaToken) {
@@ -371,18 +369,26 @@ export function createFormSubmitHandler(options: FormSubmitHandlerOptions) {
 			// Prepare, sanitize and submit
 			const preparedData = await prepareFormData(formData, recaptchaToken ?? undefined);
 			const sanitizedData = sanitizeFormData(preparedData);
+			if (!sanitizedData) {
+				throw new Error('Form data sanitization failed');
+			}
 			const response = await submitForm(sanitizedData);
 
 			// Handle response
-			if (response?.success) {
-				onSuccess(response);
+			if (isRecord(response) && response.success === true) {
+				onSuccess(response as FormRecord & { success: true });
 				return { success: true, data: response };
 			}
 
 			// Handle non-success response
-			const error = handleError(response?.error || 'Form submission failed', 'FormSubmission', {
-				response
-			});
+			const responseError = isRecord(response) ? response.error : undefined;
+			const error = handleError(
+				responseError instanceof Error || typeof responseError === 'string'
+					? responseError
+					: 'Form submission failed',
+				'FormSubmission',
+				{ response }
+			);
 			throw error;
 		} catch (error) {
 			const standardizedError =
@@ -475,7 +481,11 @@ export function resetForm(
  * ```
  */
 export function isRecaptchaInstance(obj: unknown): obj is RecaptchaInstance {
-	return obj && typeof obj.getToken === 'function';
+	return isRecord(obj) && typeof obj.getToken === 'function';
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null;
 }
 
 /**

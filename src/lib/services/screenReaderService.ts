@@ -513,8 +513,8 @@ export function getActiveAnnouncementCount(): number {
  */
 export function isFormErrors(obj: unknown): obj is FormErrors {
 	return (
-		obj &&
 		typeof obj === 'object' &&
+		obj !== null &&
 		!Array.isArray(obj) &&
 		Object.values(obj).every((value) => typeof value === 'string')
 	);

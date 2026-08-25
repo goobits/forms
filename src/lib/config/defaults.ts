@@ -10,7 +10,11 @@ import type {
 	FieldConfig,
 	CategoryConfig,
 	ContactFormConfig,
-	FileSettings
+	FileSettings,
+	RecaptchaConfig,
+	ApiConfig,
+	UiConfigOptions,
+	I18nConfig
 } from './types';
 
 /**
@@ -49,78 +53,6 @@ export interface ErrorMessageConfig extends MessageObject {
 }
 
 /**
- * reCAPTCHA configuration
- */
-export interface RecaptchaConfig {
-	/** Whether reCAPTCHA is enabled */
-	enabled: boolean;
-	/** reCAPTCHA provider type */
-	provider: 'google-v3' | 'google-v2' | 'hcaptcha';
-	/** Public site key */
-	siteKey: string;
-	/** Secret key (server-side only) */
-	secretKey: string;
-	/** Minimum score for v3 (0.0 to 1.0) */
-	minScore: number;
-	/** Cache timeout in milliseconds */
-	cacheTimeout: number;
-}
-
-/**
- * API configuration
- */
-export interface ApiConfig {
-	/** API endpoint URL */
-	endpoint: string;
-	/** Request timeout in milliseconds */
-	timeout: number;
-	/** Number of retry attempts */
-	retries: number;
-}
-
-/**
- * UI configuration
- */
-export interface UiConfig {
-	/** Show success message after submission */
-	showSuccessMessage: boolean;
-	/** Duration to show success message in milliseconds */
-	successMessageDuration: number;
-	/** Show field-level error messages */
-	showFieldErrors: boolean;
-	/** Focus first field with error */
-	focusFirstError: boolean;
-	/** Scroll to first error field */
-	scrollToError: boolean;
-	/** Submit button text */
-	submitButtonText: string;
-	/** Submit button text while submitting */
-	submittingButtonText: string;
-	/** Reset form after successful submission */
-	resetAfterSubmit: boolean;
-}
-
-/**
- * Internationalization (i18n) configuration
- */
-export interface I18nConfig {
-	/** Whether i18n is enabled */
-	enabled: boolean;
-	/** Array of supported language codes */
-	supportedLanguages: string[];
-	/** Default language code */
-	defaultLanguage: string;
-	/** Include language code in URL */
-	includeLanguageInURL: boolean;
-	/** Auto-detect user language */
-	autoDetectLanguage: boolean;
-	/** Order for language detection */
-	languageDetectionOrder: ('url' | 'sessionStorage' | 'browser')[];
-	/** Storage key for persisted language */
-	persistLanguageKey: string;
-}
-
-/**
  * Default error messages for form validation
  *
  * @example
@@ -131,9 +63,9 @@ export interface I18nConfig {
  */
 export const defaultErrorMessages: ErrorMessageConfig = {
 	// Common validation errors
-	required: (field: string) => `Please provide your ${field}`,
-	invalid: (field: string) => `Please provide a valid ${field}`,
-	select: (field: string) => `Please select ${field}`,
+	required: (field: unknown) => `Please provide your ${String(field)}`,
+	invalid: (field: unknown) => `Please provide a valid ${String(field)}`,
+	select: (field: unknown) => `Please select ${String(field)}`,
 
 	// File-related errors
 	fileSize: 'File size must be less than 5MB',
@@ -361,7 +293,7 @@ export const defaultApiConfig: ApiConfig = {
  * const showSuccess = defaultUiConfig.showSuccessMessage; // true
  * ```
  */
-export const defaultUiConfig: UiConfig = {
+export const defaultUiConfig: UiConfigOptions = {
 	showSuccessMessage: true,
 	successMessageDuration: 5000,
 	showFieldErrors: true,

@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { CheckCircle, AlertCircle } from '@lucide/svelte';
-	import { containKeyboardEvent } from '@goobits/goo/keyboard';
+	import { GooCheckbox } from '@goobits/goo/checkbox';
+	import { GooInput } from '@goobits/goo/input';
+	import { GooSelect } from '@goobits/goo/select';
+	import { GooTextarea } from '@goobits/goo/textarea';
 
 	/**
 	 * Props for the FormField component
@@ -8,7 +11,7 @@
 	let {
 		fieldName,
 		fieldConfig,
-		value,
+		value = $bindable(),
 		errors,
 		touched,
 		getFieldClasses,
@@ -44,10 +47,6 @@
 		props: Record<string, unknown>;
 	} = $props();
 
-	// Reference to the input element
-	let inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null =
-		$state(null);
-
 	// Track focus state for enhanced keyboard navigation
 	let hasFocus: boolean = $state(false);
 
@@ -62,33 +61,14 @@
 		handleBlur(fieldName);
 	}
 
-	// Add keyboard event handlers for enhanced navigation
-	function handleKeyDown(event: KeyboardEvent): void {
-		// Handle Enter key on select elements (activate dropdown)
-		if (event.key === 'Enter' && fieldConfig.type === 'select') {
-			containKeyboardEvent(event);
-			(event.currentTarget as HTMLElement).click();
-		}
-
-		// Custom handling for Escape key
-		if (event.key === 'Escape') {
-			containKeyboardEvent(event, { preventDefault: false });
-			(event.currentTarget as HTMLElement).blur();
-		}
-	}
-
-	// Common field props
-	const fieldProps = $derived({
-		...props,
-		name: fieldName,
-		id: fieldName,
-		...fieldConfig,
-		'aria-invalid': touched[fieldName] && errors?.[fieldName] ? 'true' : null,
-		'aria-describedby': touched[fieldName] && errors?.[fieldName] ? `${fieldName}-error` : null,
-		'aria-required': fieldConfig.required ? 'true' : null,
-		// Add tabindex attribute if provided
-		...(fieldConfig.tabindex !== undefined ? { tabindex: fieldConfig.tabindex } : {})
-	});
+	const ariaInvalid = $derived(touched[fieldName] && errors?.[fieldName] ? 'true' : 'false');
+	const ariaDescribedby = $derived(
+		touched[fieldName] && errors?.[fieldName] ? `${fieldName}-error` : undefined
+	);
+	const textValue = $derived(
+		typeof value === 'string' || typeof value === 'number' ? String(value) : ''
+	);
+	const checkedValue = $derived(value === true);
 
 	// Classes for styling and validation states
 	const baseClasses = $derived(getFieldClasses(fieldName));
@@ -106,6 +86,12 @@
 	const selectClasses = $derived(`contact-form__select ${baseClasses} ${validationClasses}`);
 	const textareaClasses = $derived(`contact-form__textarea ${baseClasses} ${validationClasses}`);
 	const inputClasses = $derived(`contact-form__input ${baseClasses} ${validationClasses}`);
+	const focusClass = $derived(hasFocus ? ' contact-form__field--focused' : '');
+
+	function updateValue(nextValue: string | boolean): void {
+		value = nextValue;
+		handleInput(fieldName);
+	}
 </script>
 
 <!-- Common wrapper for fields with validation icon -->
@@ -116,51 +102,53 @@
 		data-field-type={fieldConfig.type}
 	>
 		{#if fieldConfig.type === 'select'}
-			<select
-				{...fieldProps}
-				bind:value
-				bind:this={inputElement}
+			<GooSelect
+				{...props}
+				inputId={fieldName}
+				name={fieldName}
+				value={textValue}
+				options={(fieldConfig.options ?? []).map((option) =>
+					typeof option === 'object'
+						? { id: option.value, label: option.label }
+						: { id: option, label: option }
+				)}
+				placeholder="Select {fieldConfig.label.replace('(optional)', '')}"
+				required={fieldConfig.required}
+				aria-invalid={ariaInvalid}
+				aria-describedby={ariaDescribedby}
 				class={selectClasses}
-				class:contact-form__field--focused={hasFocus}
-				onblur={handleFieldBlur}
-				oninput={() => handleInput(fieldName)}
-				onfocus={handleFocus}
-				onkeydown={handleKeyDown}
-			>
-				<option value="">Select {fieldConfig.label.replace('(optional)', '')}</option>
-				{#each fieldConfig.options as option (option)}
-					{#if typeof option === 'object'}
-						<option value={option.value}>{option.label}</option>
-					{:else}
-						<option value={option}>{option}</option>
-					{/if}
-				{/each}
-			</select>
+				onchange={(nextValue) => updateValue(nextValue)}
+			/>
 		{:else if fieldConfig.type === 'textarea'}
-			<textarea
-				{...fieldProps}
-				bind:value
-				bind:this={inputElement}
-				class={textareaClasses}
-				class:contact-form__field--focused={hasFocus}
+			<GooTextarea
+				{...props}
+				inputId={fieldName}
+				name={fieldName}
+				value={textValue}
+				class="{textareaClasses}{focusClass}"
+				aria-invalid={ariaInvalid}
+				aria-describedby={ariaDescribedby}
 				onblur={handleFieldBlur}
-				oninput={() => handleInput(fieldName)}
+				oninput={(nextValue) => updateValue(nextValue)}
 				onfocus={handleFocus}
-				onkeydown={handleKeyDown}
 				placeholder={fieldConfig.placeholder}
-				rows={fieldConfig.rows || 4}></textarea>
+				required={fieldConfig.required}
+				rows={fieldConfig.rows || 4}
+			/>
 		{:else}
-			<input
-				{...fieldProps}
-				bind:value
-				bind:this={inputElement}
-				class={inputClasses}
-				class:contact-form__field--focused={hasFocus}
+			<GooInput
+				{...props}
+				inputId={fieldName}
+				name={fieldName}
+				value={textValue}
+				class="{inputClasses}{focusClass}"
+				aria-invalid={ariaInvalid}
+				aria-describedby={ariaDescribedby}
 				onblur={handleFieldBlur}
-				oninput={() => handleInput(fieldName)}
+				oninput={(nextValue) => updateValue(nextValue)}
 				onfocus={handleFocus}
-				onkeydown={handleKeyDown}
 				placeholder={fieldConfig.placeholder}
+				required={fieldConfig.required}
 				type={fieldConfig.type}
 			/>
 		{/if}
@@ -176,17 +164,19 @@
 	</div>
 {:else}
 	<!-- Special case for checkbox - no container needed -->
-	<input
-		{...fieldProps}
-		bind:checked={value}
-		bind:this={inputElement}
-		class="contact-form__checkbox {validationClasses}"
-		class:contact-form__field--focused={hasFocus}
+	<GooCheckbox
+		{...props}
+		checked={checkedValue}
+		id={fieldName}
+		name={fieldName}
+		ariaLabel={fieldConfig.label.replace(/<[^>]*>/g, '').replace('(optional)', '').trim()}
+		class="contact-form__checkbox {validationClasses}{focusClass}"
+		aria-invalid={ariaInvalid}
+		aria-describedby={ariaDescribedby}
+		required={fieldConfig.required}
 		onblur={handleFieldBlur}
-		oninput={() => handleInput(fieldName)}
 		onfocus={handleFocus}
-		onkeydown={handleKeyDown}
-		type="checkbox"
+		onchange={(nextValue) => updateValue(nextValue)}
 	/>
 {/if}
 

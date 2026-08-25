@@ -75,6 +75,7 @@
 	"scripts": {
 		"build": "svelte-package && pnpm run build:clean",
 		"build:clean": "find dist -type f -name '*.test.*' -delete",
+		"typecheck": "svelte-check --workspace . --tsconfig ./tsconfig.json --fail-on-warnings",
 		"prepublishOnly": "pnpm run build && pnpm run lint && pnpm run test:run",
 		"test": "vitest run",
 		"test:run": "vitest run",

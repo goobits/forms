@@ -69,7 +69,7 @@ export function initContactFormConfig(
 	userConfig: Partial<ContactFormConfig> = {}
 ): ContactFormConfig {
 	// Merge user config with defaults
-	currentConfig = deepMerge(defaultConfig, userConfig) as ContactFormConfig;
+	currentConfig = deepMerge(defaultConfig, userConfig) as unknown as ContactFormConfig;
 
 	// Build validation schemas based on configuration
 	currentConfig.schemas = buildValidationSchemas(currentConfig);
@@ -111,7 +111,7 @@ function createFormDataParser(config: ContactFormConfig) {
 				return { isValid: false, errors };
 			}
 
-			return { isValid: true, data: result.data };
+			return { isValid: true, data: result.data as FormData };
 		} catch (error: unknown) {
 			const errorMessage = error instanceof Error ? error.message : 'Validation failed';
 			return {
@@ -286,7 +286,7 @@ function buildValidationSchemas(config: ContactFormConfig) {
 			acc[categoryName] = z.object(categoryFields);
 			return acc;
 		},
-		{} as Record<string, z.AnyZodObject>
+		{} as Record<string, z.ZodObject>
 	);
 
 	return { schemas, categories };

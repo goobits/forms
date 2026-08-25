@@ -500,7 +500,11 @@ export function createRecaptchaProvider(config: RecaptchaConfig = {}): Recaptcha
  */
 export function isRecaptchaProvider(obj: unknown): obj is RecaptchaProvider {
 	return (
-		obj &&
+		typeof obj === 'object' &&
+		obj !== null &&
+		'init' in obj &&
+		'getToken' in obj &&
+		'verify' in obj &&
 		typeof obj.init === 'function' &&
 		typeof obj.getToken === 'function' &&
 		typeof obj.verify === 'function'

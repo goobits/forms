@@ -30,7 +30,7 @@
 		/** Display label and input inline (horizontal layout) */
 		inline?: boolean;
 		/** Snippet containing the form input */
-		children: Snippet;
+		children?: Snippet;
 		/** Additional CSS class names */
 		class?: string;
 		/** Optional indicator text (default: "(optional)") */
@@ -75,7 +75,7 @@
 		</label>
 	{/if}
 
-	{@render children()}
+	{#if children}{@render children()}{/if}
 
 	{#if helpText && !error && !success}
 		<div class="form-label__help" id="{id}-help">

@@ -1,6 +1,22 @@
 <script lang="ts">
 	import './UploadImage.css';
 	import { ImagePlus, X } from '@lucide/svelte';
+	import { GooButton } from '@goobits/goo/button';
+
+	interface UploadedImage {
+		file: File;
+		preview: string;
+	}
+
+	interface Props {
+		accept?: string;
+		error?: string | null;
+		files?: UploadedImage[];
+		maxFiles?: number;
+		maxSize?: number;
+		onChange?: (files: UploadedImage[]) => void;
+		onError?: (message: string) => void;
+	}
 
 	let {
 		accept = 'image/jpeg,image/jpg,image/png,image/webp,image/gif',
@@ -10,10 +26,10 @@
 		maxSize = 5 * 1024 * 1024,
 		onChange = () => {},
 		onError = () => {}
-	} = $props();
+	}: Props = $props();
 
 	let dragCounter = $state(0);
-	let fileInput = $state();
+	let fileInput: HTMLInputElement | undefined = $state();
 	let isDragging = $state(false);
 
 	let canAddMore = $derived(files.length < maxFiles);
@@ -22,7 +38,7 @@
 	 * Handle drag enter event
 	 * @param {DragEvent} e
 	 */
-	function handleDragEnter(e) {
+	function handleDragEnter(e: DragEvent): void {
 		e.preventDefault();
 		dragCounter++;
 		isDragging = true;
@@ -32,7 +48,7 @@
 	 * Handle drag leave event
 	 * @param {DragEvent} e
 	 */
-	function handleDragLeave(e) {
+	function handleDragLeave(e: DragEvent): void {
 		e.preventDefault();
 		dragCounter--;
 		if (dragCounter === 0) {
@@ -44,7 +60,7 @@
 	 * Handle drop event
 	 * @param {DragEvent} e
 	 */
-	function handleDrop(e) {
+	function handleDrop(e: DragEvent): void {
 		e.preventDefault();
 		dragCounter = 0;
 		isDragging = false;
@@ -55,7 +71,7 @@
 	 * Handle file input change
 	 * @param {Event} e
 	 */
-	async function handleFileSelect(e) {
+	async function handleFileSelect(e: Event): Promise<void> {
 		const target = e.target as HTMLInputElement;
 		if (target && target.files) {
 			await handleFiles(target.files);
@@ -66,7 +82,7 @@
 	 * Handle files
 	 * @param {FileList|undefined} fileList
 	 */
-	async function handleFiles(fileList) {
+	async function handleFiles(fileList: FileList | undefined): Promise<void> {
 		if (!fileList) {
 			return;
 		}
@@ -101,7 +117,7 @@
 	 * Remove file at specified index
 	 * @param {number} index
 	 */
-	function removeFile(index) {
+	function removeFile(index: number): void {
 		files = files.filter((_, i) => i !== index);
 		onChange(files);
 	}
@@ -111,11 +127,12 @@
 	 * @param {File} file
 	 * @returns {Promise<string>}
 	 */
-	async function createPreview(file) {
-		return new Promise((resolve) => {
+	async function createPreview(file: File): Promise<string> {
+		return new Promise((resolve, reject) => {
 			const reader = new FileReader();
-			reader.onloadend = () => resolve(reader.result);
-			reader.onerror = () => new Error('Failed to read file');
+			reader.onloadend = () =>
+				resolve(typeof reader.result === 'string' ? reader.result : '');
+			reader.onerror = () => reject(new Error('Failed to read file'));
 			reader.readAsDataURL(file);
 		});
 	}
@@ -146,27 +163,28 @@
 		{#each files as { preview }, i (i)}
 			<div class="image-upload__preview" role="listitem">
 				<img src={preview} alt="" class="image-upload__image" aria-hidden="true" />
-				<button
+				<GooButton
 					type="button"
 					class="image-upload__remove-btn"
 					onclick={() => removeFile(i)}
-					aria-label="Remove image"
+					ariaLabel="Remove image"
+					square
 				>
 					<X size={14} />
-				</button>
+				</GooButton>
 			</div>
 		{/each}
 
 		{#if canAddMore}
-			<button
+			<GooButton
 				type="button"
 				class="image-upload__add-btn"
-				onclick={() => fileInput.click()}
-				aria-label="Add image"
+				onclick={() => fileInput?.click()}
+				ariaLabel="Add image"
 			>
 				<ImagePlus size={36} />
 				<span class="upload-text" style="padding: 0 12px; font-weight: 500;">Add image</span>
-			</button>
+			</GooButton>
 		{/if}
 	</div>
 

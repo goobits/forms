@@ -32,9 +32,10 @@
 	// Focus the thank you message when it appears
 	onMount(() => {
 		if (browser && thankYouContainer) {
+			const container = thankYouContainer;
 			// Set focus to the container for screen readers to announce the message
 			setTimeout(() => {
-				thankYouContainer.focus();
+				container.focus();
 			}, 100);
 		}
 	});

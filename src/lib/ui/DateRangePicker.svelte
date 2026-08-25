@@ -99,7 +99,6 @@
 	let currentMonth = $state(startDate ? new Date(startDate) : new Date());
 	let startInputValue = $state('');
 	let endInputValue = $state('');
-	let hoveredDate: Date | undefined = $state();
 
 	// Unique IDs for accessibility
 	const fallbackId = `daterangepicker-${Math.random().toString(36).substr(2, 9)}`;
@@ -175,7 +174,6 @@
 	 */
 	function closeCalendar(): void {
 		isOpen = false;
-		hoveredDate = undefined;
 	}
 
 	function focusCalendarDate(): void {
@@ -292,31 +290,6 @@
 	}
 
 	/**
-	 * Check if a date is in the selected range
-	 */
-	function _isDateInRange(date: Date): boolean {
-		if (!startDate || !endDate) return false;
-		const time = date.getTime();
-		return time >= startDate.getTime() && time <= endDate.getTime();
-	}
-
-	/**
-	 * Check if a date is in the preview range (while hovering)
-	 */
-	function _isDateInPreviewRange(date: Date): boolean {
-		if (!startDate || !hoveredDate || endDate) return false;
-		const dateTime = date.getTime();
-		const startTime = startDate.getTime();
-		const hoverTime = hoveredDate.getTime();
-
-		if (hoverTime >= startTime) {
-			return dateTime >= startTime && dateTime <= hoverTime;
-		} else {
-			return dateTime >= hoverTime && dateTime <= startTime;
-		}
-	}
-
-	/**
 	 * Handle click outside to close calendar
 	 */
 	$effect(() => {
@@ -384,9 +357,7 @@
 
 <div class={containerClasses} bind:this={triggerRef}>
 	{#if label}
-		<FormLabel for={`${uniqueId}-start`} {required}>
-			{label}
-		</FormLabel>
+		<FormLabel id={`${uniqueId}-start`} {label} {required} />
 	{/if}
 
 	<div class="daterangepicker__inputs">

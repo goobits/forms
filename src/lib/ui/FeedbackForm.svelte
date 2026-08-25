@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import { Loader2 } from '@lucide/svelte';
-	import { onMount } from 'svelte';
+	import { GooButton } from '@goobits/goo/button';
+	import { GooInput } from '@goobits/goo/input';
+	import { GooRadioGroup } from '@goobits/goo/radio';
+	import { GooSpinner } from '@goobits/goo/spinner';
+	import { GooTextarea } from '@goobits/goo/textarea';
+	import { onMount, untrack } from 'svelte';
 	import { z } from 'zod';
 
 	type ContactSubmission = Record<string, unknown>;
@@ -14,15 +18,11 @@
 		handleFieldTouch,
 		initializeForm,
 		initializeFormState,
-		resetForm as resetFormService
+		type RecaptchaInstance
 	} from '../services/formService.js';
 
 	// Import logger utility
 	import { createLogger } from '@goobits/logger';
-
-	// Import message helpers
-	import { createMessageGetter } from '../utils/messages.js';
-	import { defaultMessages } from '../config/defaultMessages';
 
 	const logger = createLogger('FeedbackForm');
 
@@ -32,7 +32,7 @@
 		userComment: _propsComment,
 		userName: _propsName,
 		userEmail: _propsEmail,
-		messages = {},
+		messages: _messages = {},
 		isFormVisible: initialFormVisible = false,
 		isThankYouVisible: initialThankYouVisible = false,
 		submitContactForm = async (data: ContactSubmission) => {
@@ -84,9 +84,6 @@
 		messages: {}
 	};
 
-	// Create message getter
-	createMessageGetter({ ...defaultMessages, ...messages });
-
 	// Define validation schema using zod
 	const feedbackSchema = z.object({
 		feedbackType: z.string().min(1, 'Please select whether the page was helpful or not.'),
@@ -97,25 +94,22 @@
 
 	// Initialize form state using shared service
 	const formState = initializeFormState({
-		isFormVisible: initialFormVisible,
-		isThankYouVisible: initialThankYouVisible,
-		currentPagePath: '',
 		touched: {}
 	});
 
 	// UI State
-	let currentPagePath: string = $state(formState.currentPagePath);
-	let isFormVisible: boolean = $state(formState.isFormVisible);
-	let isThankYouVisible: boolean = $state(formState.isThankYouVisible);
-	let recaptcha: unknown = $state(formState.recaptcha);
-	let submissionError: string | null = $state(formState.submissionError);
+	let currentPagePath: string = $state('');
+	let isFormVisible: boolean = $state(untrack(() => initialFormVisible));
+	let isThankYouVisible: boolean = $state(untrack(() => initialThankYouVisible));
+	let recaptcha: RecaptchaInstance | null = $state(formState.recaptcha);
+	let submissionError: Error | null = $state(formState.submissionError);
 	let submitting: boolean = $state(false);
 	let touched: Record<string, boolean> = $state(formState.touched);
 	let thankYouRef: HTMLElement | null = $state(null);
 	let csrfToken: string = $state('');
 
 	// Define the submit handler using shared function
-	const handleSubmit = async (formData: FormData): Promise<void> => {
+	const handleSubmit = async (submittedData: ContactSubmission): Promise<void> => {
 		const submitHandler = createFormSubmitHandler({
 			validateForm: () => !Object.values($errors).some((v) => v),
 			recaptcha,
@@ -123,15 +117,15 @@
 				const currentPage = $page?.url?.pathname || 'Unknown page';
 
 				return {
-					name: formData.get('userName') || 'Page Visitor',
-					email: formData.get('userEmail') || 'no-reply@example.com',
+					name: formData.userName || 'Page Visitor',
+					email: formData.userEmail || 'no-reply@example.com',
 					category: 'product-feedback',
-					message: formData.get('userComment'),
+					message: formData.userComment,
 					recaptchaToken,
 					featureArea: 'Page Feedback',
 					coppa: true,
 					page: currentPage,
-					helpful: formData.get('feedbackType') === 'yes' ? 'Yes ✓' : 'No ✗'
+					helpful: formData.feedbackType === 'yes' ? 'Yes ✓' : 'No ✗'
 				};
 			},
 			submitForm: async (formDataToSubmit) => {
@@ -145,8 +139,9 @@
 
 				// Focus the thank you message when it appears
 				if (browser && thankYouRef) {
+					const thankYouElement = thankYouRef;
 					setTimeout(() => {
-						thankYouRef.focus();
+						thankYouElement.focus();
 					}, 100);
 				}
 			},
@@ -155,7 +150,7 @@
 			}
 		});
 
-		await submitHandler(formData);
+		await submitHandler(submittedData);
 	};
 
 	// Initialize form with shared service
@@ -164,10 +159,11 @@
 		schema: feedbackSchema,
 		onSubmitHandler: handleSubmit,
 		extraOptions: {
-			onError: ({ result }) => {
+			onError: ({ result }: { result?: { error?: unknown } }) => {
 				// Handle validation errors from server
 				if (result?.error) {
-					submissionError = result.error;
+					submissionError =
+						result.error instanceof Error ? result.error : new Error(String(result.error));
 				}
 			}
 		}
@@ -226,8 +222,10 @@
 		isFormVisible = false;
 		isThankYouVisible = false;
 
-		// Use the shared reset function
-		resetFormService(formData.set, defaultProps, { submissionError, touched });
+		formData.set(defaultProps);
+		submissionError = null;
+		touched = {};
+		submitting = false;
 	}
 
 	/**
@@ -258,7 +256,9 @@
 		>
 			<strong>Thank you for your feedback!</strong>
 			<div class="feedback__actions feedback__actions--thank-you">
-				<button class="feedback__btn feedback__btn--secondary" onclick={resetForm}>Close</button>
+				<GooButton class="feedback__btn feedback__btn--secondary" onclick={resetForm}
+					>Close</GooButton
+				>
 			</div>
 		</div>
 	{:else}
@@ -266,9 +266,9 @@
 			{#if !isFormVisible}
 				<p class="feedback__prompt">
 					<i>Was this help page useful?</i>
-					<button class="feedback__trigger" onclick={showFeedbackForm}>
+					<GooButton class="feedback__trigger" variant="link" onclick={showFeedbackForm}>
 						<span>Send feedback</span>
-					</button>
+					</GooButton>
 				</p>
 			{:else}
 				<form class="feedback__form" method="POST" use:enhance onreset={resetForm} name="feedback">
@@ -281,42 +281,24 @@
 
 					{#if submissionError}
 						<div class="feedback__error" role="alert">
-							<div class="feedback__error-message">{submissionError}</div>
+							<div class="feedback__error-message">{submissionError.message}</div>
 						</div>
 					{/if}
 
 					<div class="feedback__choices">
 						<div class="feedback__field">
-							<div class="feedback__radio-group">
-								<label
-									class="feedback__radio"
-									data-fs-field-errors={$errors.feedbackType ? 'feedbackType' : ''}
-								>
-									<input
-										bind:group={$formData.feedbackType}
-										name="feedbackType"
-										onblur={() => handleBlur('feedbackType')}
-										oninput={() => handleInput('feedbackType')}
-										type="radio"
-										value="yes"
-									/>
-									<span class="feedback__radio-text">Yes</span>
-								</label>
-								<label
-									class="feedback__radio"
-									data-fs-field-errors={$errors.feedbackType ? 'feedbackType' : ''}
-								>
-									<input
-										bind:group={$formData.feedbackType}
-										name="feedbackType"
-										onblur={() => handleBlur('feedbackType')}
-										oninput={() => handleInput('feedbackType')}
-										type="radio"
-										value="no"
-									/>
-									<span class="feedback__radio-text">No</span>
-								</label>
-							</div>
+							<GooRadioGroup
+								class="feedback__radio-group"
+								name="feedbackType"
+								options={{ yes: 'Yes', no: 'No' }}
+								required
+								value={String($formData.feedbackType ?? '')}
+								onchange={(value) => {
+									$formData.feedbackType = value;
+									handleInput('feedbackType');
+									handleBlur('feedbackType');
+								}}
+							/>
 							{#if $errors.feedbackType && touched.feedbackType}
 								<div class="feedback__field-error" data-fs-field-error="feedbackType">
 									{$errors.feedbackType}
@@ -327,26 +309,34 @@
 
 					<label class="feedback__field">
 						<span class="feedback__label">Your Name (Optional)</span>
-						<input
-							bind:value={$formData.userName}
+						<GooInput
+							value={String($formData.userName ?? '')}
 							class="feedback__input"
 							name="userName"
 							onblur={() => handleBlur('userName')}
-							oninput={() => handleInput('userName')}
+							oninput={(value) => {
+								$formData.userName = value;
+								handleInput('userName');
+							}}
 							type="text"
 						/>
 					</label>
 
 					<label class="feedback__field">
 						<span class="feedback__label">Your Thoughts</span>
-						<textarea
-							bind:value={$formData.userComment}
-							class:feedback__textarea--error={$errors.userComment && touched.userComment}
-							class="feedback__textarea"
+						<GooTextarea
+							value={String($formData.userComment ?? '')}
+							class="feedback__textarea {$errors.userComment && touched.userComment
+								? 'feedback__textarea--error'
+								: ''}"
 							data-fs-field-errors={$errors.userComment ? 'userComment' : ''}
 							name="userComment"
 							onblur={() => handleBlur('userComment')}
-							oninput={() => handleInput('userComment')}></textarea>
+							oninput={(value) => {
+								$formData.userComment = value;
+								handleInput('userComment');
+							}}
+						/>
 						{#if $errors.userComment && touched.userComment}
 							<div class="feedback__field-error" data-fs-field-error="userComment">
 								{$errors.userComment}
@@ -356,13 +346,16 @@
 
 					<label class="feedback__field">
 						<span class="feedback__label">Email (If you'd like a reply)</span>
-						<input
-							bind:value={$formData.userEmail}
+						<GooInput
+							value={String($formData.userEmail ?? '')}
 							class="feedback__input"
 							data-fs-field-errors={$errors.userEmail ? 'userEmail' : ''}
 							name="userEmail"
 							onblur={() => handleBlur('userEmail')}
-							oninput={() => handleInput('userEmail')}
+							oninput={(value) => {
+								$formData.userEmail = value;
+								handleInput('userEmail');
+							}}
 							type="email"
 						/>
 						{#if $errors.userEmail && touched.userEmail}
@@ -376,20 +369,22 @@
 
 					<div class="feedback__actions">
 						{#if !submitting}
-							<button type="reset" class="feedback__btn feedback__btn--secondary">Cancel</button>
+							<GooButton type="reset" class="feedback__btn feedback__btn--secondary"
+								>Cancel</GooButton
+							>
 						{/if}
-						<button
+						<GooButton
 							type="submit"
 							class="feedback__btn feedback__btn--primary"
 							disabled={submitting}
 						>
 							{#if submitting}
-								<Loader2 class="animate-spin" size={18} />
+								<GooSpinner size={18} label="Sending feedback" />
 								<span>Sending...</span>
 							{:else}
 								<span>Send feedback</span>
 							{/if}
-						</button>
+						</GooButton>
 					</div>
 				</form>
 			{/if}

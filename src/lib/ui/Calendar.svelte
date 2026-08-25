@@ -7,7 +7,9 @@
 	 */
 
 	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
+	import { GooButton } from '@goobits/goo/button';
 	import { containKeyboardEvent } from '@goobits/goo/keyboard';
+	import { GooSelect } from '@goobits/goo/select';
 	import {
 		getMonthCalendarDates,
 		getDayNames,
@@ -16,6 +18,7 @@
 		isSameMonth,
 		isToday,
 		isDateInRange,
+		getWeekNumber,
 		addMonths
 	} from '../utils/date-utils';
 
@@ -248,42 +251,45 @@
 
 <div class="calendar" {id}>
 	<div class="calendar__header">
-		<button
+		<GooButton
 			type="button"
 			class="calendar__nav-button"
 			onclick={previousMonth}
-			aria-label="Previous month"
+			ariaLabel="Previous month"
+			square
+			variant="ghost"
 		>
 			<ChevronLeft size={20} />
-		</button>
+		</GooButton>
 
 		<div class="calendar__controls">
-			<select
+			<GooSelect
 				class="calendar__select"
-				value={currentMonthIndex}
-				onchange={(e) => selectMonth(parseInt(e.currentTarget.value, 10))}
-				aria-label="Select month"
-			>
-				{#each monthNames as monthName, index (index)}
-					<option value={index}>{monthName}</option>
-				{/each}
-			</select>
+				value={String(currentMonthIndex)}
+				onchange={(value) => selectMonth(Number(value))}
+				ariaLabel="Select month"
+				options={monthNames.map((monthName, index) => ({ id: String(index), label: monthName }))}
+			/>
 
-			<select
+			<GooSelect
 				class="calendar__select"
-				value={currentYear}
-				onchange={(e) => selectYear(parseInt(e.currentTarget.value, 10))}
-				aria-label="Select year"
-			>
-				{#each yearOptions as year (year)}
-					<option value={year}>{year}</option>
-				{/each}
-			</select>
+				value={String(currentYear)}
+				onchange={(value) => selectYear(Number(value))}
+				ariaLabel="Select year"
+				options={yearOptions.map((year) => ({ id: String(year), label: String(year) }))}
+			/>
 		</div>
 
-		<button type="button" class="calendar__nav-button" onclick={nextMonth} aria-label="Next month">
+		<GooButton
+			type="button"
+			class="calendar__nav-button"
+			onclick={nextMonth}
+			ariaLabel="Next month"
+			square
+			variant="ghost"
+		>
 			<ChevronRight size={20} />
-		</button>
+		</GooButton>
 	</div>
 
 	<div class="calendar__grid" role="grid" aria-label="{currentMonthLabel} calendar dates">
@@ -303,8 +309,9 @@
 		{#each Array(6) as _, weekIndex (weekIndex)}
 			<div class="calendar__week" role="row">
 				{#if showWeekNumbers}
+					{@const weekStart = calendarDates[weekIndex * 7]}
 					<div class="calendar__week-number">
-						{calendarDates[weekIndex * 7]?.getWeek?.() || ''}
+						{weekStart ? getWeekNumber(weekStart) : ''}
 					</div>
 				{/if}
 				{#each Array(7) as _, dayIndex (dayIndex)}
@@ -338,7 +345,9 @@
 	</div>
 
 	<div class="calendar__footer">
-		<button type="button" class="calendar__today-button" onclick={goToToday}> Today </button>
+		<GooButton type="button" class="calendar__today-button" onclick={goToToday} variant="secondary">
+			Today
+		</GooButton>
 	</div>
 </div>
 

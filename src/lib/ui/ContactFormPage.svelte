@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ContactForm from './ContactForm.svelte';
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy, untrack } from 'svelte';
 	import { createLogger } from '@goobits/logger';
 
 	type ContactFormPageConfig = {
@@ -92,14 +92,16 @@
 	}: ContactFormPageProps = $props();
 
 	// State
-	let selectedCategory: string = $state(category || initialData.category || defaultCategory);
+	let selectedCategory: string = $state(
+		untrack(() => category || initialData.category || defaultCategory)
+	);
 	let showThankYou: boolean = $state(false);
 	let isBookingMode: boolean = $state(false);
-	let currentPageTitle: string = $state(pageTitle);
-	let isInitialRender: boolean = true;
+	let hasMounted: boolean = $state(false);
+	const currentPageTitle = $derived(isBookingMode ? bookingPageTitle : pageTitle);
 
 	// Get valid categories from config
-	const validCategories: string[] = config.categories ? Object.keys(config.categories) : [];
+	const validCategories = $derived(config.categories ? Object.keys(config.categories) : []);
 
 	// Initialize on mount
 	onMount(() => {
@@ -109,6 +111,7 @@
 
 		// Process initial URL
 		handlePopState();
+		hasMounted = true;
 	});
 
 	onDestroy(() => {
@@ -119,14 +122,15 @@
 	});
 
 	// Handle category change event from ContactForm
-	function handleCategoryChange(event: CustomEvent<{ category?: string }>): void {
-		if (event.detail && event.detail.category) {
-			selectedCategory = event.detail.category;
+	function handleCategoryChange(event: Event): void {
+		const categoryDetail = (event as CustomEvent<{ category?: string }>).detail?.category;
+		if (categoryDetail) {
+			selectedCategory = categoryDetail;
 			updateUrl();
 
 			// Call custom callback if provided
 			if (onCategoryChange) {
-				onCategoryChange(event.detail.category);
+				onCategoryChange(categoryDetail);
 			}
 		}
 	}
@@ -140,19 +144,17 @@
 		// Update booking mode
 		if (isBooking) {
 			isBookingMode = true;
-			currentPageTitle = bookingPageTitle;
-			if (!validCategories.includes(type)) {
+			if (type === null || !validCategories.includes(type)) {
 				selectedCategory = bookingCategory;
 			}
 		} else {
 			isBookingMode = false;
-			currentPageTitle = pageTitle;
 		}
 
 		// Handle page state based on URL
 		if (type === thankYouValue) {
 			showThankYou = true;
-		} else if (validCategories.includes(type)) {
+		} else if (type !== null && validCategories.includes(type)) {
 			showThankYou = false;
 			selectedCategory = type;
 
@@ -212,14 +214,9 @@
 
 	// Watch for state changes
 	$effect(() => {
-		if (!isInitialRender) {
+		if (hasMounted) {
 			updateUrl();
 		}
-	});
-
-	// After first render
-	$effect(() => {
-		isInitialRender = false;
 	});
 </script>
 

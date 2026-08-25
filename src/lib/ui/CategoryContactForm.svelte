@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import { GooButton } from '@goobits/goo/button';
+	import { GooCheckbox } from '@goobits/goo/checkbox';
+	import { GooInput } from '@goobits/goo/input';
+	import { GooSelect } from '@goobits/goo/select';
+	import { GooTextarea } from '@goobits/goo/textarea';
 	import { getValidationClasses } from '../validation/index.js';
 	import FormErrors from './FormErrors.svelte';
 
@@ -44,7 +49,7 @@
 		 */
 		form?: {
 			data: Record<string, unknown>;
-			errors: Record<string, string>;
+			errors: Record<string, string | string[]>;
 			isSubmitted: boolean;
 		};
 		/**
@@ -87,21 +92,28 @@
 	}: Props = $props();
 
 	// Extract form configuration
-	const { categories = {}, fieldConfigs = {}, ui = {} } = config;
+	const categories = $derived(config.categories ?? {});
+	const fieldConfigs = $derived(config.fieldConfigs ?? {});
+	const ui = $derived(config.ui ?? {});
 
 	// Get the selected category configuration or fallback to default
-	const categoryConfig = categories[categorySlug] ||
-		categories.general || { fields: ['name', 'email', 'message'] };
+	const categoryConfig = $derived(
+		categories[categorySlug] ?? categories.general ?? { fields: ['name', 'email', 'message'] }
+	);
 
 	// Use configuration or props for button text
-	const _submitButtonText = submitButtonText || ui.submitButtonText || 'Send Message';
-	const _submittingButtonText = submittingButtonText || ui.submittingButtonText || 'Sending...';
+	const resolvedSubmitButtonText = $derived(
+		submitButtonText || ui.submitButtonText || 'Send Message'
+	);
+	const resolvedSubmittingButtonText = $derived(
+		submittingButtonText || ui.submittingButtonText || 'Sending...'
+	);
 
 	// Track form submission state
-	let isSubmitting: boolean = false;
+	let isSubmitting: boolean = $state(false);
 
 	// Track form field touched state
-	let touchedFields: Record<string, boolean> = {};
+	let touchedFields: Record<string, boolean> = $state({});
 	function markAsTouched(fieldName: string): void {
 		touchedFields[fieldName] = true;
 	}
@@ -136,10 +148,14 @@
 
 <div class="contact-form-container">
 	{#if Object.keys(form.errors).length > 0 && form.errors._form}
-		<FormErrors errors={[form.errors._form]} />
+		<FormErrors
+			errors={{
+				_errors: Array.isArray(form.errors._form) ? form.errors._form : [form.errors._form]
+			}}
+		/>
 	{/if}
 
-	<form method="post" class="contact-form" on:submit={handleSubmit} enctype="multipart/form-data">
+	<form method="post" class="contact-form" onsubmit={handleSubmit} enctype="multipart/form-data">
 		<!-- Add CSRF token -->
 		<input type="hidden" name="csrf" value={csrfToken} />
 		<input type="hidden" name="category" value={categorySlug} />
@@ -155,27 +171,29 @@
 				{@const fieldConfig = fieldConfigs[fieldName]}
 				{@const isRequired = fieldConfig.required || false}
 				{@const fieldValue = form.data[fieldName] || ''}
-				{@const fieldError = form.errors[fieldName] || ''}
+				{@const fieldText = typeof fieldValue === 'string' || typeof fieldValue === 'number' ? String(fieldValue) : ''}
+				{@const rawFieldError = form.errors[fieldName] || ''}
+				{@const fieldError = Array.isArray(rawFieldError) ? rawFieldError[0] || '' : rawFieldError}
 				{@const isTouched = touchedFields[fieldName] || false}
 				{@const validationClass = getValidationClasses(!!fieldError, isTouched, fieldValue)}
 
 				<div class="form-field {fieldConfig.type === 'checkbox' ? 'checkbox-field' : ''}">
 					{#if fieldConfig.type === 'checkbox'}
-						<label class="checkbox-label">
-							<input
-								type="checkbox"
-								id={fieldName}
+						<GooCheckbox
+							checked={fieldValue === true || fieldValue === 'on' || fieldValue === '1'}
+							id={fieldName}
 								name={fieldName}
-								checked={fieldValue === true || fieldValue === 'on' || fieldValue === '1'}
+								ariaLabel={getMessage(`field_${fieldName}`, fieldConfig.label)}
 								required={isRequired}
 								class={validationClass}
-								on:blur={() => markAsTouched(fieldName)}
-							/>
+								onblur={() => markAsTouched(fieldName)}
+								onchange={() => markAsTouched(fieldName)}
+							>
 							<span class="label-text">
 								{getMessage(`field_${fieldName}`, fieldConfig.label)}
 								{#if isRequired}<span class="required-indicator">*</span>{/if}
 							</span>
-						</label>
+						</GooCheckbox>
 					{:else}
 						{#if !hideLabels}
 							<label for={fieldName}>
@@ -185,35 +203,31 @@
 						{/if}
 
 						{#if fieldConfig.type === 'textarea'}
-							<textarea
-								id={fieldName}
+							<GooTextarea
+								inputId={fieldName}
 								name={fieldName}
 								placeholder={fieldConfig.placeholder || ''}
 								rows={fieldConfig.rows || 5}
 								required={isRequired}
-								maxlength={fieldConfig.maxlength}
+								maxLength={fieldConfig.maxlength}
 								class={validationClass}
-								on:blur={() => markAsTouched(fieldName)}>{fieldValue}</textarea
-							>
+								value={fieldText}
+								onblur={() => markAsTouched(fieldName)}
+							/>
 						{:else if fieldConfig.type === 'select'}
-							<select
-								id={fieldName}
+							<GooSelect
+								inputId={fieldName}
 								name={fieldName}
 								required={isRequired}
 								class={validationClass}
-								on:blur={() => markAsTouched(fieldName)}
-							>
-								<option value="" disabled selected={!fieldValue}>
-									{fieldConfig.placeholder || getMessage('selectOption', 'Select an option')}
-								</option>
-								{#if fieldConfig.options}
-									{#each fieldConfig.options as option (option.value)}
-										<option value={option.value} selected={fieldValue === option.value}>
-											{option.label}
-										</option>
-									{/each}
-								{/if}
-							</select>
+								value={fieldText}
+								options={(fieldConfig.options ?? []).map((option) => ({
+									id: option.value,
+									label: option.label
+								}))}
+								placeholder={fieldConfig.placeholder || getMessage('selectOption', 'Select an option')}
+								onchange={() => markAsTouched(fieldName)}
+							/>
 						{:else if fieldConfig.type === 'file'}
 							<input
 								type="file"
@@ -223,22 +237,22 @@
 								multiple={fieldConfig.multiple || false}
 								required={isRequired}
 								class={validationClass}
-								on:blur={() => markAsTouched(fieldName)}
+								onblur={() => markAsTouched(fieldName)}
 							/>
 						{:else}
-							<input
+							<GooInput
 								type={fieldConfig.type || 'text'}
-								id={fieldName}
+								inputId={fieldName}
 								name={fieldName}
 								placeholder={fieldConfig.placeholder || ''}
-								value={fieldValue}
+								value={fieldText}
 								required={isRequired}
-								maxlength={fieldConfig.maxlength}
+								maxLength={fieldConfig.maxlength}
 								min={fieldConfig.min}
 								max={fieldConfig.max}
 								pattern={fieldConfig.pattern}
 								class={validationClass}
-								on:blur={() => markAsTouched(fieldName)}
+								onblur={() => markAsTouched(fieldName)}
 							/>
 						{/if}
 					{/if}
@@ -251,9 +265,9 @@
 		{/each}
 
 		<div class="form-actions">
-			<button type="submit" class="submit-button" disabled={isSubmitting}>
-				{isSubmitting ? _submittingButtonText : _submitButtonText}
-			</button>
+			<GooButton type="submit" class="submit-button" disabled={isSubmitting}>
+				{isSubmitting ? resolvedSubmittingButtonText : resolvedSubmitButtonText}
+			</GooButton>
 		</div>
 	</form>
 </div>
@@ -287,9 +301,7 @@
 		font-weight: 600;
 	}
 
-	.form-field input,
-	.form-field textarea,
-	.form-field select {
+	.form-field input {
 		padding: 0.75rem;
 		border: 1px solid var(--color-border);
 		border-radius: 4px;
@@ -297,24 +309,18 @@
 		width: 100%;
 	}
 
-	.form-field input:focus,
-	.form-field textarea:focus,
-	.form-field select:focus {
+	.form-field input:focus {
 		outline: none;
 		border-color: var(--color-primary-500);
 		box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 	}
 
-	.form-field input.is-invalid,
-	.form-field textarea.is-invalid,
-	.form-field select.is-invalid {
+	.form-field input.is-invalid {
 		border-color: var(--color-error-500);
 		background-color: rgba(220, 53, 69, 0.05);
 	}
 
-	.form-field input.is-valid,
-	.form-field textarea.is-valid,
-	.form-field select.is-valid {
+	.form-field input.is-valid {
 		border-color: var(--color-success-500);
 		background-color: rgba(40, 167, 69, 0.05);
 	}
@@ -322,20 +328,6 @@
 	.checkbox-field {
 		flex-direction: row;
 		align-items: flex-start;
-	}
-
-	.checkbox-label {
-		display: flex;
-		align-items: flex-start;
-		gap: 0.5rem;
-		cursor: pointer;
-		font-weight: normal;
-		margin-bottom: 0;
-	}
-
-	.checkbox-label input[type='checkbox'] {
-		margin-top: 0.25rem;
-		width: auto;
 	}
 
 	.field-error {
