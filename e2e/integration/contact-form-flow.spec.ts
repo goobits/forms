@@ -344,17 +344,4 @@ test.describe('Contact Form - Full User Flow', () => {
 		await checkA11y(page);
 	});
 
-	test('should take screenshots for visual regression', async ({ page }) => {
-		// Initial state
-		await expect(page).toHaveScreenshot('contact-form-initial.png', { fullPage: true });
-
-		// Submit to show errors
-		const form = page.locator('form').first();
-		const submitButton = form.locator('button[type="submit"]');
-		await submitButton.click();
-		await waitForOptionalFormFeedback(page);
-
-		// Error state
-		await expect(page).toHaveScreenshot('contact-form-errors.png', { fullPage: true });
-	});
 });

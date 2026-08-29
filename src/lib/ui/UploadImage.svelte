@@ -202,7 +202,3 @@
 		</div>
 	{/if}
 </div>
-
-<style lang="scss">
-	@use './UploadImage.css';
-</style>

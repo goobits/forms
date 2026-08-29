@@ -1,9 +1,9 @@
 /* Animation for loading spinner - now using global animations.css */
-:global(.animate-spin) {
+.animate-spin {
 	animation: spin 1.5s linear infinite;
 }
 
-:global(.grecaptcha-badge) {
+.grecaptcha-badge {
 	visibility: hidden !important;
 }
 
@@ -95,36 +95,18 @@
 		margin-bottom: var(--space-6);
 	}
 
-	.feedback__radio {
-		display: flex;
-		align-items: center;
-		gap: var(--space-2);
-		cursor: pointer;
-	}
-
-	.feedback__radio input[type='radio'] {
-		accent-color: var(--color-primary-500);
-	}
-
-	.feedback__radio__group {
+	.feedback__radio-group {
 		display: flex;
 		gap: var(--space-6);
 		justify-content: center;
 	}
-
-	.feedback__radio__text {
-		color: var(--color-text);
-		font-size: 1rem;
-	}
-
-	/* Dark theme radio text handled via CSS variables */
 
 	.feedback__field {
 		display: block;
 		margin-bottom: var(--space-4);
 	}
 
-	.feedback__field__error {
+	.feedback__field-error {
 		color: var(--color-error-600);
 		font-size: var(--font-size-sm);
 		margin-top: var(--space-1);
@@ -142,7 +124,7 @@
 
 	/* Dark theme error styles handled via CSS variables */
 
-	.feedback__error__message {
+	.feedback__error-message {
 		margin: 0;
 	}
 
@@ -180,7 +162,7 @@
 		resize: vertical;
 	}
 
-	.feedback__textarea.feedback--error {
+	.feedback__textarea.feedback__textarea--error {
 		border-color: var(--color-error-300) !important;
 		background-color: var(--color-error-50);
 	}
@@ -201,7 +183,7 @@
 		margin-top: var(--space-4);
 	}
 
-	.feedback__actions.feedback--thank-you {
+	.feedback__actions.feedback__actions--thank-you {
 		margin-top: var(--space-5);
 	}
 
@@ -224,14 +206,14 @@
 	}
 
 	/* Primary button modifier */
-	.feedback__btn.feedback--primary {
+	.feedback__btn.feedback__btn--primary {
 		background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
 		border: none;
 		color: var(--color-text-on-primary);
 		position: relative;
 	}
 
-	.feedback__btn.feedback--primary::before {
+	.feedback__btn.feedback__btn--primary::before {
 		background-color: var(--color-primary-600);
 		border-radius: inherit;
 		content: '';
@@ -242,33 +224,33 @@
 		z-index: 0;
 	}
 
-	.feedback__btn.feedback--primary span {
+	.feedback__btn.feedback__btn--primary span {
 		position: relative;
 		z-index: 2;
 	}
 
-	.feedback__btn.feedback--primary:hover:not(:disabled) {
+	.feedback__btn.feedback__btn--primary:hover:not(:disabled) {
 		box-shadow: var(--shadow-md);
 		transform: scale(1.02);
 	}
 
-	.feedback__btn.feedback--primary:hover:not(:disabled)::before {
+	.feedback__btn.feedback__btn--primary:hover:not(:disabled)::before {
 		opacity: 1;
 	}
 
-	.feedback__btn.feedback--primary:disabled {
+	.feedback__btn.feedback__btn--primary:disabled {
 		background: var(--color-border-strong);
 		box-shadow: none;
 		cursor: not-allowed;
 		transform: none;
 	}
 
-	.feedback__btn.feedback--primary:disabled::before {
+	.feedback__btn.feedback__btn--primary:disabled::before {
 		opacity: 0;
 	}
 
 	/* Secondary button modifier */
-	.feedback__btn.feedback--secondary {
+	.feedback__btn.feedback__btn--secondary {
 		background-color: var(--color-surface);
 		color: var(--color-text-secondary);
 		border: 1px solid var(--color-border);
@@ -276,7 +258,7 @@
 
 	/* Dark theme secondary button handled via CSS variables */
 
-	.feedback__btn.feedback--secondary:hover {
+	.feedback__btn.feedback__btn--secondary:hover {
 		background-color: var(--color-surface-hover);
 		border-color: var(--color-border-strong);
 	}

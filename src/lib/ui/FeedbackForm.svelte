@@ -1,4 +1,5 @@
 <script lang="ts">
+	import './FeedbackForm.css';
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { GooButton } from '@goobits/goo/button';
@@ -391,7 +392,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	@import './FeedbackForm.css';
-</style>

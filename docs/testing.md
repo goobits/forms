@@ -1,7 +1,7 @@
 # Testing
 
 ```bash
-pnpm test:run
+pnpm test:unit
 pnpm test:a11y
 pnpm build
 pnpm lint
