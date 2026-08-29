@@ -294,7 +294,7 @@ export const defaultFieldConfigs: Record<string, ExtendedFieldConfig> = {
 	},
 	coppa: {
 		type: 'checkbox',
-		label: 'I confirm I am over 13 years old or have parent/teacher permission',
+		label: 'I confirm I am at least 13 years old',
 		required: true
 	},
 	terms: {

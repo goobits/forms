@@ -243,7 +243,7 @@ export const contactSchema = z.object({
 	message: z.string().min(1, 'Please share your message with us'),
 	attachments: z.array(z.instanceof(File)).optional(),
 	coppa: z.boolean().refine((val) => val === true, {
-		message: "Please confirm you're over 13 or have parent/teacher permission"
+		message: 'Please confirm you are at least 13 years old'
 	})
 });
 
@@ -258,7 +258,7 @@ export const feedbackSchema = z.object({
 	message: z.string().min(1, 'Please share your message with us'),
 	attachments: z.array(z.instanceof(File)).optional(),
 	coppa: z.boolean().refine((val) => val === true, {
-		message: "Please confirm you're over 13 or have parent/teacher permission"
+		message: 'Please confirm you are at least 13 years old'
 	})
 });
 
@@ -277,7 +277,7 @@ export const supportSchema = z.object({
 	operatingSystem: z.string().min(1, "Please tell us which operating system you're using"),
 	attachments: z.array(z.instanceof(File)).optional(),
 	coppa: z.boolean().refine((val) => val === true, {
-		message: "Please confirm you're over 13 or have parent/teacher permission"
+		message: 'Please confirm you are at least 13 years old'
 	})
 });
 
@@ -293,7 +293,7 @@ export const businessSchema = z.object({
 	businessRole: z.string().min(1, 'Please tell us your role in the company'),
 	message: z.string().min(1, 'Please share your message with us'),
 	coppa: z.boolean().refine((val) => val === true, {
-		message: "Please confirm you're over 13 or have parent/teacher permission"
+		message: 'Please confirm you are at least 13 years old'
 	})
 });
 
@@ -310,7 +310,7 @@ export const bookingSchema = z.object({
 	preferredTime: z.string().min(1, 'Please select your preferred time'),
 	message: z.string().min(1, 'Please share your message with us'),
 	coppa: z.boolean().refine((val) => val === true, {
-		message: "Please confirm you're over 13 or have parent/teacher permission"
+		message: 'Please confirm you are at least 13 years old'
 	})
 });
 

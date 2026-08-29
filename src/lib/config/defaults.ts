@@ -76,7 +76,7 @@ export const defaultErrorMessages: ErrorMessageConfig = {
 	name: 'Please provide your name',
 	email: 'Please enter a valid email address',
 	message: 'Please share your message with us',
-	coppa: "Please confirm you're over 13 or have parent/teacher permission",
+	coppa: 'Please confirm you are at least 13 years old',
 	phone: 'Please provide a contact phone number',
 	preferredDate: 'Please select your preferred date',
 	preferredTime: 'Please select your preferred time',
@@ -239,7 +239,7 @@ export const defaultFieldConfigs: Record<string, FieldConfig> = {
 	},
 	coppa: {
 		type: 'checkbox',
-		label: 'I confirm I am over 13 years old or have parent/teacher permission',
+		label: 'I confirm I am at least 13 years old',
 		required: true
 	},
 	attachments: {
