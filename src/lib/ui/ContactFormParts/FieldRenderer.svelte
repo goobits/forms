@@ -152,7 +152,10 @@
 							{...getGooControlProps(props)}
 							id={props.id}
 							name={props.name}
-							ariaLabel={fieldConfig.label.replace(/<[^>]*>/g, '').replace('(optional)', '').trim()}
+							ariaLabel={fieldConfig.label
+								.replace(/<[^>]*>/g, '')
+								.replace('(optional)', '')
+								.trim()}
 							checked={!!formData[fieldName]}
 							class="contact-form__checkbox {touched[fieldName] && fieldErrors?.[fieldName]
 								? 'contact-form__field--error'

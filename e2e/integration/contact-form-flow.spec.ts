@@ -343,5 +343,4 @@ test.describe('Contact Form - Full User Flow', () => {
 		// Check accessibility with errors shown
 		await checkA11y(page);
 	});
-
 });

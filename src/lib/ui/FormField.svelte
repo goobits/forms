@@ -169,7 +169,10 @@
 		checked={checkedValue}
 		id={fieldName}
 		name={fieldName}
-		ariaLabel={fieldConfig.label.replace(/<[^>]*>/g, '').replace('(optional)', '').trim()}
+		ariaLabel={fieldConfig.label
+			.replace(/<[^>]*>/g, '')
+			.replace('(optional)', '')
+			.trim()}
 		class="contact-form__checkbox {validationClasses}{focusClass}"
 		aria-invalid={ariaInvalid}
 		aria-describedby={ariaDescribedby}

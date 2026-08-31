@@ -171,7 +171,10 @@
 				{@const fieldConfig = fieldConfigs[fieldName]}
 				{@const isRequired = fieldConfig.required || false}
 				{@const fieldValue = form.data[fieldName] || ''}
-				{@const fieldText = typeof fieldValue === 'string' || typeof fieldValue === 'number' ? String(fieldValue) : ''}
+				{@const fieldText =
+					typeof fieldValue === 'string' || typeof fieldValue === 'number'
+						? String(fieldValue)
+						: ''}
 				{@const rawFieldError = form.errors[fieldName] || ''}
 				{@const fieldError = Array.isArray(rawFieldError) ? rawFieldError[0] || '' : rawFieldError}
 				{@const isTouched = touchedFields[fieldName] || false}
@@ -182,13 +185,13 @@
 						<GooCheckbox
 							checked={fieldValue === true || fieldValue === 'on' || fieldValue === '1'}
 							id={fieldName}
-								name={fieldName}
-								ariaLabel={getMessage(`field_${fieldName}`, fieldConfig.label)}
-								required={isRequired}
-								class={validationClass}
-								onblur={() => markAsTouched(fieldName)}
-								onchange={() => markAsTouched(fieldName)}
-							>
+							name={fieldName}
+							ariaLabel={getMessage(`field_${fieldName}`, fieldConfig.label)}
+							required={isRequired}
+							class={validationClass}
+							onblur={() => markAsTouched(fieldName)}
+							onchange={() => markAsTouched(fieldName)}
+						>
 							<span class="label-text">
 								{getMessage(`field_${fieldName}`, fieldConfig.label)}
 								{#if isRequired}<span class="required-indicator">*</span>{/if}
@@ -225,7 +228,8 @@
 									id: option.value,
 									label: option.label
 								}))}
-								placeholder={fieldConfig.placeholder || getMessage('selectOption', 'Select an option')}
+								placeholder={fieldConfig.placeholder ||
+									getMessage('selectOption', 'Select an option')}
 								onchange={() => markAsTouched(fieldName)}
 							/>
 						{:else if fieldConfig.type === 'file'}
