@@ -1,17 +1,15 @@
-import { defineConfig, devices } from '@playwright/test';
+import { devices } from '@playwright/test';
 
-export default defineConfig({
-	testDir: './e2e',
-	fullyParallel: true,
-	forbidOnly: !!process.env.CI,
-	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
-	reporter: 'html',
-	use: {
-		baseURL: 'http://localhost:3180',
-		trace: 'on-first-retry',
-		screenshot: 'only-on-failure'
-	},
+import {
+	createWorkspacePlaywrightConfig,
+	resolveWorkspacePlaywrightOutputPath
+} from '@sketchapi/testing/playwright';
+
+const baseURL = 'http://localhost:3180';
+const config = createWorkspacePlaywrightConfig(import.meta.url, {
+	baseURL,
+	outputDir: resolveWorkspacePlaywrightOutputPath('sketchpad-com-forms', 'artifacts'),
+	parallel: true,
 	projects: [
 		{
 			name: 'chromium',
@@ -34,9 +32,23 @@ export default defineConfig({
 			use: { ...devices['iPhone 12'] }
 		}
 	],
-	webServer: {
-		command: 'pnpm run demo',
-		url: 'http://localhost:3180',
-		reuseExistingServer: false
-	}
+	reporter: [
+		[
+			'html',
+			{
+				open: 'never',
+				outputFolder: resolveWorkspacePlaywrightOutputPath('sketchpad-com-forms', 'html-report')
+			}
+		]
+	],
+	screenshot: true,
+	testDir: './e2e'
 });
+
+config.webServer = {
+	command: 'pnpm run demo',
+	url: baseURL,
+	reuseExistingServer: false
+};
+
+export default config;

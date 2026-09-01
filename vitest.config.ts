@@ -1,96 +1,96 @@
-import { defineConfig } from 'vitest/config';
+import { createWorkspaceVitestConfig } from '@sketchapi/vite/workspace-config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import path from 'path';
 
-export default defineConfig({
-	plugins: [svelte({ compilerOptions: { dev: true } })],
-	test: {
-		globals: true,
-		environment: 'jsdom',
-		pool: 'vmThreads',
-		maxWorkers: 2,
-		minWorkers: 1,
-		setupFiles: ['./tests/setup.ts'],
-		include: ['src/**/*.test.ts', 'src/**/*.test.js', 'src/**/*.spec.ts', 'src/**/*.spec.js'],
-		exclude: [
-			'node_modules',
-			'dist',
-			'build',
-			'.svelte-kit',
-			'.idea',
-			'.git',
-			'.cache',
-			'demo/**/*',
-			'docs/**/*',
-			'examples/**/*',
-			'e2e/**/*',
-			'playwright-report/**/*',
-			'coverage/**/*'
-		],
-		coverage: {
-			provider: 'v8',
-			reporter: ['text', 'html', 'json-summary', 'text-summary'],
-			reportsDirectory: './coverage',
-			include: [
-				// Security-critical code (high priority for testing)
-				'src/lib/config/secureDeepMerge.ts',
-				'src/lib/utils/sanitizeInput.ts',
-				// UI components and utilities
-				'src/lib/ui/**/*.{ts,svelte}',
-				'src/lib/validation/**/*.ts',
-				'src/lib/handlers/**/*.ts'
-			],
+export default createWorkspaceVitestConfig(import.meta.url, {
+	aliases: [
+		{ find: '$lib', replacement: './src/lib' },
+		{ find: '$app/environment', replacement: './tests/mocks/app-environment.ts' },
+		{ find: '$app/stores', replacement: './tests/mocks/app-stores.ts' },
+		{ find: '$app/navigation', replacement: './tests/mocks/app-navigation.ts' },
+		{ find: '$app/forms', replacement: './tests/mocks/app-forms.ts' }
+	],
+	config: {
+		plugins: [svelte({ compilerOptions: { dev: true } })],
+		test: {
+			globals: true,
+			environment: 'jsdom',
+			pool: 'vmThreads',
+			minWorkers: 1,
+			setupFiles: ['./tests/setup.ts'],
+			include: ['src/**/*.test.ts', 'src/**/*.test.js', 'src/**/*.spec.ts', 'src/**/*.spec.js'],
 			exclude: [
-				'**/*.d.ts',
-				'**/*.test.{ts,js}',
-				'**/*.spec.{ts,js}',
-				'**/types.ts',
-				'**/index.ts',
-				'**/test-setup.ts',
-				'src/lib/utils/logger.ts',
-				'src/lib/utils/debounce.ts',
-				'src/lib/utils/constants.ts',
-				'src/lib/utils/messages.ts',
-				'src/lib/config/defaults.ts',
-				'src/lib/config/defaultMessages.ts',
-				'src/lib/config/contactSchemas.ts',
-				// Demo and documentation files
-				'src/lib/ui/DemoPlayground.svelte',
-				'**/demo/**',
-				'**/docs/**',
-				'**/examples/**'
+				'node_modules',
+				'dist',
+				'build',
+				'.svelte-kit',
+				'.idea',
+				'.git',
+				'.cache',
+				'demo/**/*',
+				'docs/**/*',
+				'examples/**/*',
+				'e2e/**/*',
+				'playwright-report/**/*',
+				'coverage/**/*'
 			],
-			// Per-file thresholds for security-critical code
-			thresholds: {
-				// Security-critical files (high thresholds)
-				'src/lib/config/secureDeepMerge.ts': {
-					lines: 100,
-					functions: 100,
-					branches: 100,
-					statements: 100
-				},
-				'src/lib/utils/sanitizeInput.ts': {
-					lines: 85,
-					functions: 100,
-					branches: 85,
-					statements: 85
-				},
-				// Global thresholds for UI components (moderate)
-				lines: 80,
-				functions: 80,
-				branches: 75,
-				statements: 80
+			coverage: {
+				provider: 'v8',
+				reporter: ['text', 'html', 'json-summary', 'text-summary'],
+				reportsDirectory: './coverage',
+				include: [
+					// Security-critical code (high priority for testing)
+					'src/lib/config/secureDeepMerge.ts',
+					'src/lib/utils/sanitizeInput.ts',
+					// UI components and utilities
+					'src/lib/ui/**/*.{ts,svelte}',
+					'src/lib/validation/**/*.ts',
+					'src/lib/handlers/**/*.ts'
+				],
+				exclude: [
+					'**/*.d.ts',
+					'**/*.test.{ts,js}',
+					'**/*.spec.{ts,js}',
+					'**/types.ts',
+					'**/index.ts',
+					'**/test-setup.ts',
+					'src/lib/utils/logger.ts',
+					'src/lib/utils/debounce.ts',
+					'src/lib/utils/constants.ts',
+					'src/lib/utils/messages.ts',
+					'src/lib/config/defaults.ts',
+					'src/lib/config/defaultMessages.ts',
+					'src/lib/config/contactSchemas.ts',
+					// Demo and documentation files
+					'src/lib/ui/DemoPlayground.svelte',
+					'**/demo/**',
+					'**/docs/**',
+					'**/examples/**'
+				],
+				// Per-file thresholds for security-critical code
+				thresholds: {
+					// Security-critical files (high thresholds)
+					'src/lib/config/secureDeepMerge.ts': {
+						lines: 100,
+						functions: 100,
+						branches: 100,
+						statements: 100
+					},
+					'src/lib/utils/sanitizeInput.ts': {
+						lines: 85,
+						functions: 100,
+						branches: 85,
+						statements: 85
+					},
+					// Global thresholds for UI components (moderate)
+					lines: 80,
+					functions: 80,
+					branches: 75,
+					statements: 80
+				}
 			}
-		}
-	},
-	resolve: {
-		alias: {
-			$lib: path.resolve(import.meta.dirname, './src/lib'),
-			'$app/environment': path.resolve(import.meta.dirname, './tests/mocks/app-environment.ts'),
-			'$app/stores': path.resolve(import.meta.dirname, './tests/mocks/app-stores.ts'),
-			'$app/navigation': path.resolve(import.meta.dirname, './tests/mocks/app-navigation.ts'),
-			'$app/forms': path.resolve(import.meta.dirname, './tests/mocks/app-forms.ts')
 		},
-		conditions: ['browser']
+		resolve: {
+			conditions: ['browser']
+		}
 	}
 });
