@@ -71,7 +71,7 @@
 			}
 		}
 	},
-	"packageManager": "pnpm@11.22.0",
+	"packageManager": "pnpm@11.24.0",
 	"scripts": {
 		"audit:dependencies": "pnpm audit --audit-level low --registry=https://registry.npmjs.org/",
 		"build": "svelte-package && pnpm run build:clean",
@@ -80,17 +80,17 @@
 		"prepublishOnly": "pnpm run build && pnpm run lint && pnpm run test:unit",
 		"test": "pnpm run test:unit",
 		"test:unit": "vitest run",
-		"test:leaks": "vitest run --detectAsyncLeaks --maxWorkers=1 --silent=passed-only src/lib/ui/ContactForm.a11y.test.ts src/lib/ui/DatePicker.a11y.test.ts",
-		"test:heap": "vitest run --logHeapUsage --maxWorkers=1 --reporter=verbose src/lib/handlers/contactFormHandler.test.ts src/lib/ui/ContactForm.a11y.test.ts",
+		"test:leaks": "VITEST_MAX_WORKERS=1 vitest run --detectAsyncLeaks --silent=passed-only src/lib/ui/ContactForm.a11y.test.ts src/lib/ui/DatePicker.a11y.test.ts",
+		"test:heap": "VITEST_MAX_WORKERS=1 vitest run --logHeapUsage --reporter=verbose src/lib/handlers/contactFormHandler.test.ts src/lib/ui/ContactForm.a11y.test.ts",
 		"test:watch": "vitest --watch",
 		"test:ui": "vitest --ui",
 		"test:coverage": "vitest run --coverage",
 		"test:a11y": "vitest run --reporter=verbose src/lib/ui/**/*.a11y.test.ts",
 		"test:a11y:watch": "vitest --reporter=verbose src/lib/ui/**/*.a11y.test.ts",
-		"test:e2e": "playwright test",
-		"test:e2e:ui": "playwright test --ui",
-		"test:e2e:headed": "playwright test --headed",
-		"test:e2e:debug": "playwright test --debug",
+		"test:e2e": "node ../../../../tasks/testing/playwright/runWithBrowserCapacity.mjs -- playwright test",
+		"test:e2e:ui": "node ../../../../tasks/testing/playwright/runWithBrowserCapacity.mjs --wait 600 -- playwright test --ui",
+		"test:e2e:headed": "node ../../../../tasks/testing/playwright/runWithBrowserCapacity.mjs --wait 600 -- playwright test --headed",
+		"test:e2e:debug": "node ../../../../tasks/testing/playwright/runWithBrowserCapacity.mjs --wait 600 -- playwright test --debug",
 		"test:e2e:codegen": "playwright codegen http://localhost:3180",
 		"test:e2e:report": "playwright show-report",
 		"validate:docs": "node tests/docs-validator.js",
@@ -176,8 +176,8 @@
 		"zod": "^4.4.3"
 	},
 	"peerDependencies": {
-		"@sveltejs/kit": "^2.0.0",
-		"svelte": "^5.0.0"
+		"@sveltejs/kit": "^2.70.3",
+		"svelte": "^5.56.10"
 	},
 	"keywords": [
 		"svelte",
@@ -216,14 +216,12 @@
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/svelte": "^5.4.2",
-		"@testing-library/user-event": "^14.6.4",
+		"@testing-library/user-event": "^14.6.6",
 		"@types/node": "^26.2.0",
-		"@typescript-eslint/eslint-plugin": "^8.67.0",
-		"@typescript-eslint/parser": "^8.67.0",
 		"@vitest/coverage-v8": "^4.1.11",
 		"@vitest/ui": "^4.1.11",
 		"axe-core": "^4.13.0",
-		"eslint": "^10.8.1",
+		"eslint": "^10.9.0",
 		"eslint-plugin-svelte": "^3.23.0",
 		"globals": "^17.11.0",
 		"jest-axe": "^11.0.0",
